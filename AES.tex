@@ -1,6 +1,6 @@
 % ---------------------------------- AES ---------------------------------------
 
-\documentclass[a4paper,12pt]{memoir}
+\documentclass[a4paper,12pt]{book}
 
 %TODO: sistemare titolo
 
@@ -14,7 +14,7 @@
 \usepackage[breaklinks]{hyperref}
 \usepackage{amsmath,amssymb,amsthm}
 
-%\usepackage{geometry} % [showframe] serve per mostrare il margine, è da rimuovere quando ho finito di controllare il margine. %TODO: remove showframe %TODO: sistemare margini se uso geometry.
+\usepackage{geometry} % [showframe] serve per mostrare il margine, è da rimuovere quando ho finito di controllare il margine. %TODO: remove showframe %TODO: sistemare margini se uso geometry.
 
 \usepackage[italian]{babel}
 
@@ -131,6 +131,7 @@
 % ----- empty page command end -------------
 
 % ----- code ----------------
+%TODO: remove
 
 \usepackage{listingsutf8}
 
@@ -257,51 +258,17 @@
 
 % ----------------------------- BEGIN CHAPTER STYLE ----------------------------------
 
-\newcommand\numlifter[1]{\raisebox{-2cm}[0pt][0pt]{\smash{#1}}}
-\newcommand\numindent{\kern37pt}
-\newlength\chaptertitleboxheight
-\makechapterstyle{hansen}{
-	\renewcommand\printchaptername{\raggedleft}
-	\renewcommand\printchapternum{%
-		\begingroup%
-		\leavevmode%
-		\chapnumfont%
-		\strut%
-		\numlifter{\thechapter}%
-		\numindent%
-		\endgroup%
-	}
-	
-	\renewcommand*{\printchapternonum}{%
-		\vphantom{\begingroup%
-			\leavevmode%
-			\chapnumfont%
-			\numlifter{\vphantom{9}}%
-			\numindent%
-			\endgroup}
-		\afterchapternum}
-	\setlength\midchapskip{0pt}
-	\setlength\beforechapskip{0.5\baselineskip}
-	\setlength{\afterchapskip}{3\baselineskip}
-	\renewcommand\chapnumfont{%
-		\fontsize{4cm}{0cm}%
-		\bfseries%
-		\sffamily%
-		\color{chaptercolor}%
-	}
-	\renewcommand\chaptitlefont{%
-		\normalfont%
-		\huge%
-		\bfseries%
-		\raggedleft%
-	}%
-	\settototalheight\chaptertitleboxheight{%
-		\parbox{\textwidth}{\chaptitlefont \strut bg\\bg\strut}}
-	\renewcommand\printchaptertitle[1]{%
-		\parbox[t][\chaptertitleboxheight][t]{\textwidth}{%
-			%\microtypesetup{protrusion=false}% add this if you use microtype
-			\chaptitlefont\strut ##1\strut}%
-}}
+% ================== Chapter Style 1 ================================================
+
+%\definecolor{gray75}{gray}{0.75}
+%\newcommand{\hsp}{\hspace{20pt}}
+
+%\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+% ================== Chapter Style 2 ================================================
+
+%Options: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+\usepackage[Lenny]{fncychap}
 
 % ----------------------------- END CHAPTER STYLE ------------------------------------
 
@@ -359,13 +326,13 @@
 	%\FSfont{5bp} % FontSite Bergamo (Bembo)
 	%49
 	\drop = 0.2\textheight
-	%\centering %TODO: questo centering da problemi
+	%\centering %TODO: questo centering da problemi; uncomment
 	\vfill
 	{\Huge Advanced Encryption Standard}\\[\baselineskip]
 	{\Huge AES}\\[\baselineskip]
 	{\large Luca Rengo}\\[0.5\drop]
 	{\Large }\\[0.5\baselineskip] %TODO: \plogo da problemi
-	{\Large The Publisher}\par
+	{\Large The Publisher}\par %TODO: al posto di The Publisher scrivere qualcos'altro
 	{\large \scshape year 2022} 
 	\vfill\null
 	\endgroup}
@@ -382,8 +349,6 @@
 	
 	\tableofcontents
 	
-	\chapterstyle{hansen}
-	
 	% \input: import the commands from filename.tex to target file.
 	
 	% \include: does a \clearpage and does an \input.
@@ -391,6 +356,18 @@
 	% \import: needs \usepackage{import} and it's used only when the imported files needs the path. \import{path}{filename}
 	
 	\mainmatter
+	
+	%TODO: magari non serve l'introduzione per ogni capitolo? %TODO: remove
+	
+	\include{Storia_di_AES}
+	
+	\include{Algoritmo} %TODO: oppure chiamarlo: "Meccanismo"?
+	
+	\include{La_matematica_dietro_AES}
+	
+	%TODO: Pros e Cons (Tipi Attacchi su AES, ecc.)
+	
+	%TODO: Conclusioni
 	
 	\backmatter
 	
