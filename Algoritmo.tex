@@ -1,12 +1,27 @@
-% ================================ L'ALGORITMO =============================
+% ================================ L'ALGORITMO =========================================
 
 \chapter{L'Algoritmo}
 
 %TODO: Le varie sezioni: sub bytes, Shift Rows, mix columns, Add Round Key
 %TODO: aggiungere immagini
 
-% ======================================================================================
+%TODO: perché l'ultimo round è differente?
 
+%TODO: 1. KeyExpansion (Rijndael Key Scheduler/AES Key Scheduler)
+%TODO: 1. AddRoundKey (con lo XOR)
+
+%TODO: 1. SubBytes (S-Box)
+%TODO: 2. ShiftRows (1a riga niente, 2a riga = shift a sinistra di 1, 3a riga = shift di 2, 4a riga = shift di 3) (lo shift è come una ROL in x86)
+%TODO: 3. MixColumns (Rijndael Key Scheduler/AES Key Scheduler)
+%TODO: 4. AddRoundKey (con lo XOR)
+
+%TODO: ShiftRows e MixColumns per la "Confusione e Diffusione" (teoria di Shannon).
+
+%TODO: 10 rounds (fasi/cicli) per chiavi di 128-bit
+%TODO: 12 rounds (fasi/cicli) per chiavi di 192-bit
+%TODO: 14 rounds (fasi/cicli) per chiavi di 256-bit
+
+% ======================================================================================
 
 % ---------------------------- SECTION: INTRODUZIONE -----------------------------------
 
