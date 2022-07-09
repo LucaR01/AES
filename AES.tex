@@ -19,7 +19,7 @@
 \usepackage[breaklinks]{hyperref}
 \usepackage{amsmath,amssymb,amsthm}
 
-\usepackage{geometry} % [showframe] serve per mostrare il margine, è da rimuovere quando ho finito di controllare il margine. %TODO: remove showframe %TODO: sistemare margini se uso geometry.
+\usepackage{geometry} % [showframe] % serve per mostrare il margine, è da rimuovere quando ho finito di controllare il margine. %TODO: remove showframe %TODO: sistemare margini se uso geometry.
 
 \usepackage[italian]{babel}
 
@@ -287,12 +287,12 @@
 {} % label
 {0.5ex} % sep
 {
-	\vspace{1ex}
-	\rule{\textwidth}{2pt} 
+	\vspace{1ex} % prima era 1ex
+	\rule{\textwidth}{2pt} % 2pt
 	\centering
 } % before-code
 [
-\vspace{-2ex}%
+\vspace{-2ex}% 2ex
 \rule{\textwidth}{1.5pt} % prima era 1.5 col font classico.
 ] % after-code
 
