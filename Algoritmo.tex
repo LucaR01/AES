@@ -84,14 +84,36 @@
 
 %TODO: Per ogni round, eseguiamo questi passaggi tranne per l'ultimo dove nonn effettuiamo il passaggio delle "Mix columns", perché non aumenterebbe la sicurezza e semplicemente rallenterebbe: [magari approfondire il perché]
 
+%TODO: Applichiamo il principio/proprietà di \emph{confusione} attraverso il passaggio 'Sub-bytes':
 %TODO: itemize: 
 
-%TODO: \textbf{Sub-bytes} oppure \underline{\emph{Sub-bytes}}: ...
+%TODO: \textbf{Sub-bytes} oppure \underline{\emph{Sub-bytes}}: Ogni byte viene mappato in un diverso byte attraverso una sbox [o si scrive s-box?]. Questo passaggio/step applica la prima proprietà di \emph{confusione} di Shannon, perché oscura la relazione tra ogni byte.
 
-%TODO: \textbf{Shift Rows} oppure \underline{\emph{Shift Rows}}:
+%TODO: Applichiamo la proprietà di \emph{diffusione}:
+%TODO: \textbf{Shift Rows} oppure \underline{\emph{Shift Rows}}: La seconda riga della matrice viene spostata di 1 verso sinistra. La terza riga di 2 posizioni e la quarta di 3.
 
-%TODO: \textbf{Mix Columns} oppure \underline{\emph{Mix Columns}}:
+%TODO: \textbf{Mix Columns} oppure \underline{\emph{Mix Columns}}: Ogni bits delle colonne della matrice (di stato) vengono mischiate.
 
-%TODO: \textbf{Add Round Key} oppure \underline{\emph{Add Round Key}}:
+%TODO: Dopodiché applichiamo la proprietà di \emph{segretezza della chiave}.
+%TODO: \textbf{Add Round Key} oppure \underline{\emph{Add Round Key}}: Viene applicata la chiave del prossimo round attraverso uno XOR.
+
+%TODO: Più rounds, più sicurezza, ma questo porterebbe ad un rallentamento delle performance.
+%TODO: Per questo dobbiamo trovare/serve un compresso/un bilanciamento tra sicurezza e prestazioni.
+
+%TODO: Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, [come possiamo notare ogni bit di output di un round dipende da ogni bit dei due rounds precedenti ] per evitare questo sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.
+
+%TODO: [magari aggiungere qualche immagine sul procedimento]
+
+%TODO: section/subsection: "Come può essere usato AES?" o "Con quali combinazioni può essere usato AES" o "In combinazione a cosa può essere usato AES"? o "Le modalità di AES"
+
+%TODO: AES non può essere usato così com'è, ma necessita di essere utilizzato in combinazione a una modalità .
+%TODO: Esistono varie modalità, qui ne elenco qualcuna:
+%TODO: ECB (Electronic Code Book)
+%TODO: CBC (Cipher Block Chaining)
+%TODO: CFB (Cipher FeedBack)
+%TODO: OFB (Output FeedBack)
+%TODO: CTR (Counter mode)
+
+%TODO: Approfondirli magari nella sezione dei pro e contro e dei possibili attacchi come: PA (Padding Attack), CPA (Chosen Plaintext Attack), CCA (Chosen Ci)
 
 % -------------------------------- FINE CAPITOLO ---------------------------------------
