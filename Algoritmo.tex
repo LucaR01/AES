@@ -29,35 +29,79 @@
 
 \section{Introduzione}
 
-%In questo capitolo, tratteremo il funzionamento dell'algoritmo di AES con una panoramica dall'alto, per poi affrontare nel prossimo capitolo, più in dettaglio, la matematica dietro a questo. %TODO: "dietro a questo" suona male, meglio trovare qualcos'altro.
+\textsf{\small In questo capitolo, tratteremo il funzionamento dell'algoritmo di AES con una panoramica dall'alto, per poi affrontare nel prossimo capitolo, più in dettaglio, la sua matematica.}
 
-%TODO: In questo capitolo affronteremo il funzionamento dell'algoritmo di AES più nel dettaglio/con una visione dall'alto, per poi trattare nel prossimo capitolo la matematica dietro all'\emph{Advanced Encryption Standard}.
+% ----------------- SECTION: I TRE CONCETTI DIETRO LA CRITTOGRAFI ----------------------
 
-% ---------------------------- SECTION:  ----------------------------------
+%\newpage
 
-\newpage
+\section{I tre concetti dietro la Crittografia} %TODO: Le tre idee/concetti/principi dietro la/alla Crittografia
 
-\section{} %TODO: Le tre idee/concetti/principi dietro la Crittografia
+\textsf{\small Alla base della crittografia, ci sono due importanti proprietà dei cifrari a chiave simmetrica, elaborati dal padre della teoria dell'informazione, Claude Elwood Shannon, ovvero: \emph{diffusione} e \emph{confusione}.} \\
 
-%TODO: Alla base della crittografia, ci sono due importanti proprietà/principi dei cifrari a chiave simmetrica, elaborati dal padre della teoria dell'informazione, Claude Elwood Shannon, ovvero: \emph{diffusione} e \emph{confusione}.
+\begin{comment}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/theory_of_information/confusion_and_diffusion.png}
+	\caption{Confusion and Diffusion}
+	\label{fig:confusion_and_diffusion2}
+\end{figure}
+\end{comment}
 
-%TODO: Il principio/proprietà della \emph{confusione} nasconde/vela la connessione tra il messaggio originale e il messaggio/testo cifrato. [per esempio cifrario di cesare (con annessa immagine volendo)]
+\textsf{\small Il principio della \emph{confusione} vela la connessione tra il messaggio originale e il testo cifrato.} %TODO: messaggio/testo; [per esempio cifrario di cesare (con annessa immagine volendo)]
 
-%TODO: Il principio/proprietà di \emph{diffusione}, invece, riguarda il riordino/ridistribuzione/scombussolamento della posizione delle lettere/caratteri nel/del messaggio/testo. [un semplice esempio potrebbe essere la trasposizione delle colonne in una matrice oppure non lo scrivo.]
+\textsf{\small La proprietà di \emph{diffusione}, invece, riguarda lo scombussolamento della posizione dei caratteri del messaggio.} %TODO: [un semplice esempio potrebbe essere la trasposizione delle colonne in una matrice oppure non lo scrivo.]
 
-%TODO: Un altro concetto/astrazione? molto importante è quello della \emph{segretezza nella chiave}, ovvero che l'algoritmo alla base del cifrario è conosciuto, è pubblico, ma la sola conoscenza di questo non basta/non è sufficiente per poter ottenere/attingere/conseguire l'accesso alle informazioni, perché per poterlo raggiungere/attingere/acquisire/conseguire avraì bisogno/sarà necessario conoscere la chiave segreta. [volendo aggiungere altro sulla teoria dell'informazione, su Shannon, sull'importanza, ecc. Magari aggiungere anche un'immagine.]
+\textsf{\small Un altro importante concetto è quello della \emph{segretezza della chiave}, ovvero che l'algoritmo alla base del cifrario è conosciuto, è pubblico, ma la sola conoscenza di questo non è sufficiente per poter conseguire l'accesso alle informazioni, perché per poter attingerle sarà necessario conoscere la chiave segreta.} %TODO: nella/della chiave; attingere/ottenere; attingerle/acquisire/raggiungere; concetto/astrazione
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/theory_of_information/confusion-and-diffusion.png}
+	\caption{Confusione e Diffusione}
+	\label{fig:confusion_and_diffusion}
+\end{figure}
+
+%TODO: [volendo aggiungere altro sulla teoria dell'informazione, su Shannon, sull'importanza, ecc. Magari aggiungere anche un'immagine.]
 
 %TODO: [aggiungere una o più immagini sulla teoria di Shannon]
 
-% ---------------------------- SECTION:  ----------------------------------
+% ------------------- SECTION: UNA PANORAMICA SULL'ALGORITMO --------------------------
 
-\section{} %TODO: Una panoramica dell'Algoritmo/Una panoramica sull'Algoritmo (meglio una panoramica sull'algoritmo come nome!) oppure "L'Algoritmo in breve" o "Semplice Overview dell'Algoritmo".
+\section{Una panoramica sull'Algoritmo} %TODO: Una panoramica dell'Algoritmo/Una panoramica sull'Algoritmo (meglio una panoramica sull'algoritmo come nome!) oppure "L'Algoritmo in breve" o "Semplice Overview dell'Algoritmo".
 
-%TODO: I dati di input vengono caricati in una matrice 4x4, anche chiamata \emph{state matrix} (matrice di stato), ogni cella contiene/rappresenta 1 byte di informazione, su questa compiamo diverse operazioni: sub-bytes (sostituzione dei bytes), shift rows (spostamento delle righe), mix columns (mescolamento delle colonne), add round key (aggiunta della chiave del round) per un numero di volte/rounds pari/in base alla grandezza della chiave. [immagine key size / Rounds]
+\textsf{\small I dati di input vengono caricati in una matrice 4x4, anche chiamata \emph{state matrix} (matrice di stato), dove ogni cella rappresenta 1 byte di informazione e su queste compiamo diverse operazioni: \emph{sub-bytes} (sostituzione dei bytes), \emph{shift rows} (spostamento delle righe), \emph{mix columns} (mescolamento delle colonne), \emph{add round key} (aggiunta della chiave del round) per un numero di volte, di rounds pari alla grandezza della chiave.} %TODO: oppure metterli in un itemize?
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth, height=0.8\textheight, keepaspectratio]{./images/aes/key_size_and_number_of_rounds.png}
+	\caption{Key Size e Numero di Rounds}
+	\label{fig:aes_key_size_number_of_rounds}
+\end{figure}
+
+\textsf{\small Nel primo round svolgiamo uno XOR tra il messaggio d'input e la chiave segreta.}
+
+\textsf{\small Lo \emph{XOR} (\emph{E\textbf{X}clusive-\textbf{OR}}) bit-a-bit è un'operazione di macsheratura dei bit, dove se i due bit di input sono diversi, allora produrrà un 1 in uscita, altrimenti se sono uguali, uno zero.} 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth, height=0.6\textheight, keepaspectratio]{./images/XOR/XOR-Truth-Table.png}
+	\caption{Tabella della verità dello XOR}
+	\label{fig:xor_truth_table}
+\end{figure}
 
 %TODO:  Nel primo round svolgiamo uno XOR (bit-a-bit?) tra il messaggio/testo d'input e la chiave segreta. [inserire immagine tabella verità XOR]
 
 %TODO: Lo XOR (EXclusive-OR) bit-a-bit è un'operazione di mascheratura dei bit, dove se i due bit di input sono diversi, allora genererà/produrrà un 1 in uscita, altrimenti se sono uguali, uno zero.
+
+\subsection{Perché lo XOR è usato in crittografia?}
+
+\begin{itemize}
+	\item \textsf{\small Lo XOR non \emph{leaka} informazioni sull'input originale.} %TODO: magari leaka non è proprio il top come parola, non esiste nemmeno in italiano
+	\item \textsf{\small Lo XOR è una \emph{involutory function} (funzione involutoria) tale che se la applichi due volte riottieni il testo originale.}
+	\item \textsf{\small L'output dello XOR dipende da entrambi gli input. Non è così per le altre operazioni (AND, OR, NOT, ecc.).}
+\end{itemize}
+
+\fleuron
 
 %TODO: Sezione/Subsection: Perché lo XOR è usato in crittografia?
 %TODO: itemize?
@@ -67,22 +111,49 @@
 
 %TODO: piccolo siparietto per tornare sull'argomento della sezione. \fleuron o \ornament
 
-%TODO: Fare una subsection?: titolo: "Come vengono ottenute le chiavi per ogni round?" oppure no?
+\textsf{\small Per poter elaborare i rounds, l'algoritmo ha bisogno di molte chiavi, una per round, queste vengono tutte derivate dalla chiave iniziale.}
+
+%TODO: Fare una subsection?: titolo: "Come vengono ottenute le chiavi per ogni round?" oppure no? KEY EXPANSION/KEY SCHEDULE
 %TODO: Per poter eseguire/elaborare i rounds, l'algoritmo ha bisogno di molte chiavi [una per round?], queste vengono tutte derivate dalla chiave iniziale. (volendo scrivere: Questo è uno dei motivi per cui AES viene criticato, perché tutte le chiavi vengono derivate dalla chiave originale).
 
-%TODO: Il procedimento è questo: [mettere delle immagini a riguardo]
+\textsf{\small Il procedimento per ricavarle è questo: }
 
-%TODO: enumerate: 
-%TODO: 1) Sposta la prima cella dell'ultima colonna della precedente chiave, in fondo/basso alla colonna.
-%TODO: 2) Ogni byte viene eseguito in una substituion box [che lo mapperà in qualcos' altro].
-%TODO: 3) Poi viene effettuato uno XOR tra la colonna e un \emph{round costant} (una costante di round) che è diversa per ogni round.
-%TODO: 4) Infine viene realizzato uno XOR con la prima colonna della precedente chiave.
+\begin{enumerate}
+	\item \textsf{\small Sposta la prima cella dell'ultima colonna della precedente chiave in fondo alla colonna.}
+	\item \textsf{\small Ogni byte viene posto in una substitution box che lo mapperà in qualcos'altro.}
+	\item \textsf{\small Viene effettuato uno XOR tra la colonna e una \emph{round constant} (costante di round) che è diversa per ogni round.}
+	\item \textsf{\small Infine viene realizzato uno XOR con la prima colonna della precedente chiave.}
+	%\item \textsf{\small }
+\end{enumerate}
+
+\textsf{\small Per le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave (eccetto per le chiavi a 256 bit che hanno un procedimento un po' più complicato).} \\ %TODO: rimuovere la parte tra parentesi? ovvero la parte procedimento un po' più complicato
+
+\begin{comment} %TODO: mettere immagine a riguardo
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/}
+	\caption{}
+	\label{fig:}
+\end{figure}
+\end{comment}
+
+%TODO: [mettere delle immagini a riguardo]
 
 %TODO: Per quanto riguarda le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave. [magari spiegare meglio] [magari mettere un'immagine a riguardo] [eccetto per le chiavi a 256 bit che sono un po' più complicate] [approfondire il perché siano più complicate]
 
 %TODO: Dopo aver ottenuto queste chiavi vengono compiuti i vari rounds.
 
-%TODO: Per ogni round, eseguiamo questi passaggi tranne per l'ultimo dove nonn effettuiamo il passaggio delle "Mix columns", perché non aumenterebbe la sicurezza e semplicemente rallenterebbe: [magari approfondire il perché]
+\textsf{\small Dopo aver ottenuto le chiavi, vengono compiuti i vari rounds.} 
+
+\textsf{\small Per ogni round, eseguiamo questi passaggi, tranne per l'ultimo dove non effettuiamo il passaggio delle \emph{Mix Columns}, perché non aumenterebbe la sicurezza e semplicemente rallenterebbe: } %TODO: [magari approfondire il perché rallenterebbe]
+
+\begin{itemize}
+	\item[] \textsf{\small Applichiamo il principio di \emph{confusione} attraverso il passaggio \emph{Sub-bytes}.}
+	\item \textsf{\small \underline{\emph{Sub-bytes}}: } %TODO:
+	\item \textsf{\small \underline{\emph{Shift Rows}}: } %TODO:
+	\item \textsf{\small \underline{\emph{Mix Columns}}: } %TODO:
+	\item \textsf{\small \underline{\emph{Add Round Key}}: } %TODO:
+\end{itemize}
 
 %TODO: Applichiamo il principio/proprietà di \emph{confusione} attraverso il passaggio 'Sub-bytes':
 %TODO: itemize: 
@@ -115,5 +186,7 @@
 %TODO: CTR (Counter mode)
 
 %TODO: Approfondirli magari nella sezione dei pro e contro e dei possibili attacchi come: PA (Padding Attack), CPA (Chosen Plaintext Attack), CCA (Chosen Ci)
+
+%TODO: immagine 500px-AES_(Rijndael)_Round_Function
 
 % -------------------------------- FINE CAPITOLO ---------------------------------------
