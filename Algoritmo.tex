@@ -1,4 +1,4 @@
-% ================================ L'ALGORITMO =========================================
+% ================================ L'ALGORITMO ========================================
 
 \chapter{L'Algoritmo} %TODO: Rinominare in "Una panoramica sull'Algoritmo" o in realtà quello è per una sezione?
 
@@ -23,7 +23,7 @@
 
 % ======================================================================================
 
-% ---------------------------- SECTION: INTRODUZIONE -----------------------------------
+% ---------------------------- SECTION: INTRODUZIONE ----------------------------------
 
 %\newpage
 
@@ -89,10 +89,6 @@
 	\label{fig:xor_truth_table}
 \end{figure}
 
-%TODO:  Nel primo round svolgiamo uno XOR (bit-a-bit?) tra il messaggio/testo d'input e la chiave segreta. [inserire immagine tabella verità XOR]
-
-%TODO: Lo XOR (EXclusive-OR) bit-a-bit è un'operazione di mascheratura dei bit, dove se i due bit di input sono diversi, allora genererà/produrrà un 1 in uscita, altrimenti se sono uguali, uno zero.
-
 \subsection{Perché lo XOR è usato in crittografia?}
 
 \begin{itemize}
@@ -102,14 +98,6 @@
 \end{itemize}
 
 \fleuron
-
-%TODO: Sezione/Subsection: Perché lo XOR è usato in crittografia?
-%TODO: itemize?
-%TODO: Lo XOR non fa fuoriuscire/fuori esce/leak informazioni (sull'input inziiale/originale?)
-%TODO: Lo XOR è \emph{involutory function}, se lo applichi due volte, riottieni il testo originale.
-%TODO: L'output dello XOR dipende da entrambi gli input. Non è così per le altre operazioni. (Scrivere: AND, OR, NOT, ecc.?)
-
-%TODO: piccolo siparietto per tornare sull'argomento della sezione. \fleuron o \ornament
 
 \textsf{\small Per poter elaborare i rounds, l'algoritmo ha bisogno di molte chiavi, una per round, queste vengono tutte derivate dalla chiave iniziale.}
 
@@ -126,16 +114,14 @@
 	%\item \textsf{\small }
 \end{enumerate}
 
-\textsf{\small Per le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave (eccetto per le chiavi a 256 bit che hanno un procedimento un po' più complicato).} \\ %TODO: rimuovere la parte tra parentesi? ovvero la parte procedimento un po' più complicato
+\textsf{\small Per le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave (eccetto per le chiavi a 256 bit che hanno un procedimento un po' più complicato).} \\ %TODO: rimuovere la parte tra parentesi? ovvero la parte procedimento un po' più complicato o approfondirla?
 
-\begin{comment} %TODO: mettere immagine a riguardo
-\begin{figure}[H]
+\begin{figure}[H] %TODO: Cambiare immagine?
 	\centering
-	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/}
-	\caption{}
-	\label{fig:}
+	\includegraphics[width=0.8\textwidth, height=0.8\textheight, keepaspectratio]{./images/key_expansion/key_expansion.png}
+	\caption{Key Expansion}
+	\label{fig:key_expansion}
 \end{figure}
-\end{comment}
 
 %TODO: [mettere delle immagini a riguardo]
 
@@ -149,44 +135,55 @@
 
 \begin{itemize}
 	\item[] \textsf{\small Applichiamo il principio di \emph{confusione} attraverso il passaggio \emph{Sub-bytes}.}
-	\item \textsf{\small \underline{\emph{Sub-bytes}}: } %TODO:
-	\item \textsf{\small \underline{\emph{Shift Rows}}: } %TODO:
-	\item \textsf{\small \underline{\emph{Mix Columns}}: } %TODO:
-	\item \textsf{\small \underline{\emph{Add Round Key}}: } %TODO:
+	\item \textsf{\small \underline{\emph{Sub-bytes}}: Ogni byte viene mappato in un diverso byte attraverso una s-box. Questo step applica la proprietà di \emph{confusione} di Shannon, perché oscura la relazione tra ogni byte.}
+	\item[] \textsf{\small Applichiamo la proprietà di \emph{diffusione}:}
+	\item \textsf{\small \underline{\emph{Shift Rows}}: La seconda riga della matrice viene spostata di 1 verso sinistra. La terza riga di 2 posizioni e la quarta di 3 (sempre verso sinistra).}
+	\item \textsf{\small \underline{\emph{Mix Columns}}: Ogni bit delle colonne della matrice (di stato) vengono mischiate.} %TODO: Approfondire come vengono mischiate
+	\item[] \textsf{\small Applichiamo la proprietà di \emph{segretezza della chiave}:}
+	\item \textsf{\small \underline{\emph{Add Round Key}}: Viene applicata la chiave del prossimo round attraverso uno XOR.} %TODO: applicata, meglio trovare un altro verbo
 \end{itemize}
 
-%TODO: Applichiamo il principio/proprietà di \emph{confusione} attraverso il passaggio 'Sub-bytes':
-%TODO: itemize: 
+\begin{figure}[H] %TODO: Cambiare immagine?
+	\centering
+	\includegraphics[width=0.5\textwidth, height=0.5\textheight, keepaspectratio]{./images/aes/flowcharts/aes_flowchart.png}
+	\caption{AES Rounds Flowchart}
+	\label{fig:aes_flowchart2}
+\end{figure}
 
-%TODO: \textbf{Sub-bytes} oppure \underline{\emph{Sub-bytes}}: Ogni byte viene mappato in un diverso byte attraverso una sbox [o si scrive s-box?]. Questo passaggio/step applica la prima proprietà di \emph{confusione} di Shannon, perché oscura la relazione tra ogni byte.
+\textsf{\small Più rounds aggiungiamo, più sicurezza, ma questo porterebbe ad un rallentamento dell'algoritmo e quindi delle performance.}
+\textsf{\small Per questo serve un compromesso tra sicurezza e prestazioni.}
 
-%TODO: Applichiamo la proprietà di \emph{diffusione}:
-%TODO: \textbf{Shift Rows} oppure \underline{\emph{Shift Rows}}: La seconda riga della matrice viene spostata di 1 verso sinistra. La terza riga di 2 posizioni e la quarta di 3.
-
-%TODO: \textbf{Mix Columns} oppure \underline{\emph{Mix Columns}}: Ogni bits delle colonne della matrice (di stato) vengono mischiate.
-
-%TODO: Dopodiché applichiamo la proprietà di \emph{segretezza della chiave}.
-%TODO: \textbf{Add Round Key} oppure \underline{\emph{Add Round Key}}: Viene applicata la chiave del prossimo round attraverso uno XOR.
-
-%TODO: Più rounds, più sicurezza, ma questo porterebbe ad un rallentamento delle performance.
-%TODO: Per questo dobbiamo trovare/serve un compresso/un bilanciamento tra sicurezza e prestazioni.
-
-%TODO: Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, [come possiamo notare ogni bit di output di un round dipende da ogni bit dei due rounds precedenti ] per evitare questo sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.
+\textsf{\small Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, per evitare ciò, sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.} %TODO: Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, [come possiamo notare ogni bit di output di un round dipende da ogni bit dei due rounds precedenti ] per evitare questo sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.
 
 %TODO: [magari aggiungere qualche immagine sul procedimento]
 
-%TODO: section/subsection: "Come può essere usato AES?" o "Con quali combinazioni può essere usato AES" o "In combinazione a cosa può essere usato AES"? o "Le modalità di AES"
+\subsection{Le modalità di AES} %TODO: section/subsection: "Come può essere usato AES?" o "Con quali combinazioni può essere usato AES" o "In combinazione a cosa può essere usato AES"? o "Le modalità di AES"
 
-%TODO: AES non può essere usato così com'è, ma necessita di essere utilizzato in combinazione a una modalità .
-%TODO: Esistono varie modalità, qui ne elenco qualcuna:
-%TODO: ECB (Electronic Code Book)
-%TODO: CBC (Cipher Block Chaining)
-%TODO: CFB (Cipher FeedBack)
-%TODO: OFB (Output FeedBack)
-%TODO: CTR (Counter mode)
+\textsf{\small AES non può essere utilizzato così com'è, ma necessita di essere adoperato in combinazione a una modalità. } %TODO: AES non può essere usato così com'è, ma necessita di essere utilizzato in combinazione a una modalità .
+\textsf{\small Una modalità è un processo/sistema/procedimento per aumentare/incrementare/trasformare/avanzare l'efficacia di un algoritmo crittografico.  } %TODO: processo/sistema/procedimento; aumentare/incrementare/trasformare/avanzare;
+
+\textsf{\small Di seguito, alcune delle modalità di AES: }
+
+\begin{itemize} %TODO: approfondirli, scrivere qualcosa di ciascuno
+	\item \textsf{\small \textbf{ECB} (\emph{\textbf{E}lectronic \textbf{C}ode \textbf{B}ook})}
+	\item \textsf{\small \textbf{CBC} (\emph{\textbf{C}ipher \textbf{B}lock \textbf{C}haining})}
+	\item \textsf{\small \textbf{CFB} (\emph{\textbf{C}ipher \textbf{F}eed\textbf{B}ack)}}
+	\item \textsf{\small \textbf{OFB} (\emph{\textbf{O}utput \textbf{F}eed\textbf{B}ack)}}
+	\item \textsf{\small \textbf{CTR} (\emph{\textbf{C}oun\textbf{t}e\textbf{r} mode})}
+	%\item \textsf{\small }
+\end{itemize} 
+
+%TODO: magari approfondire queste modalità oppure più tardi oppure scrivere giusto un filino per ognuna e poi al massimo lo riprendo dopo.
+
+\newpage
+
+\begin{figure}[H] %TODO: oppure mettere un'immagine sulle modalità, oppure mettere quueta prima delle modalità
+	\centering
+	\includegraphics[width=0.6\textwidth, height=0.6\textheight, keepaspectratio]{./images/aes/500px-AES_(Rijndael)_Round_Function.png}
+	\caption{AES Round Function}
+	\label{fig:500px-AES_(Rijndael)_Round_Function}
+\end{figure}
 
 %TODO: Approfondirli magari nella sezione dei pro e contro e dei possibili attacchi come: PA (Padding Attack), CPA (Chosen Plaintext Attack), CCA (Chosen Ci)
 
-%TODO: immagine 500px-AES_(Rijndael)_Round_Function
-
-% -------------------------------- FINE CAPITOLO ---------------------------------------
+% -------------------------------- FINE CAPITOLO --------------------------------------
