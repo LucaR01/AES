@@ -1,4 +1,4 @@
-% ================================ LA MATEMATICA DIETRO AES ============================
+% ================================ LA MATEMATICA DIETRO AES ===========================
 
 \chapter{La Matematica dietro AES}
 
@@ -14,8 +14,28 @@
 
 % ======================================================================================
 
+%TODO: Parto spiegando che cos'è il campo finito di Galois GF(2^8)
+%TODO: spiego le varie operazioni possibili in questo campo e come si eseguono:
+%TODO: i numeri si possono rappresentare come polinomi, ovvero, per esempio: il numero esadecimale 0x53, ovvero 83 in decimale o 01010011 in binario può essere rappresentato come x^6 + x^4 + x + 1 perché 01010011 (1 * 2^6, 1 * 2^4, 1 * 2^1, 1 * 2^0 <=> x^6 + x^4 + x + 1)
+%TODO: Somma e Sottrazione si fanno con lo XOR. 
+%TODO: mostrare un esempio
+%TODO: Moltiplicazione: modulo x^8 + x^4 + x^3 + x + 1 e il perché
+%TODO: mostrare un esempio di moltiplicazione
+%TODO: esponenziazione
+%TODO: esempio o tabella degli esponenti
+%TODO: Logaritmi
+%TODO: esempio o tabella dei logaritmi
+%TODO: Divisione
+%TODO: esempio della divisione
+%TODO: trovare il polinomio inverso
 
-% ---------------------------- SECTION: INTRODUZIONE -----------------------------------
+%TODO: spiego le varie operazioni dell'algoritmo come vengono eseguite in termini matematici.
+%TODO: l's-box g e f => f(g(x))
+%TODO: round constants nella key expansion
+%TODO: Mix Columns: ogni colonna come polinomio, la moltiplico per un altro polinomio e recupero il resto dopo averla divisa per x^4 + 1, tutto questo è una moltiplicazione tra matrici.
+%TODO: e altro.
+
+% ---------------------------- SECTION: INTRODUZIONE ----------------------------------
 
 %\newpage
 
