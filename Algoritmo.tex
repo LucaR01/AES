@@ -48,6 +48,8 @@
 \end{figure}
 \end{comment}
 
+%TODO: itemize?
+
 \textsf{\small Il principio della \emph{confusione} vela la connessione tra il messaggio originale e il testo cifrato.} %TODO: messaggio/testo; [per esempio cifrario di cesare (con annessa immagine volendo)]
 
 \textsf{\small La proprietà di \emph{diffusione}, invece, riguarda lo scombussolamento della posizione dei caratteri del messaggio.} %TODO: [un semplice esempio potrebbe essere la trasposizione delle colonne in una matrice oppure non lo scrivo.]
@@ -68,6 +70,9 @@
 % ------------------- SECTION: UNA PANORAMICA SULL'ALGORITMO --------------------------
 
 \section{Una panoramica sull'Algoritmo} %TODO: Una panoramica dell'Algoritmo/Una panoramica sull'Algoritmo (meglio una panoramica sull'algoritmo come nome!) oppure "L'Algoritmo in breve" o "Semplice Overview dell'Algoritmo".
+
+%TODO: itemize?
+%TODO: forse dovrei semplificarlo un attimo e parlarne più con calma prima di passare alle liste delle operazioni.
 
 \textsf{\small I dati di input vengono caricati in una matrice 4x4, anche chiamata \emph{state matrix} (matrice di stato), dove ogni cella rappresenta 1 byte di informazione e su queste compiamo diverse operazioni: \emph{sub-bytes} (sostituzione dei bytes), \emph{shift rows} (spostamento delle righe), \emph{mix columns} (mescolamento delle colonne), \emph{add round key} (aggiunta della chiave del round) per un numero di volte, di rounds pari alla grandezza della chiave.} %TODO: oppure metterli in un itemize?
 
@@ -99,6 +104,8 @@
 
 \fleuron
 
+%TODO: magari semplificare questa parte.
+
 \textsf{\small Per poter elaborare i rounds, l'algoritmo ha bisogno di molte chiavi, una per round, queste vengono tutte derivate dalla chiave iniziale.}
 
 %TODO: Fare una subsection?: titolo: "Come vengono ottenute le chiavi per ogni round?" oppure no? KEY EXPANSION/KEY SCHEDULE
@@ -107,9 +114,9 @@
 \textsf{\small Il procedimento per ricavarle è questo: }
 
 \begin{enumerate}
-	\item \textsf{\small Sposta la prima cella dell'ultima colonna della precedente chiave in fondo alla colonna.}
-	\item \textsf{\small Ogni byte viene posto in una substitution box che lo mapperà in qualcos'altro.}
-	\item \textsf{\small Viene effettuato uno XOR tra la colonna e una \emph{round constant} (costante di round) che è diversa per ogni round.}
+	\item \textsf{\small Sposta la prima cella dell'ultima colonna della precedente chiave in fondo alla colonna.} %TODO: spostare
+	\item \textsf{\small Ogni byte viene posto in una substitution box che lo mapperà in qualcos'altro.} %TODO: (S-box) dopo substitution box; specificare cosa quel qualcos'altro.
+	\item \textsf{\small Viene effettuato uno XOR tra la colonna e una \emph{round constant} (costante di round) che è diversa per ogni round.} %TODO: approfondire come è diversa.
 	\item \textsf{\small Infine viene realizzato uno XOR con la prima colonna della precedente chiave.}
 	%\item \textsf{\small }
 \end{enumerate}
@@ -153,9 +160,11 @@
 \textsf{\small Più rounds aggiungiamo, più sicurezza, ma questo porterebbe ad un rallentamento dell'algoritmo e quindi delle performance.}
 \textsf{\small Per questo serve un compromesso tra sicurezza e prestazioni.}
 
-\textsf{\small Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, per evitare ciò, sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.} %TODO: Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, [come possiamo notare ogni bit di output di un round dipende da ogni bit dei due rounds precedenti ] per evitare questo sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.
+\textsf{\small Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, per evitare ciò, sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.} %TODO: Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, [come possiamo notare ogni bit di output di un round dipende da ogni bit dei due rounds precedenti ] per evitare questo sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}. %TODO: magari approfondire?
 
 %TODO: [magari aggiungere qualche immagine sul procedimento]
+
+%TODO: la subsection modalità di AES magari la sposto in un capitolo a parte? Oppure semplicemente ampio con le modalità di AES.
 
 \subsection{Le modalità di AES} %TODO: section/subsection: "Come può essere usato AES?" o "Con quali combinazioni può essere usato AES" o "In combinazione a cosa può essere usato AES"? o "Le modalità di AES"
 

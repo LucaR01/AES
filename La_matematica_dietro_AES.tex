@@ -14,6 +14,7 @@
 
 % ======================================================================================
 
+%TODO: 
 %TODO: Parto spiegando che cos'è il campo finito di Galois GF(2^8)
 
 %TODO: Cos'è un gruppo abelliano: gruppo con operazione con proprietà commutativa 
@@ -54,10 +55,108 @@
 
 \section{Introduzione}
 
-% ---------------------------- SECTION:  ----------------------------------
+%TODO: In questo capitolo tratteremo più a fondo la matematica che sta dietro questo algoritmo. Per poterlo fare avremo bisogno di introdurre alcune strutture matematiche come: i gruppi, gli anelli e i campi, dopodiché ci soffermeremo su uno/un specifico/determinato campo, quello di Galois, ne mostreremo le operazioni possibili e come vengono usufruite/utilizzate nei steps/passi mostrati/trattati nel capitolo degli algoritmi.
+%TODO: da sistemare l'introduzione. 
+\textsf{\small }
+
+% ------------------------- SECTION: GRUPPI, ANELLI E CAMPI  --------------------------
 
 \newpage
 
-\section{} 
+\section{Gruppi, Anelli e Campi} %TODO: oppure "Gruppi, Anelli e Campi: Le differenze" oppure "Campi, Gruppi e Anelli" o "Campi, Anelli e Gruppi".
+
+\textsf{\small }
+
+%TODO: Prima di introdurre il campo di Galois, facciamo chiarezza/differenziamo i/tra Gruppi, gli Anelli e i Campi.
+
+%TODO: o spiegare i gruppi, gli anelli e i campi prima del campo di Galois o dopo! Li metto in una sezione a parte o come subsections di "Il campo di Galois"?
+
+\subsection{Gruppo}
+
+\subsubsection{Gruppo abelliano}
+
+\subsection{Anello}
+
+\subsubsection{Anello finito} %TODO: o altro oppure non serve come subsubsection
+
+\subsection{Campo} %TODO: o "Campi"?
+
+\subsubsection{Campi vs Anelli} %TODO: o "Campo vs Anello"?
+
+% ---------------------------- SECTION: IL CAMPO DI GALOIS  ---------------------------
+
+\section{Il campo di Galois} %TODO: o "Il camppo finito"
+
+%TODO: Il campo finito o anche denominato il campo di Galois, dal matematico francese Évariste Galois, è un campo che contiene un numero finito di elementi che ci permette di attuare operazioni su numeri a 8 bits. %TODO: da riscrivere meglio
+
+%TODO: Fornisce una connessione tra teoria di campi e teoria dei gruppi, attraverso il teorema fondamentale della teoria di galois. %TODO: questo è da approfondire!
+
+%TODO: Lo introdusse per studiare le radici dei polinomi e risolvere queste equazioni polinomiali in termini di gruppi di permutazione delle loro radici.
+%TODO: Un'equazione è risolvibile dai suoi radicali se le sue radici si possono esprimere da una formula che riguarda numeri interi, radici ennesime e le 4 operazioni aritmetiche basilari (+, -, \cdot, /).
+%TODO: Questo generalizza il teorema di Abel-Ruffini che afferma che non c'è soluzioni in radicali alle equazioni polinomiali di grado 5 o superiori con coefficienti arbitrari. %TODO: questo è da mettere dopo l'introduzione al campo di Galois! E da semplificare.
+
+%TODO: Ora arriviamo al motivo per cui ci interessa:
+%TODO: Il più comune campo di Galois è il campo GF(256) o anche scritto/definito GF(2^8) (GF = Galois Field) che ci permette di definire/dove le operazioni sono definite a livello di byte, dove i bits vengono interpretati come coefficienti dei polinomi del campo finito.
+
+%TODO: Subsection? Le operazioni possibili nel campo di Galois
+\subsection{Le operazioni del campo finito} %TODO: oppure "Le operazioni del campo di Galois" oppure "Le operazioni di GF(2^8)".
+
+%TODO: Nel campo finito sono disponibili le quattro operazioni basilari dell'aritmetica, (+, -, \cdot, /) e i loro relativi./e di conseguenza l'esponenziazione e i logaritmi.
+
+%TODO: I numeri vengono rappresentati come polinomi di 8 bits, ovvero, per esempio il numero esadecimale 0x53, ovvero 83 in decimale o 01010011 in binario può essere rappresentato come x^6 + x^4 + x + 1 perché 01010011 (1 * 2^6, 1 * 2^4, 1 * 2^1, 1 * 2^0 <=> x^6 + x^4 + x + 1). 
+
+%TODO: oppure scegliere un altro numero!
+\textsf{\small }
+
+\subsubsection{Addizione e sottrazione} %TODO: oppure non serve fare una subsubsection?
+
+%TODO: Somma e sottrazione vengono eseguite tramite uno XOR.
+%TODO: Per esempio: prendiamo due polinomi: x + 1 e x^2 + 1.
+%TODO: x + 1 equivale a 2^1 + 2^0, ovvero in binario il numero 11.
+%TODO: x^2 + 1 equivale a 1 * 2^2 + 0 * 2^1 + 1 * 2^0, ovvero in binario al numero 101.
+%TODO: dopodiché eseguiamo, semplicemente, uno XOR tra i due polinomi.
+%TODO: 011 \xor 101 oppure x + 1 \xor x^2 + 1 = 110 o x^2 + x
+
+%TODO: potrei utilizzare i gli $\underbrace{}$
+\textsf{\small }
+
+\subsubsection{Moltiplicazione}
+
+%TODO: Per la moltiplicazione è un filino/è un pochino più complicato.
+%TODO: Avvenuta l'operazione, è necessario effettuare/compiere un'operazioni di modulo con il polinomio x^8 + x^4 + x^3 + x + 1. (magari spiegare il perché)
+
+%TODO: per esempio ... \cdot ... = ... , visto/perché: %TODO: ... vuol dire mettere il numero esadecimale.
+
+\subsubsection{Esponenziazione} %TODO: "Potenza"?
+
+\textsf{\small L'esponenziazione è semplicemente la ripetizione della moltiplicazione.}
+
+%TODO: Alcuni numeri possiedono la proprietà di attraversare/essere in grado di attraversare tutti i 255 numeri non-zero/non-zeri del campo quando vengono moltiplicati per se stessi. Questi numeri vengono denominati/chiamati \emph{generatori}.
+
+%TODO: Possiamo raccogliere questi numeri in una tabella, la tabella dei generatori.
+
+%TODO: volendo mostrare la tabella in un'immagine.
+
+\subsubsection{Logaritmi}
+
+%\textsf{\small Per eseguire i logaritmi possiamo avvalerci della tabella dei generatori.} %TODO: magari approfondire e fare anche un esempio.
+
+%TODO: [...] creando così la tabella degli algoritmi.
+
+\subsubsection{Divisione}
+
+%TODO: Si fa prendendo i logaritmi dei due numeri e eseguedo il modulo 255.
+%TODO: g^{(x - y) mod 255} dove g è uno dei generatori. 
+\textsf{\small }
+
+\subsubsection{Inverso}
+
+%TODO: 
+\textsf{\small }
+
+% ----------- SECTION: IL TEOREMA FONDAMENTALE DELLA TEORIA DI GALOIS  ----------------
+
+\section{Il teorema fondamentale della teoria di Galois} %TODO: oppure non in una section? oppure proprio non metterlo.
+\textsf{\small } 
 
 % -------------------------------- FINE CAPITOLO --------------------------------------
