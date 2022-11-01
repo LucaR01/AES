@@ -63,6 +63,8 @@
 
 \newpage
 
+%TODO: volendo spiegare cos'è un assioma.
+
 \section{Gruppi, Anelli e Campi} %TODO: oppure "Gruppi, Anelli e Campi: Le differenze" oppure "Campi, Gruppi e Anelli" o "Campi, Anelli e Gruppi".
 
 \textsf{\small }
@@ -73,15 +75,67 @@
 
 \subsection{Gruppo}
 
+%TODO: Un gruppo è una struttura algebrica composta da un'insieme vuoto \emptyset e un'operazione binaria (+ e \cdot) per l'elemento neutro e per l'elemento inverso.
+%TODO: Il gruppo deve soddisfare tre assiomi:
+%TODO: itemize o enumerate
+%TODO: I. proprietà associativa: dati a, b, c;  (a * b) * c = a * (b * c) %TODO: oppure usare x, y, z? Usare \cdot o *
+%TODO: II. esistenza dell'elemento neutro: elemento neutro \emph{e} tale che a \cdot e = e \cdot a = a %TODO: a o alfa?
+%TODO: III. esistenza dell'inverso: esiste a', detto inverso, tale che a \cdot a' = a' \cdot a = e
+\textsf{\small }
+
+\subsubsection{Monoide}
+
+%TODO: Il monoide è una struttura algebrica fornita/dotata dell'operazione binaria associativa e di un elemento neutro.
+\textsf{\small }
+
 \subsubsection{Gruppo abelliano}
+
+%TODO: È un gruppo che gode della proprietà commutativa.
+\textsf{\small }
 
 \subsection{Anello}
 
+%TODO: Un anello è una struttura algebrica, dove sono definite due operazioni: + e \cdot (somma e prodotto) che rispetta le proprietà: commutativa, distributiva (della moltiplicazione rispetto all'addizione) e dove esiste un elemento neutro nell'addizione (a + 0 = 0 + a = a) e nella moltiplicazione (a \cdot 1 = 1 \cdot a = a).
+
+%TODO: Quindi un anello è:
+%TODO: itemize
+%TODO: - 2 operazioni binarie + e \cdot che rispettano i 3 assiomi degli anelli:
+%TODO: 	- gruppo abelliano rispetto all'addizione (proprietà commutativa).
+%TODO: 	- monoide rispetto alla moltiplicazione (proprietà associativa ed elemento neutro)
+%TODO: 	- moltiplicazione distributiva rispetto all'addizione.
+\textsf{\small }
+
+\subsubsection{Anello commutativo}
+
+%TODO: È un tipo di anello in cui l'operazione moltiplicativa gode della proprietà commutativa.
+\textsf{\small }
+
 \subsubsection{Anello finito} %TODO: o altro oppure non serve come subsubsection
+
+%TODO: Un anello finito è un anello che possiede un numero finito di elementi.
+\textsf{\small }
 
 \subsection{Campo} %TODO: o "Campi"?
 
-\subsubsection{Campi vs Anelli} %TODO: o "Campo vs Anello"?
+%TODO: Un campo \mathbb{K} è una struttura algebrica formata da un insieme non vuoto e due operazioni binarie + e \cdot in cui:
+%TODO: l'insieme e l'operazione + sono un gruppo abelliano con elemento neutro
+%TODO: \mathbb{K} \ {0} e l'operazione \cdot sono un gruppo abelliano con elemento neutro 1.
+%TODO: la moltiplicazione è distributiva rispetto all'addizione.
+
+%TODO: Un campo può essere definito anche come un anello commutativo dove ogni elemento non nullo possiede un inverso.
+%TODO: O anche come un corpo commutativo alla moltiplicazione. %TODO: volendo fare una subsection per il corpo?
+\textsf{\small }
+
+\subsubsection{Campi vs Anelli} %TODO: o "Campo vs Anello"? %TODO: forse questa parte non serve?
+
+%TODO: La differenza fra queste due strutture è questa, ovvero:
+%TODO: Un anello è un gruppo abelliano rispetto alla prima operazione (+ addizione), ma non rispetto alla seconda, mentre, il campo è un gruppo abelliano rispetto a entrambe le operazioni.
+\textsf{\small }
+
+%TODO: Di seguito, alcuni esempi:
+%TOOD: Esempio: L'anello dei numeri interi (\mathbb{Z}, +, \cdot) è un gruppo abelliano rispetto all'addizione: 5 + (-5) = 0. Ma non è un gruppo abelliano rispetto alla moltiplicazione, perché non esiste un inverso di un numero intero n tale che n \cdot n^{-1} = 1, 5 * $\underset{\frac{1}{5}}{\notin \mathbb{Z}} = 1$
+
+%TODO: Esempio: Anello numeri frazionari è un campo: $(\mathbb{Q}, +, \cdot)$ è un gruppo abelliano rispetto all'addizione e alla moltiplicazione: 5 + (-5) = 0. 5 \cdot $\frac{1}{5} = 1$
 
 % ---------------------------- SECTION: IL CAMPO DI GALOIS  ---------------------------
 
