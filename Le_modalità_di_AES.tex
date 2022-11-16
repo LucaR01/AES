@@ -2,10 +2,60 @@
 
 \chapter{Le modalità di AES}
 
+%TODO: ECB, CBC, CTR, GCM, CBC-MAC, CFB, OCB, XTS, OFB
+%TODO: Section sulle MAC
+%TODO: Section Authenticated encryption
+%TODO: Consigli generali? Non riusare mai lo stesso IV (spiegare cos'è la IV) e rendere l'IV non predicibile!
+%TODO: spiegare cos'è il nonce (cercare traduzione in italiano).
+%TODO: IV vs nonce.
+
+%TODO: aggiungere delle immagini se possibile.
+
 % =======================================================================================
 
 % ---------------------------- SECTION: INTRODUZIONE ------------------------------------
 
 \section{Introduzione}
 
-% ---------------------------- SECTION:
+% ---------------------------- SECTION: PERCHÉ SERVE UNA/LE MODALITÀ? PERCHÉ USARE UNA/LE MODALITÀ? A COSA SERVONO LE MODALITÀ? ------------
+
+\section{A cosa servono le modalità?} %TODO: A cosa servono le modalità? oppure Perché usare le modalità
+
+\textsf{\small }
+
+% -------------------------- SECTION: IV, NONCE, SALT E PEPPER --------------------------
+
+\section{IV, Nonce, Salt e Pepper} %TODO: IV, Nonce, Sale e Pepe?
+
+\textsf{\small }
+
+%TODO: subsection: IV, Nonce, Salt, Pepper o magari salt e pepper non servono.
+
+%TODO: subsection IV vs Nonce
+
+% ---------------------------- SECTION: LE MODALITÀ -------------------------------------
+
+\section{Le modalità} %TODO: oppure trovare un altro titolo: Panoramica sulle modalità? però l'ho già usato come titolo "panoramica".
+
+\textsf{\small }
+
+%TODO: encryption vs message integrity
+%TODO: volendo anche il MAC qui e poi anche dopo
+%TODO: MAC, meccanismo a tre componenti: Secret Key, MAC Signing Algorithm, MAC Validation Algorithm.
+
+%TODO: subsection Block cipher modes, encryption but not message integrity
+%TODO: subsection ECB | Electronic Code Book
+%TODO: subsection Cipher Block Chain | CBC
+%TODO: subsection CFB | Cipher Feedback
+%TODO: subsection OCB | Offset Codebook (questo va nella subsection MACS)
+%TODO: subsection CTR | Counter Mode
+%TODO: subsection XTS | AES-XTS (XEX) Tweakable Blk Cipher 
+
+%TODO: subsection EAX | encrypt-then-authenticate-then-translate. metterlo o no?
+
+%TODO: section/subsection MACS
+%TODO: spiegare cos'è il MAC e la filosofia dietro.
+%TODO: subsection ALG1-6, CMAC (Cipher-based Message Authentication Code), HMAC (keyed-hash message authentication code o hash-based message authentication code), GMAC (Galois Message Authentication Code), CBC-MAC (CBC-MAC qui o sopra?)
+
+%TODO: section/subsection Authenticated Encryption (AEAD (Authenticated Encryption with Associated Data))
+%TODO: CCM | Cipher Block Chaining e GCM | Galois Counter Mode
