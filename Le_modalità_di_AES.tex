@@ -37,19 +37,41 @@
 
 \section{IV, Nonce, Salt e Pepper} %TODO: IV, Nonce, Sale e Pepe?
 
-%TODO: Prima di poter trattare le modalità è necessario introdurre alcuni componenti/elementi che ci serviranno (nella creazione ...).
-
-\textsf{\small }
-
-\subsection{IV | Initialization Vector} %TODO: Oppure solo IV; prima era L'IV; Initialization Vector | IV
-
-%TODO: 
+%TODO: Prima di poter trattare le modalità è necessario introdurre alcuni componenti/elementi che ci serviranno (nella creazione ...). (Questi sono l'IV, il nonce, il sale e il pepe).
 
 \textsf{\small }
 
 \subsection{Nonce | Number Used Once} %TODO: oppure solo Nonce
 
-%TODO: 
+%TODO: Aggiungere dove viene usato.
+
+%TODO: Il nonce, \emph{\textbf{n}umber used \textbf{once}} (numero utilizzato una volta), sono dei bits (ovvero un numero) che vengono utilizzati una singola volta. Il riutilizzo non è proibito, ma deve essere limitato.
+
+%TODO: Viene utilizzato nei protocolli di autenticazione per garantire la sicurezza nelle comunicazioni (private) (ed evitare replay attacks [da spiegare in un altro capitolo (e aggiungere la \ref alla pagina volendo)]).
+
+\textsf{\small }
+
+\subsubsection{Nonce sequenziali}
+
+%TODO: Prevenisco/Garantiscono la non ripetizione, se molto grandi.
+
+\textsf{\small }
+
+%TODO: subsubsection Nonce random?
+
+\subsection{IV | Initialization Vector} %TODO: Oppure solo IV; prima era L'IV; Initialization Vector | IV
+
+%TODO: L'initialization vector o anche definito/chiamato starting variables è un input di dimensione fissa, ovvero un numero arbitrario che viene fornito/adoperato per impostare lo stato iniziale di un algoritmo crittografico. Viene utilizzato in varie modalità di cifratura per randomizzare la cifratura in modo da produrre/generare diversi testi cifrati anche se lo stesso testo viene cifrato molteplici volte.
+
+%TODO: È simile al nonce, ma deve essere casuale/random. Quindi i nonce sequenziali non andrebbero bene.
+
+%TODO: È prioritario/molto importante che l'IV sia:
+%TODO: itemize: impredicibile
+%TODO: sempre diverso, mai riutilizzare lo stesso/un IV!
+
+\textsf{\small }
+
+\subsection{IV vs Nonce} %TODO: forse questa non serve.
 
 \textsf{\small }
 
