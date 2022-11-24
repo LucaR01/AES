@@ -11,6 +11,8 @@
 
 %TODO: aggiungere delle immagini se possibile.
 
+%TODO: Aggiungere i vari tipi di padding? Prima o dopo la spiegazione delle modalità? Prima direi, dopo l'iv, nonce, ecc.
+
 % =======================================================================================
 
 % ---------------------------- SECTION: INTRODUZIONE ------------------------------------
@@ -77,13 +79,18 @@
 
 \subsection{Salt} %TODO: Oppure Sale; Oppure Salt | Password Salting
 
-%TODO: 
+%TODO: Il salt/sale/password salting viene utilizzato nelle password per incrementarne la sicurezza. Vengono aggiunti dei caratteri unici casuali alla password, in questo modo un attaccante non necessita solamente di un dizionario di password comuni, ma anche di uno per ogni tipo di sale possibile.
+
+%TODO: Questo processo/tecnica è molto importante e viene utilizzata nei database affinché le password degli utenti siano sicure. (e non possano essere rubate).
+%TODO: Le password non vengono mai, possibilmente, memorizzate nei database in chiaro, ma gli viene aggiunto il salt e poi viene eseguito l'hashing su esse.
 
 \textsf{\small }
 
 \subsection{Pepper} %TODO: Oppure Pepe
 
-%TODO: 
+%TODO: Il pepper/pepe è simile al salt/sale, ma questo a differenza del sale che è appena/meramente unico più che segreto, è un (singolo) carattere segreto appeso/aggiunto alla fine della password.
+
+%TODO: Questo, (a differenza del sale) non viene memorizzato nello stesso database assieme alla password hash e al sale, ma a parte.
 
 \textsf{\small }
 
@@ -95,11 +102,76 @@
 
 \section{Le modalità} %TODO: oppure trovare un altro titolo: Panoramica sulle modalità? però l'ho già usato come titolo "panoramica".
 
+%TODO: Qui, di seguito elencherò le caratteristiche e proprietà delle principali modalità di cifratura:
+
 \textsf{\small }
 
 %TODO: encryption vs message integrity
 %TODO: volendo anche il MAC qui e poi anche dopo
 %TODO: MAC, meccanismo a tre componenti: Secret Key, MAC Signing Algorithm, MAC Validation Algorithm.
+
+\subsection{Modalità di cifratura senza integrità del messaggio}
+
+%TODO: Queste modalità forniscono la cifratura del messaggio, ma non garantisco l'integrità del messaggio, ovvero/quindi non è assicurato che il messaggio non sia stato manomesso/alterata e quindi non è possibile accertare l'autenticazione del messaggio originale. %TODO: magari riguardare la parte dell'"accertare l'autenticazione del messaggio originale".
+
+\textsf{\small }
+
+\subsubsection{ECB | Electronic Code Book}
+
+%TODO: Questa modalità di cifratura divide il nostro messaggio in diversi blocchi e ognuno di questi viene cifrato separatamente.
+
+%TODO: Questa modalità manca il principio di diffusione (aggiungere \ref) e quindi cifra lo stesso messaggio nello stesso testo cifrato, quindi non vela (il pattern) dei dati/i dati.
+
+%TODO: Quindi, se si encripta/cifra più di un blocco con la stessa chiave, non andrebbe usato.
+%TODO: In generale, ECB è considerata una modalità obsoleta, da non utilizzare. È una modalità molto debole e poco sicura.
+
+\textsf{\small }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/ecb_encryption.png} % mettere 1 e 1?
+	\caption{ECB}
+	\label{fig:ecb}
+\end{figure}
+
+\subsubsection{CBC | Cipher Block Chain}
+
+%TODO: La modalità CBC cerca di ovviare ai problemi dell'ECB aggiungendo della casualità a ogni operazione di cifratura usufruendo di un initialization vector (IV) per il primo blocco e dopodichè applicando uno XOR a ogni blocco di testo in chiaro con il blocco cifrato precedente/precedentemente.
+
+\textsf{\small }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/aes_modes/cbc.png} % mettere 1 e 1?
+	\caption{CBC}
+	\label{fig:cbc}
+\end{figure}
+
+%TODO: Questa modalità è sicura come uno schema probabilistico e la confidenzialità non viene raggiunta se l'IV è un nonce semplice. %TODO: forse approfondire cos'è un nonce semplice
+
+\subsubsection{CFB | Cipher Feedback}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{OCB | Offset Codebook} %TODO: section MACS
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{CTR | Counter Mode}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{XTS | AES-XTS (XEX) Tweakable Blk Cipher}
+
+%TODO: 
+
+\textsf{\small }
 
 %TODO: subsection Block cipher modes, encryption but not message integrity
 %TODO: subsection ECB | Electronic Code Book
@@ -111,9 +183,63 @@
 
 %TODO: subsection EAX | encrypt-then-authenticate-then-translate. metterlo o no?
 
+\subsection{MACS | Message Authentication Codes}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{ALG1-6}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{CMAC | Cipher-based Message Authentication Code}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{HMAC | Keyed-hash Message Authentication Code}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{GMAC | Galois Message Authentication Code}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{CBC-MAC}
+
+%TODO: 
+
+\textsf{\small }
+
 %TODO: section/subsection MACS
 %TODO: spiegare cos'è il MAC e la filosofia dietro.
 %TODO: subsection ALG1-6, CMAC (Cipher-based Message Authentication Code), HMAC (keyed-hash message authentication code o hash-based message authentication code), GMAC (Galois Message Authentication Code), CBC-MAC (CBC-MAC qui o sopra?)
+
+\subsection{AEAD | Authenticated Encryption with Associated Data}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{CCM | Cipher Block Chaining}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{GCM | Galois Counter Mode}
+
+%TODO: 
+
+\textsf{\small }
 
 %TODO: section/subsection Authenticated Encryption (AEAD (Authenticated Encryption with Associated Data))
 %TODO: CCM | Cipher Block Chaining e GCM | Galois Counter Mode
