@@ -35,6 +35,15 @@
 
 \textsf{\small }
 
+\begin{comment} %TODO: uncomment or remove?
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/aes_modes.png}
+	\caption{Modalità di AES}
+	\label{fig:aes_modes}
+\end{figure}
+\end{comment}
+
 % -------------------------- SECTION: IV, NONCE, SALT E PEPPER --------------------------
 
 \section{IV, Nonce, Salt e Pepper} %TODO: IV, Nonce, Sale e Pepe?
@@ -52,6 +61,13 @@
 %TODO: Viene utilizzato nei protocolli di autenticazione per garantire la sicurezza nelle comunicazioni (private) (ed evitare replay attacks [da spiegare in un altro capitolo (e aggiungere la \ref alla pagina volendo)]).
 
 \textsf{\small }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/iv_nonce_salt_pepper/nonce.png}
+	\caption{Nonce}
+	\label{fig:nonce}
+\end{figure}
 
 \subsubsection{Nonce sequenziali}
 
@@ -86,6 +102,15 @@
 
 \textsf{\small }
 
+\begin{comment} %TODO: uncomment or remove?
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/iv_nonce_salt_pepper/withsalting.png}
+	\caption{Salt}
+	\label{fig:salt}
+\end{figure}
+\end{comment}
+
 \subsection{Pepper} %TODO: Oppure Pepe
 
 %TODO: Il pepper/pepe è simile al salt/sale, ma questo a differenza del sale che è appena/meramente unico più che segreto, è un (singolo) carattere segreto appeso/aggiunto alla fine della password.
@@ -112,7 +137,14 @@
 
 \subsection{Modalità di cifratura senza integrità del messaggio}
 
-%TODO: Queste modalità forniscono la cifratura del messaggio, ma non garantisco l'integrità del messaggio, ovvero/quindi non è assicurato che il messaggio non sia stato manomesso/alterata e quindi non è possibile accertare l'autenticazione del messaggio originale. %TODO: magari riguardare la parte dell'"accertare l'autenticazione del messaggio originale".
+%TODO: Queste modalità forniscono la cifratura del messaggio, ma non garantisco l'integrità del messaggio, ovvero/quindi non è assicurato che il messaggio non sia stato manomesso/alterato e quindi non è possibile accertare l'autenticazione del messaggio originale. %TODO: magari riguardare la parte dell'"accertare l'autenticazione del messaggio originale".
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/confidentiality.png}
+	\caption{Confidenzialità}
+	\label{fig:confidentiality}
+\end{figure}
 
 \textsf{\small }
 
@@ -151,27 +183,80 @@
 
 \subsubsection{CFB | Cipher Feedback}
 
-%TODO: 
+%TODO: CFB è molto simile a CBC, ma al posto di essere un cifrario a blocchi, è un cifrario a stream, \emph{stream cipher}, ovvero un cifrario che prende una chiave e un algoritmo e lo applica allo stream (un bit alla volta), a ogni singolo bit (bit a bit) e non a blocchi di bits.
 
 \textsf{\small }
 
-\subsubsection{OCB | Offset Codebook} %TODO: section MACS
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/aes_modes/cfb.png} % mettere 1 e 1?
+	\caption{CFB}
+	\label{fig:cfb}
+\end{figure}
 
-%TODO: 
+\subsubsection{OFB | Output Feedback}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/aes_modes/ofb.png} % mettere 1 e 1?
+	\caption{OFB}
+	\label{fig:ofb}
+\end{figure}
+
+%TODO: È anch'esso un \emph{stream cipher}, cifra l'iv (genera una serie di caratteri casuali)  e poi esegue uno XOR per ottenere il testo cifrato.
+%TODO: Ogni operazione dipende da quelle precedenti.
 
 \textsf{\small }
 
 \subsubsection{CTR | Counter Mode}
 
-%TODO: 
+%TODO: La Counter Mode o CM (\emph{integer counter mode}) o SIC (\emph{segmented integer counter}) usufruisce di un counter (contatore), ovvero di una funzione che genera sequenze irripetibili (nel tempo), al posto di utilizzare un IV.
+%TODO: Il più semplice contatore è il (banale/banalissimo) incrementa di 1.
+%TODO: Questa modalità può essere parallelizzata.
 
 \textsf{\small }
 
-\subsubsection{XTS | AES-XTS (XEX) Tweakable Blk Cipher}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/aes_modes/ctr.png}
+	\caption{CTR}
+	\label{fig:ctr}
+\end{figure}
 
-%TODO: 
+\subsubsection{XTS | AES-XTS (XEX) Tweakable Block Cipher}
+
+%TODO: Questa modalità è utilizzata per cifrare/decifrare i dischi rigidi (hard-disk), quindi la cifratura verrà operata sui segmenti da 512 bytes(, ovvero 32 blocchi di AES-128,) e i rispettivi settori (del disco).
+
+%TODO: Questa modalità esegue/è composta/compie/effettua le seguenti operazioni:
+
+%TODO: itemize?
+%TODO: Dati/Definiti: Due chiavi K1, K2 (se utilizziamo AES-128). Blocco di input, P, numero settore, \emph{i} e un numero del blocco, \emph{j}, creiamo/definiamo il tweak", \emph{X}, nel seguente modo:
+
+%TODO: $X = E_{K_2}(i) \otimes 2^j$ 
+%TODO: (\otimes è il prodotto tensoriale (nel finite field)). Da includere nel capitolo della matematica?
+
+%TODO: Di conseguenza, il testo cifrato C è definito così:
+%TODO: $C = P \oplus X$
+%TODO: ovvero testo cifrato = blocco di input XORato con il tweak.
+%TODO: $C = E_{K_1}(C) \oplus X$
+
+%TODO: Per poter decriptare, invece, eseguiamo: 
+%TODO: $X = E_{K_2} (i) \otimes 2^j$
+
+%TODO: il testo in chiaro, per ogni blocco, è 
+%TODO: $P = C \oplus X$
+%TODO: $P = E^{-1}_{K_1} (P) \oplus X$
+
+%TODO: In questo modo, il tweak fa da IV.
 
 \textsf{\small }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/aes_modes/xex.png}
+	\caption{XEX}
+	\label{fig:xex}
+\end{figure}
 
 %TODO: subsection Block cipher modes, encryption but not message integrity
 %TODO: subsection ECB | Electronic Code Book
@@ -185,9 +270,24 @@
 
 \subsection{MACS | Message Authentication Codes}
 
-%TODO: 
+%TODO: I MACS permettono di verificare l'integrità del messaggio per potersi assicurare che non sia stato manomesso/alterato da parti esterne e che il messaggio arrivi/giunga integro/intero ai destinatari originali.
+
+%TODO: Quindi, i MACS producono/formano una tipologia di firma digitale dove tutte le parti considerate/in considerazione possono verificare che i dati ricevuti siano validi.
+
+%TODO: Questo grazie a un meccanismo a 3 componenti:
+%TODO: itemize/enumerate
+%TODO: 1. Chiave segreta: chiave segreta condivisa dalle parti.
+%TODO: 2. MAC Signing Algorithm: (ci) si avvale della chiave e del messaggio per creare/generare/produrre un tag (\emph{authentication tag} che permette(, per l'appunto,) di verificare che i dati siano integri e non manomessi/truccati)
+%TODO: 3.MAC Validation Algorithm: prende in input la chiave, il messaggio, il tag e restituisce in output la validità del tag, ovvero se è il messaggio è stato modificato/violato o no.
 
 \textsf{\small }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/encryption-integrity-and-nonrepudiation.png}
+	\caption{Integrità e non ripudio}
+	\label{fig:encryption-integrity-and-nonrepudiation}
+\end{figure}
 
 \subsubsection{ALG1-6}
 
@@ -224,6 +324,12 @@
 %TODO: subsection ALG1-6, CMAC (Cipher-based Message Authentication Code), HMAC (keyed-hash message authentication code o hash-based message authentication code), GMAC (Galois Message Authentication Code), CBC-MAC (CBC-MAC qui o sopra?)
 
 \subsection{AEAD | Authenticated Encryption with Associated Data}
+
+%TODO: 
+
+\textsf{\small }
+
+\subsubsection{OCB | Offset Codebook} %TODO: section MACS
 
 %TODO: 
 
