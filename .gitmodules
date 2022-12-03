@@ -1,0 +1,3 @@
+[submodule "code/cpp/aes/external/spdlog"]
+	path = code/cpp/aes/external/spdlog
+	url = https://github.com/gabime/spdlog.git
