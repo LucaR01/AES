@@ -13,6 +13,8 @@
 
 %TODO: Aggiungere i vari tipi di padding? Prima o dopo la spiegazione delle modalità? Prima direi, dopo l'iv, nonce, ecc.
 
+%TODO: Magari approfondire le modalità che andrò a implementare.
+
 % =======================================================================================
 
 % ---------------------------- SECTION: INTRODUZIONE ------------------------------------
@@ -122,6 +124,33 @@
 %TODO: subsection: IV, Nonce, Salt, Pepper o magari salt e pepper non servono.
 
 %TODO: subsection IV vs Nonce
+
+% ---------------------------- SECTION: IL PADDING --------------------------------------
+
+\section{Il padding}
+
+\textsf{\small Un altro elemento utilizzato nei cifrari a blocchi è il padding. }
+\textsf{\small Il padding serve per riempire i blocchi del cifrario con dei bytes.}
+
+\textsf{\small È un modo per cifrare messaggi anche di grandezze che il cifrario non sarebbe in grado di decifrare.}
+\textsf{\small Non aumenta la sicurezza, anzi se mal implementato può portare ad attacchi di padding (\emph{padding oracle attack}).} %TODO: portare/causare. %TODO: approfondire magari anche con \ref nel capitolo sugli attacchi.
+
+\textsf{\small Grazie a questa tecnica, è possibile aggiungere, all'inizio, al centro o in fondo al messaggio, del nonsense per oscurare parti del messaggio che altrimenti sarebbero prevedibili, come: \emph{Caro...}, \emph{Gentile...}, \emph{Cordiali Saluti..}, ecc.}
+
+\textsf{\small I principali meccanismi di padding sono: }
+
+\begin{comment} %TODO: uncomment e approfondire.
+\begin{itemize}
+	\item \textsf{\small CMS (\emph{\textbf{C}ryptographic \textbf{M}essage \textbf{S}yntax}): }
+	\item \textsf{\small PKCS#5: bytes di padding = 8 - numberOfBytes(clearText) mod 8}
+	\item \textsf{\small PKCS#7: }
+	\item \textsf{\small Bit: composto da 0x80 seguito da bytes di zeri.}
+	\item \textsf{\small Zero length: questo padding è composto da zeri tranne per l'ultimo byte che è uguale al numero di bytes di padding.}
+	\item \textsf{\small Null: il padding è composto da caratteri NULL.}
+	\item \textsf{\small Space: il padding è composto da spazi bianchi.}
+	\item \textsf{\small Random: padding formato da bytes casuali tranne per l'ultimo byte che è uguale al numero di bytes di padding.}
+\end{itemize}
+\end{comment}
 
 % ---------------------------- SECTION: LE MODALITÀ -------------------------------------
 
