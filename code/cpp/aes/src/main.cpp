@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "logger/Logger.hpp"
+#include "logger/logger.hpp"
 
 int main() {
 
 #ifndef RELEASE_MODE
-    aes::log::Logger aes_logger;
-    aes_logger.init();
+    //aes::log::Logger aes_logger;
+    aes::log::Logger::init();
 #endif
 
     AES_TRACE("Tracing AES v{}.{}.{}", 1, 0, 0)
@@ -20,7 +20,8 @@ int main() {
     //AES_ASSERT_BREAK(1 == 2, "1 is not equal to 2.")
 
 #ifndef RELEASE_MODE
-    aes_logger.shutdown();
+    //aes_logger.shutdown();
+    aes::log::Logger::shutdown();
 #endif
 
     return 0;

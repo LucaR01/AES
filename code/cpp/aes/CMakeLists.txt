@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 23)
 # include_directories() è legacy code, meglio usare un target.
 include_directories(include)
 # L'utilizzo di file(GLOB ...) è altamente scoraggiato.
-file(GLOB SOURCES src/*.cpp src/logger/*.cpp)
+file(GLOB SOURCES src/*.cpp src/logger/*.cpp src/math/*.cpp src/graphics/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

@@ -12,13 +12,14 @@ namespace aes::log {
 
 //TODO: se non uso il private, potrei fare una struct al posto della classe.
 //TODO: potrei fare un Singleton.
+//TODO: forse non mi serve nè una struct nè una classe.
 class Logger {
 public:
     Logger() = default;
     ~Logger() = default;
 
-    void init();
-    void shutdown();
+    static void init();
+    static void shutdown();
 };
 
 }

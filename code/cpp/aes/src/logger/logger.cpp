@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "logger/Logger.hpp"
+#include "logger/logger.hpp"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
