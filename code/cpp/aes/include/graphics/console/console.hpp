@@ -12,6 +12,10 @@ void show_console();
 
 void get_user_input();
 
+void operation_encryption();
+
+void operation_decryption();
+
 }
 
 #endif //AES_CONSOLE_H

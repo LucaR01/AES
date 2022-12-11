@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "logger/logger.hpp"
+#include "graphics/console/console.hpp"
 
 int main() {
 
@@ -18,6 +19,8 @@ int main() {
 
     AES_ASSERT(1 == 2, "1 is not equal to 2.")
     //AES_ASSERT_BREAK(1 == 2, "1 is not equal to 2.")
+
+    aes::con::show_console(); //TODO: remove
 
 #ifndef RELEASE_MODE
     //aes_logger.shutdown();
