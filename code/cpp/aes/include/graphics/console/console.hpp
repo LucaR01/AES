@@ -9,12 +9,15 @@
 
 #include "core/padding/padding.hpp"
 #include "core/modes/modes.hpp"
+#include "core/operations/operations.hpp"
 
 namespace aes::con {
 
 void show_console();
 
 void get_user_input();
+
+aes::ops::Operations request_operation(); //TODO: o magari rinominarla get_operation();
 
 void operation_encryption();
 

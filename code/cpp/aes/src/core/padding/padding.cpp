@@ -8,7 +8,7 @@
 
 namespace aes::pad {
 
-unsigned short get_padding_index(Paddings padding)
+unsigned short get_padding_index(const Paddings& padding)
 {
     return static_cast<std::underlying_type_t<Paddings>>(padding);
 }

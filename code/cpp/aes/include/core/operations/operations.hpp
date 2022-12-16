@@ -8,6 +8,8 @@
 #include <type_traits>
 #include <map>
 #include <string_view>
+#include <array>
+#include <variant>
 
 namespace aes::ops {
 
@@ -17,10 +19,11 @@ enum Operations { //TODO: rename in ENCRYPTION e DECRYPTION?
     DECRYPT
 };
 
-//TODO: static constexpr
-unsigned short get_operation_index(Operations operation);
+static constexpr uint8_t NUM_OF_OPERATIONS = 2; //TODO: rimettere short?
 
-static const std::map<Operations, std::string_view> enums_names = {
+static constexpr std::array<Operations, NUM_OF_OPERATIONS> all_operations{Operations::ENCRYPT, Operations::DECRYPT};
+
+static const std::map<Operations, std::string_view> operations_names = {
         {Operations::ENCRYPT, "Encrypt"},
         {Operations::DECRYPT, "Decrypt"}
 };
@@ -34,10 +37,16 @@ enum EncryptionOperations {
     FILE
 };
 
+static constexpr uint8_t NUM_OF_ENCRYPTION_OPERATIONS = 2;
+
+static constexpr std::array<EncryptionOperations, NUM_OF_ENCRYPTION_OPERATIONS> all_encryption_operations{EncryptionOperations::MESSAGE, EncryptionOperations::FILE};
+
 static const std::map<EncryptionOperations, std::string_view> encryption_operations_names = {
         {EncryptionOperations::MESSAGE, "Message"},
         {EncryptionOperations::FILE, "File"}
 };
+
+unsigned short get_operation_index(const std::variant<Operations, EncryptionOperations>& op);
 
 } //namespace aes::ops
 

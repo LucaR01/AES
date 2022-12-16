@@ -6,7 +6,6 @@
 #include <string>
 
 #include "graphics/console/console.hpp"
-#include "core/operations/operations.hpp"
 #include "logger/logger.hpp"
 
 namespace aes::con {
@@ -17,20 +16,46 @@ void show_console()
     get_user_input();
 }
 
+//TODO: in get_user_input() posso volendo solo mettere le chiamate alle altre funzioni.
 void get_user_input()
+{
+    aes::ops::Operations operation = request_operation();
+
+    switch(operation) {
+        case aes::ops::ENCRYPT:
+            AES_INFO("Inside ENCRYPT case, operation_selected: {}", aes::ops::operations_names.at(operation))
+            operation_encryption();
+            break;
+        case aes::ops::DECRYPT:
+            AES_INFO("Inside DECRYPT case, operation_selected: {}", aes::ops::operations_names.at(operation))
+            operation_decryption();
+            break;
+        default:
+            AES_ERROR("operation_selected should not be in default branch, operation_selected: {}", aes::ops::operations_names.at(operation))
+            exit(0);
+    }
+}
+
+//TODO: però questa la utilizzo una singola volta, la tengo lo stesso? Per il principio di Single Responsability Principle.
+aes::ops::Operations request_operation()
 {
     unsigned short operation_selected; //TODO: renderlo un Operations di default?
 
     //TODO: volendo aggiungere la possibilità di avere più lingue.
     std::cout << "Seleziona l'operazione:" << '\n';
-    std::cout << "1. Cifratura " << '\n';
-    std::cout << "2. Decifrare " << std::endl;
+    for(const auto& op : aes::ops::all_operations) {
+        std::cout << aes::ops::get_operation_index(op) << ". " << aes::ops::operations_names.at(op) << '\n';
+    }
     std::cout << "[Input: 1|2] Scelta: ";
 
     std::cin >> operation_selected;
     AES_TRACE("operation_selected: {}", operation_selected)
     //TODO: cambiare la condizione nel while.
-    while(operation_selected != get_operation_index(aes::ops::Operations::ENCRYPT) && operation_selected != get_operation_index(aes::ops::Operations::DECRYPT)) {
+    while((std::cin.fail()) || (operation_selected < aes::ops::get_operation_index(aes::ops::all_operations.front()) || operation_selected > aes::ops::all_operations.size())) {
+        //std::cout << "[Input: 1|2] Scelta: "; //TODO: uncomment se lascio solo questo al posto di quello sotto.
+        for(const auto& op : aes::ops::all_operations) { //TODO: forse è quasi meglio non ristamparli. (non serve, sono già sopra)
+            std::cout << aes::ops::get_operation_index(op) << ". " << aes::ops::operations_names.at(op) << '\n';
+        }
         std::cout << "[Input: 1|2] Scelta: ";
         std::cin >> operation_selected;
         std::cout << std::flush;
@@ -39,24 +64,10 @@ void get_user_input()
 
     std::cin.clear(); //TODO: remove?
 
-    operation_selected = static_cast<aes::ops::Operations>(operation_selected);
-    AES_DEBUG("operation_selected converted to enum: {}", operation_selected)
+    aes::ops::Operations op = static_cast<aes::ops::Operations>(operation_selected);
+    std::cout << "Operazione selezionata: " << aes::ops::operations_names.at(op) << std::endl;
 
-    std::cout << "Operazione selezionata: " << aes::ops::enums_names.at(static_cast<aes::ops::Operations>(operation_selected)) << std::endl;
-
-    switch(operation_selected) {
-        case aes::ops::ENCRYPT:
-            AES_INFO("Inside ENCRYPT case, operation_selected: {}", operation_selected)
-            operation_encryption();
-            break;
-        case aes::ops::DECRYPT:
-            AES_INFO("Inside DECRYPT case, operation_selected: {}", operation_selected)
-            operation_decryption();
-            break;
-        default:
-            AES_ERROR("operation_selected should not be in default branch, operation_selected: {}", operation_selected)
-            exit(0);
-    }
+    return op;
 }
 
 void operation_encryption()
@@ -65,15 +76,17 @@ void operation_encryption()
     //TODO: chiedere messaggio, chiave, modalità, padding.
     //TODO: chiedere file input, path output file, estensione del file?, chiave, modalità, padding.
     std::cout << "Cosa si desidera cifrare?" << '\n';
-    std::cout << "1. Messaggio" << '\n';
-    std::cout << "2. File" << '\n';
+    for(const auto& e : aes::ops::all_encryption_operations) {
+        std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+    }
     std::cout << "Seleziona: ";
     std::cin >> encryption_operation;
     while((std::cin.fail()) || (encryption_operation <= 0 || encryption_operation >= 3)) { //!(std::cin >> encryption_operation) || (std::cin.fail())
         std::cin.clear();
         std::cout << "Cosa si desidera cifrare?" << '\n';
-        std::cout << "1. Messaggio" << '\n';
-        std::cout << "2. File" << '\n';
+        for(const auto& e : aes::ops::all_encryption_operations) {
+            std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        }
         std::cout << "Seleziona: ";
         std::cin >> encryption_operation;
         std::cout << std::flush;
@@ -139,16 +152,18 @@ aes::pad::Paddings request_padding()
 {
     unsigned short padding_type;
     std::cout << "Seleziona tipo di padding: " << '\n';
-    std::cout << "1. No padding" << '\n';
-    std::cout << "2. PKCS5" << '\n';
+    for(const auto& p : aes::pad::all) {
+        std::cout << aes::pad::get_padding_index(p) << ". " << aes::pad::padding_names.at(p) << '\n';
+    }
     std::cout << "Seleziona: ";
     std::cin >> padding_type;
 
     while((std::cin.fail()) || (padding_type < 1 || padding_type > 2)) {
         std::cin.clear();
         std::cout << "Seleziona tipo di padding: " << '\n';
-        std::cout << "1. No padding" << '\n';
-        std::cout << "2. PKCS5" << '\n';
+        for(const auto& p : aes::pad::all) {
+            std::cout << aes::pad::get_padding_index(p) << ". " << aes::pad::padding_names.at(p) << '\n';
+        }
         std::cout << "Seleziona: " << std::flush;
         std::cin >> padding_type;
         AES_DEBUG("padding_type: {}", padding_type)
@@ -169,18 +184,17 @@ aes::mod::Modes request_mode()
 {
     unsigned short mode;
     std::cout << "Seleziona modalità: " << '\n';
-    //TODO: potrei usare l'enum per stampare i vari tipi, piuttosto che passarli io così direttamente.
-    std::cout << "0. ECB" << '\n';
-    std::cout << "1. CBC" << '\n';
-    std::cout << "2. CTR" << '\n';
+    for(const auto& m : aes::mod::all) {
+        std::cout << aes::mod::get_mode_index(m) << ". " << aes::mod::modes_names.at(m) << '\n';
+    }
     std::cout << "Seleziona: ";
     std::cin >> mode;
 
     while((std::cin.fail()) || (mode < aes::mod::get_mode_index(aes::mod::Modes::ECB) || mode > aes::mod::get_mode_index(aes::mod::Modes::CTR))) {
         std::cin.clear();
-        std::cout << "0. ECB" << '\n';
-        std::cout << "1. CBC" << '\n';
-        std::cout << "2. CTR" << '\n';
+        for(const auto& e : aes::mod::all) {
+            std::cout << aes::mod::get_mode_index(e) << ". " << aes::mod::modes_names.at(e) << '\n';
+        }
         std::cout << "Seleziona: ";
         std::cin >> mode;
         AES_DEBUG("mode: {}", mode)

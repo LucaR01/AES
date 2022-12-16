@@ -7,18 +7,23 @@
 
 #include <map>
 #include <string_view>
+#include <array>
 
 namespace aes::mod {
 
 enum class Modes {
-    ECB = 0,
+    ECB = 1,
     CBC,
     CTR
 };
 
+static constexpr unsigned short NUM_OF_MODES = 3;
+
+static constexpr std::array<Modes, NUM_OF_MODES> all = { Modes::ECB, Modes::CBC, Modes::CTR };
+
 //TODO: static constexpr?
 //TODO: ritornare un byte? uint8_t? char?
-unsigned short get_mode_index(Modes mode);
+unsigned short get_mode_index(const Modes& mode);
 
 static const std::map<Modes, std::string_view> modes_names = {
         {Modes::ECB, "ECB"},
