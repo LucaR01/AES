@@ -10,6 +10,7 @@
 
 namespace aes::gal {
 
+static constexpr uint8_t BLOCK_WORDS = 4; //TODO: rename
 static constexpr unsigned short BLOCK_SIZE = 16;
 
 static constexpr unsigned short AES_128 = 128;
