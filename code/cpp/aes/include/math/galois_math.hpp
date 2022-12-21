@@ -21,6 +21,7 @@ static constexpr unsigned short ROUNDS_AES_128 = 10;
 static constexpr unsigned short ROUNDS_AES_192 = 12;
 static constexpr unsigned short ROUNDS_AES_256 = 14;
 
+//TODO: usare std::bitset?
 static constexpr unsigned short MIX_COLUMNS_IRREDUCIBLE = 0x1B; // equivalente a 27 = 00011011 = x^4 + x^3 + x + 1.
 
 //TODO: usare std::byte o uint8_t?
