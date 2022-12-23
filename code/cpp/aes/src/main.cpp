@@ -10,6 +10,7 @@ int main() {
     aes::log::Logger::init();
 #endif
 
+    //TODO: remove unnecessary logs
     AES_TRACE("Tracing AES v{}.{}.{}", 1, 0, 0)
     AES_DEBUG("Debugging...")
     AES_INFO("Info.")

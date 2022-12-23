@@ -13,11 +13,11 @@ namespace aes::gal {
 static constexpr uint8_t BLOCK_WORDS = 4; //TODO: rename
 static constexpr unsigned short BLOCK_SIZE = 16;
 
-static constexpr unsigned short AES_128 = 128;
+static constexpr unsigned short AES_128 = 128; //TODO: usare l'enum?
 static constexpr unsigned short AES_192 = 192;
 static constexpr unsigned short AES_256 = 256;
 
-static constexpr unsigned short ROUNDS_AES_128 = 10;
+static constexpr unsigned short ROUNDS_AES_128 = 10; //TODO: Creare un enum? Oppure metterlo nell'enum Aes?
 static constexpr unsigned short ROUNDS_AES_192 = 12;
 static constexpr unsigned short ROUNDS_AES_256 = 14;
 

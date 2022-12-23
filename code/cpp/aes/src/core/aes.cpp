@@ -11,19 +11,18 @@ namespace aes {
 
 //TODO: volendo usare la classe Matrix e SquareMatrix.
 
-void add_round_key(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS], uint8_t (&key)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
+void add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& key)
 {
     // Aggiungo la chiave allo stato.
     for(unsigned short i = 0; i < gal::BLOCK_WORDS; i++) {
         for(unsigned short j = 0; j < gal::BLOCK_WORDS; j++) {
-            state[i][j] ^= key[i][j];
+            state[i][j] ^= key[i][j]; //TODO: key[i + gal::BLOCK_WORDS * j]
             //TODO: volendo potrei anche fare così state[i][j] = gal::galois_addition_subtraction(state[i][j], key[i][j]);
         }
     }
 }
 
-//TODO: pass by value o pass by reference?
-void sub_bytes(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
+void sub_bytes(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state)
 {
     for(auto& i : state) {
         for(unsigned char& j : i) {
@@ -33,66 +32,72 @@ void sub_bytes(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
 }
 
 //TODO: update
-void shift_row(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS], const unsigned short row, const unsigned short positions)
+void shift_row(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, unsigned short row, unsigned short positions)
 {
-    uint8_t temp[gal::BLOCK_WORDS];
+    std::array<uint8_t, gal::BLOCK_WORDS> temp{};
     for(unsigned int i = 0; i < gal::BLOCK_WORDS; i++) {
         temp[i] = state[row][(i + positions)]; //TODO:
     }
-    std::memcpy(state[row], temp, gal::BLOCK_WORDS * sizeof(uint8_t));
+    //std::memcpy(state[row], temp, gal::BLOCK_WORDS * sizeof(uint8_t)); //TODO: remove?
+    state[row] = temp;
+    //TODO: copio direttamente o con iterator o direttamente: state[row] = temp; oppure
+    //TODO: std::copy(std::begin(temp.data()), std::end(temp.data()), std::begin(state[row])); #include <algorithm>
 }
 
-void shift_rows(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
+void shift_rows(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state)
 {
     shift_row(state, 1, 1);
     shift_row(state, 2, 2);
     shift_row(state, 3, 3);
 }
 
-void mix_columns(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
+void mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state)
 {
     //TODO: se dà problemi switcharlo ad unsigned short.
-    std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> output; //TODO: initializer {}
+    //TODO: rinominarlo in temp?
+    std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> output{}; //TODO: initializer {}
 
     for(unsigned short i = 0; i < gal::BLOCK_WORDS; i++) {
         for(unsigned short j = 0; j < gal::BLOCK_WORDS; j++) {
-            output[i][j] = 0x00; //TODO: forse questo non serve, perché viene automaticamente inizializzato a 0.
+            //output[i][j] = 0x00; //TODO: forse questo non serve, perché viene automaticamente inizializzato a 0.
             for(unsigned short k = 0; k < gal::BLOCK_WORDS; k++) {
                 output[i][j] ^= gal::galois_multiplication(CIRCULANT_MDS[i][k], state[k][j]);
+                //TODO: usare un galois multiplication lookup table al posto?
             }
         }
     }
 
-    std::memcpy(state, output.data(), gal::BLOCK_WORDS * gal::BLOCK_WORDS * sizeof(uint8_t));
+    state = output;
+    //std::memcpy(state.data(), output.data(), gal::BLOCK_WORDS * gal::BLOCK_WORDS * sizeof(uint8_t)); //TODO: remove?
 }
 
-void encrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t number_of_rounds,
+void encrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t& number_of_rounds,
                    std::array<uint8_t, gal::BLOCK_WORDS>& output )
 {
     std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> state{};
 
     for(unsigned short i = 0; i < gal::BLOCK_WORDS; i++) {
         for(unsigned short j = 0; j < gal::BLOCK_WORDS; j++) {
-            state[i][j] = input.at(i);
+            state[i][j] = input.at(i); //TODO: input.at(i + gal::BLOCK_WORDS * j)?
         }
     }
 
     //TODO: usare il reinterpret_cast è pericoloso; da cambiare.
     // FIRST ROUND
-    add_round_key(reinterpret_cast<uint8_t (&)[4][4]>(state), reinterpret_cast<uint8_t (&)[4][4]>(keys));
+    add_round_key(state, keys);
 
     // FIRST ROUND - LAST ROUND - 1
     for(unsigned short round = 1; round < number_of_rounds; round++) {
-        sub_bytes(reinterpret_cast<uint8_t (&)[4][4]>(state));
-        shift_rows(reinterpret_cast<uint8_t (&)[4][4]>(state));
-        mix_columns(reinterpret_cast<uint8_t (&)[4][4]>(state));
-        add_round_key(reinterpret_cast<uint8_t (&)[4][4]>(state), reinterpret_cast<uint8_t (&)[4][4]>(keys.at(round)));
+        sub_bytes(state);
+        shift_rows(state);
+        mix_columns(state);
+        add_round_key(state,reinterpret_cast<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> &>(keys.at(round))); //TODO: modificare.
     }
 
     // LAST ROUND
-    sub_bytes(reinterpret_cast<uint8_t (&)[4][4]>(state));
-    shift_rows(reinterpret_cast<uint8_t (&)[4][4]>(state));
-    add_round_key(reinterpret_cast<uint8_t (&)[4][4]>(state),reinterpret_cast<uint8_t (&)[4][4]>(keys.at(number_of_rounds)));
+    sub_bytes(state);
+    shift_rows(state);
+    add_round_key(state, reinterpret_cast<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> &>(keys.at(number_of_rounds))); //TODO: modificare.
 
     /*for(unsigned short i = 0; i < gal::BLOCK_WORDS; i++) { //TODO: uncomment?
         for(unsigned short j = 0; j < gal::BLOCK_WORDS; j++) {
@@ -103,19 +108,21 @@ void encrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK
     unsigned short i = 0; //TODO: volendo metterlo direttamente nel loop, come sopra.
     for(unsigned short column = 0; column < gal::BLOCK_WORDS; column++) {
         for(unsigned short row = 0; row < gal::BLOCK_WORDS; row++) {
-            output[i++] = state[row][column];
+            output[i++] = state[row][column]; //TODO: output[i + gal::BLOCK_WORDS * j]?
+
+            //TODO: state[row][column] ^= iv[i]; oppure gal::galois_add_sub(state[row][column], iv[i]);
         }
     }
 }
 
 // DECRYPTION
 
-void inverse_add_round_key(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS], uint8_t (&key)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
+void inverse_add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& key)
 {
    add_round_key(state, key);
 }
 
-void inverse_sub_bytes(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
+void inverse_sub_bytes(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state)
 {
     for(auto& i : state) {
         for(unsigned char& j : i) {
@@ -124,14 +131,14 @@ void inverse_sub_bytes(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
     }
 }
 
-void inverse_shift_rows(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
+void inverse_shift_rows(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state)
 {
     shift_row(state, 1, gal::BLOCK_WORDS - 1);
     shift_row(state, 2, gal::BLOCK_WORDS - 2);
     shift_row(state, 3, gal::BLOCK_WORDS - 3);
 }
 
-void inverse_mix_columns(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
+void inverse_mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state)
 {
     std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> output{};
 
@@ -144,10 +151,11 @@ void inverse_mix_columns(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS])
         }
     }
 
-    std::memcpy(state, output.data(), gal::BLOCK_WORDS * gal::BLOCK_WORDS * sizeof(uint8_t));
+    //std::memcpy(state, output.data(), gal::BLOCK_WORDS * gal::BLOCK_WORDS * sizeof(uint8_t)); //TODO: remove?
+    state = output;
 }
 
-void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t number_of_rounds,
+void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t& number_of_rounds,
                    std::array<uint8_t, gal::BLOCK_WORDS>& output )
 {
     std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> state{};
@@ -155,7 +163,7 @@ void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK
     unsigned short i = 0; //TODO: volendo metterlo direttamente nel loop?
     for(unsigned short column = 0; column < gal::BLOCK_WORDS; column++) {
         for(unsigned short row = 0; row < gal::BLOCK_WORDS; row++) {
-            state[row][column] = input[i];
+            state[row][column] = input[i]; //TODO: volendo input[i++]? e quindi toglierlo sotto?
             i++;
         }
     }
@@ -163,26 +171,30 @@ void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK
     //TODO: usare reinterpret_cast è pericoloso! da cambiare.
 
     // LAST ROUND
-    inverse_add_round_key(reinterpret_cast<uint8_t (&)[4][4]>(state),reinterpret_cast<uint8_t (&)[4][4]>(keys[number_of_rounds]));
-    inverse_shift_rows(reinterpret_cast<uint8_t (&)[4][4]>(state));
-    inverse_sub_bytes(reinterpret_cast<uint8_t (&)[4][4]>(state));
+    inverse_add_round_key(state, reinterpret_cast<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> &>(keys[number_of_rounds]));
+    inverse_shift_rows(state); //TODO: remove?
+    inverse_sub_bytes(state); //TODO: remove?
 
     // LAST ROUND - 1 --> FIRST ROUND
     for(unsigned short round = number_of_rounds - 1; round > 0; round--) {
-        inverse_add_round_key(reinterpret_cast<uint8_t (&)[4][4]>(state),reinterpret_cast<uint8_t (&)[4][4]>(keys[round]));
-        inverse_mix_columns(reinterpret_cast<uint8_t (&)[4][4]>(state));
-        inverse_shift_rows(reinterpret_cast<uint8_t (&)[4][4]>(state));
-        inverse_sub_bytes(reinterpret_cast<uint8_t (&)[4][4]>(state));
+        //TODO: cambiare ordine? nuovo ordine: inverse_sub_bytes, inverse_shift_rows, add_round_key, inverse_mix_columns?
+        inverse_add_round_key(state,reinterpret_cast<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> &>(keys[round])); //TODO: modificare.
+        inverse_mix_columns(state);
+        inverse_shift_rows(state);
+        inverse_sub_bytes(state);
     }
 
     // FIRST ROUND
-    inverse_add_round_key(reinterpret_cast<uint8_t (&)[4][4]>(state), reinterpret_cast<uint8_t (&)[4][4]>(keys[0]));
+    //TODO: aggiungere prima di inverse_add_round_key: inverse_sub_bytes, inverse_shift_rows
+    inverse_add_round_key(state, reinterpret_cast<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> &>(keys[0])); //TODO: modificare.
 
     unsigned short j = 0; //TODO: metterlo direttamente nel loop stesso?
     for(unsigned short row = 0; row < gal::BLOCK_WORDS; row++) {
         for(unsigned short column = 0; column < gal::BLOCK_WORDS; column++) {
-            output[j] = state[row][column]; //TODO: output[j++]
+            output[j] = state[row][column]; //TODO: output[j++] e quindi rimuovere il j++ sotto.
             j++;
+
+            //TODO: xor it with IV. output[j] ^= iv[j] oppure gal::galois_add_sub(output[j], iv[j])
         }
     }
 }

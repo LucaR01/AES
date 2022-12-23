@@ -15,9 +15,17 @@
 
 namespace aes {
 
+//TODO: Aggiungere una funzione che in base al tipo di AES, ti restituisce il numero di rounds?
+//TODO: mettere questo enum in un altro file?
+enum AES {
+    AES_128 = 128,
+    AES_192 = 192,
+    AES_256 = 256
+};
+
 //TODO: forse non serve fare classi separate per AES-128, AES-256, ecc.
 //TODO: basta passare
-class AES { //TODO: remove?
+/*class AES { //TODO: remove?
 public:
     AES() = default;
     ~AES() = default;
@@ -25,7 +33,7 @@ public:
 
 private:
     //TODO: state
-};
+};*/
 
 //TODO: fare delle costanti per lo shift delle righe nello shift_rows()?
 
@@ -91,40 +99,51 @@ static constexpr std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WO
 //TODO: passarli come puntatori?
 
 // ENCRYPTION
-void add_round_key(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS], uint8_t (&key)[gal::BLOCK_WORDS][gal::BLOCK_WORDS]);
+void add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& key);
 
-void sub_bytes(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS]); //uint8_t state[gal::BLOCK_WORDS][gal::BLOCK_WORDS]
+void sub_bytes(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state);
 
-void shift_row(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS], unsigned short row, unsigned short positions);
+void shift_row(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, unsigned short row, unsigned short positions);
 
-void shift_rows(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS]);
+void shift_rows(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state);
 
-void mix_columns(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS]);
+void mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state);
 
 //TODO: string_view?
 //TODO: std::array& keys perché poi viene dedotto che è un array con size non definito; std::vector<std::array<>>? triple array tipo arr[][][];
 //TODO: uint8_t* keys
 //TODO: std::array<uint8_t, gal::BLOCK_WORDS>& iv,
-void encrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t number_of_rounds,
+void encrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t& number_of_rounds,
                    std::array<uint8_t, gal::BLOCK_WORDS>& output );
 
 // DECRYPTION
-void inverse_add_round_key(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS], uint8_t (&key)[gal::BLOCK_WORDS][gal::BLOCK_WORDS]);
+void inverse_add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& key);
 
-void inverse_sub_bytes(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS]);
+void inverse_sub_bytes(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state);
 
-//void inverse_shift_row(); //TODO: remove
+void inverse_shift_rows(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state);
 
-void inverse_shift_rows(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS]);
-
-void inverse_mix_columns(uint8_t (&state)[gal::BLOCK_WORDS][gal::BLOCK_WORDS]);
+void inverse_mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state);
 
 //TODO: string_view?
 //TODO: std::array& keys perché poi viene dedotto che è un array con size non definito; std::vector<std::array<>>? triple array tipo arr[][][];
 //TODO: uint8_t* keys
 //TODO: std::array<uint8_t, gal::BLOCK_WORDS>& iv,
-void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t number_of_rounds,
+void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t& number_of_rounds,
                    std::array<uint8_t, gal::BLOCK_WORDS>& output );
+
+// KEY EXPANSION | KEY SCHEDULE
+
+//TODO: al posto di usare key_length si potrebbe fare un enum AES con 128, 192, 256
+void key_expansion(std::string& key, unsigned short key_length,  uint8_t (&keys)[][gal::BLOCK_WORDS][gal::BLOCK_WORDS]); //TODO: remove?
+
+void key_expansion(std::string& key, AES key_length, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys); //TODO: remove?
+
+void rot_word(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys); //TODO: fix?
+
+void sub_word(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys); //TODO: fix?
+
+void rcon(); //TODO:
 
 }
 
