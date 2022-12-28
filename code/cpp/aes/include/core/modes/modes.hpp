@@ -8,6 +8,8 @@
 #include <map>
 #include <string_view>
 #include <array>
+#include <cstdint>
+#include <vector>
 
 namespace aes::mod {
 
@@ -30,6 +32,10 @@ static const std::map<Modes, std::string_view> modes_names = {
         {Modes::CBC, "CBC"},
         {Modes::CTR, "CTR"}
 };
+
+std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const uint16_t& number_of_rounds );
+
+std::vector<uint8_t> decrypt_ECB(); //TODO:
 
 } // aes::mod
 

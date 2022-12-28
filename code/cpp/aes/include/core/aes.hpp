@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <array>
 #include <string>
+#include <vector>
 
 #include "math/galois_math.hpp"
 
@@ -22,6 +23,10 @@ enum AES {
     AES_192 = 192,
     AES_256 = 256
 };
+
+static constexpr unsigned short AES_128_NUMBER_OF_KEYS = 4; //TODO: spostarlo in galois_math.hpp? fare un enum?
+static constexpr unsigned short AES_192_NUMBER_OF_KEYS = 6;
+static constexpr unsigned short AES_256_NUMBER_OF_KEYS = 8;
 
 //TODO: forse non serve fare classi separate per AES-128, AES-256, ecc.
 //TODO: basta passare
@@ -113,8 +118,8 @@ void mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WO
 //TODO: std::array& keys perché poi viene dedotto che è un array con size non definito; std::vector<std::array<>>? triple array tipo arr[][][];
 //TODO: uint8_t* keys
 //TODO: std::array<uint8_t, gal::BLOCK_WORDS>& iv,
-void encrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t& number_of_rounds,
-                   std::array<uint8_t, gal::BLOCK_WORDS>& output );
+void encrypt_block(const std::vector<uint8_t>& input, std::array<uint8_t, gal::BLOCK_WORDS>& output,
+                   std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, const uint8_t& number_of_rounds);
 
 // DECRYPTION
 void inverse_add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& key);
@@ -134,16 +139,13 @@ void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK
 
 // KEY EXPANSION | KEY SCHEDULE
 
-//TODO: al posto di usare key_length si potrebbe fare un enum AES con 128, 192, 256
-void key_expansion(std::string& key, unsigned short key_length,  uint8_t (&keys)[][gal::BLOCK_WORDS][gal::BLOCK_WORDS]); //TODO: remove?
+void key_expansion(std::string& key, const unsigned short& number_of_keys, std::string& word);
 
-void key_expansion(std::string& key, AES key_length, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys); //TODO: remove?
+void rot_word(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys);
 
-void rot_word(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys); //TODO: fix?
+void sub_word(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys);
 
-void sub_word(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys); //TODO: fix?
-
-void rcon(); //TODO:
+void rcon(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys, const unsigned short& number_of_keys);
 
 }
 

@@ -18,20 +18,22 @@ static constexpr unsigned short AES_192 = 192;
 static constexpr unsigned short AES_256 = 256;
 
 static constexpr unsigned short ROUNDS_AES_128 = 10; //TODO: Creare un enum? Oppure metterlo nell'enum Aes?
-static constexpr unsigned short ROUNDS_AES_192 = 12;
+static constexpr unsigned short ROUNDS_AES_192 = 12; //TODO: spostarli in aes.hpp?
 static constexpr unsigned short ROUNDS_AES_256 = 14;
 
 //TODO: usare std::bitset?
-static constexpr unsigned short MIX_COLUMNS_IRREDUCIBLE = 0x1B; // equivalente a 27 = 00011011 = x^4 + x^3 + x + 1.
+static constexpr unsigned short IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00011011 = x^4 + x^3 + x + 1.
 
 //TODO: usare std::byte o uint8_t?
 
 //TODO: aggiungere la s-box
 
 //TODO: aggiornare in galois_add_sub?
-uint8_t galois_addition_subtraction(const uint8_t x, const uint8_t y);
+[[nodiscard("Pure function")]] constexpr uint8_t galois_addition_subtraction(const uint8_t& x, const uint8_t& y) noexcept;
 
-uint8_t galois_multiplication(uint8_t x, uint8_t y);
+[[nodiscard]] constexpr uint8_t galois_multiplication(uint8_t x, uint8_t y) noexcept;
+
+[[nodiscard]] constexpr uint8_t xtime(const uint8_t& x) noexcept;
 
 }
 

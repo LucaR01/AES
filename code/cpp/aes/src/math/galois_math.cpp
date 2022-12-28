@@ -9,12 +9,13 @@
 
 namespace aes::gal {
 
-uint8_t galois_addition_subtraction(const uint8_t x, const uint8_t y)
+[[nodiscard("Pure function")]] constexpr uint8_t galois_addition_subtraction(const uint8_t& x, const uint8_t& y) noexcept
 {
     return x ^ y;
 }
 
-uint8_t galois_multiplication(uint8_t x, uint8_t y)
+//TODO: forse si può riscrivere così: return (x << 1) ^ (((x >> 7) & 1) * MIX_COLUMNS_IRREDUCIBLE);
+[[nodiscard]] constexpr uint8_t galois_multiplication(uint8_t x, uint8_t y) noexcept
 {
     uint8_t result = 0;
 
@@ -23,15 +24,21 @@ uint8_t galois_multiplication(uint8_t x, uint8_t y)
             result ^= x; // ^= è l'addizione in GF(2^8); potrei anche fare result = galois_addition_subtraction(result, x);
         }
 
-        if(x & 0x80) { // x >= 0x80 = 128
-            x <<= 1; // ruotiamo x di 1 (moltiplicazione in GF(2^8)
-            x ^= MIX_COLUMNS_IRREDUCIBLE; // x -= 0x1B, ovvero mod(x^8 + x^4 + x^3 + x + 1)
+        const bool high_bit = x & 0x80; // x >= 0x80 = 128
+        x <<= 1; // ruotiamo x di 1 (moltiplicazione in GF(2^8)
+        if(high_bit) {
+            x ^= IRREDUCIBLE_POLYNOMIAL; // x -= 0x1B, ovvero mod(x^8 + x^4 + x^3 + x + 1)
         }
+
+        y >>= 1; // ruotiamo y a destra (divisione in GF(2^8)
     }
 
-    y >>= 1; // ruotiamo y a destra (divisione in GF(2^8)
-
     return result;
+}
+
+[[nodiscard]] constexpr uint8_t xtime(const uint8_t& x) noexcept
+{
+    return (x << 0x01) ^ (((x >> 0x07) & 0x01) * gal::IRREDUCIBLE_POLYNOMIAL);
 }
 
 }

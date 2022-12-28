@@ -3,7 +3,6 @@
 //
 
 #include "core/aes.hpp"
-#include <cstring>
 
 namespace aes {
 
@@ -71,7 +70,8 @@ void mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WO
     //std::memcpy(state.data(), output.data(), gal::BLOCK_WORDS * gal::BLOCK_WORDS * sizeof(uint8_t)); //TODO: remove?
 }
 
-void encrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t& number_of_rounds,
+//TODO: prima avevo usato std::string
+void encrypt_block(const std::vector<uint8_t>& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, const uint8_t& number_of_rounds,
                    std::array<uint8_t, gal::BLOCK_WORDS>& output )
 {
     std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> state{};
@@ -197,6 +197,89 @@ void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK
             //TODO: xor it with IV. output[j] ^= iv[j] oppure gal::galois_add_sub(output[j], iv[j])
         }
     }
+}
+
+// KEY EXPANSION | KEY SCHEDULE
+
+//TODO: remove AES& key_length
+//TODO: std::array<uint8_t, 16> key, std::array<uint8_t, 44> word;
+//TODO: oppure std::vector<uint8_t> key, std::vector<uint8_t> word;
+void key_expansion(std::string& key, const unsigned short& number_of_keys, std::string& word)
+{
+    //number of keys = Nk = 4, 6, 8
+
+    /*switch(key_length) { //TODO: remove
+        case AES::AES_192:
+            //TODO: chiamare key_expansion_aes_192() o key_expansion_aes192() o key_expansion_192();
+            //TODO: oppure fare tutto in questa funzione.
+            //TODO: rcon(keys, AES_192_NUMBER_OF_KEYS * 4);
+            break;
+        case AES::AES_256:
+            break;
+        case AES::AES_128:
+        default:
+            break;
+    }*/
+
+    std::array<uint8_t, AES_128_NUMBER_OF_KEYS> temp{};
+    std::array<uint8_t, AES_128_NUMBER_OF_KEYS> rcon{};
+
+    for(unsigned short i = 0; i < AES_128_NUMBER_OF_KEYS * number_of_keys; i++) {
+        word[i] = key[i];
+    }
+
+    for(unsigned short j = AES_128_NUMBER_OF_KEYS * number_of_keys; j < AES_128_NUMBER_OF_KEYS * gal::BLOCK_WORDS * (number_of_keys + 1); j += 4) {
+        temp[0] = word[j - AES_128_NUMBER_OF_KEYS + 0];
+        temp[1] = word[j - AES_128_NUMBER_OF_KEYS + 1];
+        temp[2] = word[j - AES_128_NUMBER_OF_KEYS + 2];
+        temp[3] = word[j - AES_128_NUMBER_OF_KEYS + 3];
+
+        if(j / gal::BLOCK_WORDS % number_of_keys == 0) {
+            rot_word(temp);
+            sub_word(temp);
+            aes::rcon(rcon, j / (number_of_keys * AES_128_NUMBER_OF_KEYS));
+
+            for(unsigned short k = 0; k < AES_128_NUMBER_OF_KEYS; k++) { //TODO: mettere in una funzione a parte?
+                temp[k] = temp[k] ^ rcon[k]; //TODO: galois_add_sub()
+            }
+        } else if(number_of_keys > AES_192_NUMBER_OF_KEYS && j / AES_128_NUMBER_OF_KEYS % number_of_keys == AES_128_NUMBER_OF_KEYS) {
+            sub_word(temp);
+        }
+
+        word[j + 0] = word[j - AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[0]; //TODO: galois_add_sub()
+        word[j + 1] = word[j + 1 - AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[1];
+        word[j + 2] = word[j + 2 - AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[2];
+        word[j + 3] = word[j + 3 - AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[3];
+    }
+}
+
+void rot_word(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys)
+{
+    //TODO: magari utilizzare un for
+    uint8_t temp = keys[0];
+    keys[0] = keys[1];
+    keys[1] = keys[2];
+    keys[2] = keys[3];
+    keys[3] = temp;
+}
+
+void sub_word(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys)
+{
+    for(unsigned short i = 0; i < AES_128_NUMBER_OF_KEYS; i++) {
+        keys[i] = S_BOX[keys[i]]; //TODO: fix? i % 16
+    }
+}
+
+void rcon(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys, const unsigned short& number_of_keys)
+{
+    //Nk = number of keys = 4, 6, 8
+    uint8_t temp = 1;
+    for(unsigned short i = 0; i < number_of_keys - 1; i++) {
+        temp = gal::xtime(temp);
+    }
+
+    keys[0] = temp;
+    keys[1] = keys[2] = keys[3] = 0;
 }
 
 }
