@@ -3,6 +3,8 @@
 #include "logger/logger.hpp"
 #include "graphics/console/console.hpp"
 
+//TODO: dove uso constexpr, metterli nell'.hpp; tipo negli enums.
+
 int main() {
 
 #ifndef RELEASE_MODE

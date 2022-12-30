@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <vector>
 
+#include "core/aes.hpp"
+
 namespace aes::mod {
 
 enum class Modes {
@@ -25,6 +27,7 @@ static constexpr std::array<Modes, NUM_OF_MODES> all = { Modes::ECB, Modes::CBC,
 
 //TODO: static constexpr?
 //TODO: ritornare un byte? uint8_t? char?
+//TODO: [[nodiscard]]
 unsigned short get_mode_index(const Modes& mode);
 
 static const std::map<Modes, std::string_view> modes_names = {
@@ -34,6 +37,8 @@ static const std::map<Modes, std::string_view> modes_names = {
 };
 
 std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const uint16_t& number_of_rounds );
+
+std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes );
 
 std::vector<uint8_t> decrypt_ECB(); //TODO:
 

@@ -24,9 +24,35 @@ enum AES {
     AES_256 = 256
 };
 
-static constexpr unsigned short AES_128_NUMBER_OF_KEYS = 4; //TODO: spostarlo in galois_math.hpp? fare un enum?
-static constexpr unsigned short AES_192_NUMBER_OF_KEYS = 6;
-static constexpr unsigned short AES_256_NUMBER_OF_KEYS = 8;
+/*[[nodiscard]] static constexpr uint8_t get_number_of_rounds(const AES& aes);
+
+[[nodiscard]] uint8_t get_number_of_keys(const AES& aes);*/
+
+[[nodiscard]] static constexpr uint8_t get_number_of_rounds(const AES& aes)
+{
+    switch(aes) {
+        case AES_192:
+            return gal::ROUNDS_AES_192;
+        case AES_256:
+            return gal::ROUNDS_AES_256;
+        case AES_128:
+        default:
+            return gal::ROUNDS_AES_128;
+    }
+}
+
+[[nodiscard]] static constexpr uint8_t get_number_of_keys(const AES& aes)
+{
+    switch(aes) {
+        case AES_192:
+            return gal::AES_192_NUMBER_OF_KEYS;
+        case AES_256:
+            return gal::AES_256_NUMBER_OF_KEYS;
+        case AES_128:
+        default:
+            return gal::AES_128_NUMBER_OF_KEYS;
+    }
+}
 
 //TODO: forse non serve fare classi separate per AES-128, AES-256, ecc.
 //TODO: basta passare
@@ -118,7 +144,9 @@ void mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WO
 //TODO: std::array& keys perché poi viene dedotto che è un array con size non definito; std::vector<std::array<>>? triple array tipo arr[][][];
 //TODO: uint8_t* keys
 //TODO: std::array<uint8_t, gal::BLOCK_WORDS>& iv,
-void encrypt_block(const std::vector<uint8_t>& input, std::array<uint8_t, gal::BLOCK_WORDS>& output,
+//TODO: prima era std::array<uint8_t, gal::BLOCK_WORDS>& output
+//TODO: o fare std::array<uint8_t, gal::BLOCK_SIZE + 1 (ovvero 17)> oppure std::vector<uint8_t>& output
+void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output,
                    std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, const uint8_t& number_of_rounds);
 
 // DECRYPTION
@@ -139,13 +167,23 @@ void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK
 
 // KEY EXPANSION | KEY SCHEDULE
 
-void key_expansion(std::string& key, const unsigned short& number_of_keys, std::string& word);
+void key_expansion(const std::vector<uint8_t>& key, const aes::AES& aes, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys);
 
-void rot_word(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys);
+//TODO: std::array<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys
+//TODO: std::array<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>, gal::ROUNDS_AES_128 + 1>& keys
+void key_expansion_aes_128(const std::vector<uint8_t>& key, std::vector<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>>& keys);
 
-void sub_word(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys);
+void key_expansion_aes_192(const std::vector<uint8_t>& key, std::vector<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>>& keys);
 
-void rcon(std::array<uint8_t, AES_128_NUMBER_OF_KEYS>& keys, const unsigned short& number_of_keys);
+void key_expansion_aes_256(const std::vector<uint8_t>& key, std::vector<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>>& keys);
+
+void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, const unsigned short& number_of_keys);
+
+void rot_word(std::array<uint8_t, gal::AES_128_NUMBER_OF_KEYS>& keys);
+
+void sub_word(std::array<uint8_t, gal::AES_128_NUMBER_OF_KEYS>& keys);
+
+void rcon(std::array<uint8_t, gal::AES_128_NUMBER_OF_KEYS>& keys, const unsigned short& number_of_keys);
 
 }
 
