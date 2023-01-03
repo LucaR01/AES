@@ -149,6 +149,8 @@ void mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WO
 void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output,
                    std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, const uint8_t& number_of_rounds);
 
+//void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t& keys, const uint8_t& number_of_rounds ); //TODO: remove
+
 // DECRYPTION
 void inverse_add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& key);
 

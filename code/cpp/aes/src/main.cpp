@@ -7,6 +7,7 @@
 
 int main() {
 
+//TODO: mettere #ifndef #endif fuori dal main?
 #ifndef RELEASE_MODE
     //aes::log::Logger aes_logger;
     aes::log::Logger::init();
