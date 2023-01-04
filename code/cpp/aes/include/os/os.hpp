@@ -2,8 +2,8 @@
 // Created by Luca on 07/12/2022.
 //
 
-#ifndef AES_OS_H
-#define AES_OS_H
+#ifndef AES_OS_HPP
+#define AES_OS_HPP
 
 // Ottengo il sistema operativo in cui il codice viene eseguito.
 #if defined(_WIN32) || defined(_WIN64)
@@ -27,4 +27,4 @@
 #define AES_BREAK __builtin_trap();
 #endif
 
-#endif //AES_OS_H
+#endif //AES_OS_HPP

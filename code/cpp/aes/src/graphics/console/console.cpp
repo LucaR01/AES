@@ -7,8 +7,11 @@
 
 #include "graphics/console/console.hpp"
 #include "logger/logger.hpp"
+#include "file_manager/file_manager.hpp"
 
 namespace aes::con {
+
+//TODO: usare uint8_t dove possibile.
 
 void show_console()
 {
@@ -32,7 +35,7 @@ void get_user_input()
             break;
         default:
             AES_ERROR("operation_selected should not be in default branch, operation_selected: {}", aes::ops::operations_names.at(operation))
-            exit(0);
+            exit(EXIT_FAILURE);
     }
 }
 
@@ -69,6 +72,8 @@ aes::ops::Operations request_operation()
 
     return op;
 }
+
+// ENCRYPTION
 
 void operation_encryption()
 {
@@ -109,27 +114,45 @@ void operation_encryption()
             break;
         default:
             AES_CRITICAL("encryption_operation should not be in default case, encryption_operation: {}", encryption_operation)
-            exit(0);
+            exit(EXIT_FAILURE);
     }
 }
 
 void show_encrypt_message()
 {
     //std::string_view message; //TODO: remove
-    std::string message;
+    /*std::string message;
     std::cout << "Inserire messaggio: ";
     std::cin.ignore();
     std::getline(std::cin, message);
-    AES_DEBUG("Message from user input: {}", message)
+    AES_DEBUG("Message from user input: {}", message)*/
 
-    aes::mod::Modes mode = request_mode();
-    aes::pad::Paddings padding = request_padding();
+    const std::string& message = request_message();
+    const aes::mod::Modes& mode = request_mode();
+    const aes::pad::Paddings& padding = request_padding();
+    const std::string& key = request_key(); //TODO: usare magari una classe al posto di una stringa.
+    //TODO: chiamare funzione per cifrare
+    //TODO: mostrare a schermo il messaggio cifrato.
 }
 
 void show_encrypt_file()
 {
+    const std::string& input_file_path = request_input_file();
+    const std::vector<char*>& file_data = aes::fm::FileManager::get_file_data(input_file_path); //TODO: o questo
+    const std::vector<std::string>& file_data2 = aes::fm::FileManager::get_file_data2(input_file_path); //TODO: o questo
+    const std::string& file_data3 = aes::fm::FileManager::get_key(input_file_path); //TODO: oppure questo.
 
+    const aes::mod::Modes& mode = request_mode();
+    const aes::pad::Paddings& padding = request_padding();
+    const std::string& key = request_key(); //TODO: questo forse da cambiare.
+
+    const std::string& output_file_path = request_output_file();
+
+    //TODO: chiamare la funzione per cifrare
+    //TODO: cifrare i dati e scriverli in un altro file.
 }
+
+// DECRYPTION
 
 void operation_decryption()
 {
@@ -140,12 +163,110 @@ void operation_decryption()
 
 void show_decrypt_message()
 {
-
+    const std::string& message = request_message();
+    const aes::mod::Modes& mode = request_mode();
+    const aes::pad::Paddings& padding = request_padding();
+    const std::string& key = request_key(); //TODO: questo forse da cambiare.
+    //TODO: chiamare funzione per decifrare
+    //TODO: mostrare a schermo il messaggio decifrato.
 }
 
 void show_decrypt_file()
 {
 
+}
+
+void show_encrypt_decrypt_message(const ops::Operations& operation) //TODO: remove?
+{
+    const std::string& message = request_message();
+    const aes::mod::Modes& mode = request_mode();
+    const aes::pad::Paddings& padding = request_padding();
+    const std::string& key = request_key(); //TODO: usare magari una classe al posto di una stringa.
+
+    switch(operation) {
+        case ops::Operations::ENCRYPT:
+            //TODO: chiamare funzione per cifrare.
+            //TODO: mostrare a schermata il risultato della cifratura.
+            break;
+        case ops::Operations::DECRYPT:
+            //TODO: chiamare funzione per decifrare.
+            //TODO: mostrare a schermata il risultato della decifratura.
+            break;
+    }
+}
+
+void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
+{
+    const std::string& input_file_path = request_input_file();
+    const std::vector<char*>& file_data = aes::fm::FileManager::get_file_data(input_file_path); //TODO: o questo
+    const std::vector<std::string>& file_data2 = aes::fm::FileManager::get_file_data2(input_file_path); //TODO: o questo
+    const std::string& file_data3 = aes::fm::FileManager::get_key(input_file_path); //TODO: oppure questo.
+
+    const aes::mod::Modes& mode = request_mode();
+    const aes::pad::Paddings& padding = request_padding();
+    const std::string& key = request_key(); //TODO: questo forse da cambiare.
+
+    const std::string& output_file_path = request_output_file();
+
+    switch(operation) {
+        case ops::Operations::ENCRYPT:
+            //TODO: chiamare funzione per cifrare il file.
+            break;
+        case ops::Operations::DECRYPT:
+            //TODO: chiamare funzione per decifrare il file.
+            break;
+    }
+}
+
+// REQUEST
+
+std::string request_message() //TODO: const aes::ops::Operations& operation
+{
+    std::string message;
+    std::cout << "Inserire messaggio: "; //TODO: uncomment.
+
+    //TODO: non ha senso a questo punto avere uno switch solo per quello, piuttosto fare
+    //TODO: std::cout << "Inserire messaggio: "; e rimuovere il parametro.
+
+    /*switch(operation) { //TODO: remove
+        case aes::ops::Operations::ENCRYPT:
+            std::cout << "Inserire messaggio: ";
+            break;
+        case aes::ops::Operations::DECRYPT:
+            std::cout << "Inserire testo cifrato: ";
+            break;
+        default:
+            AES_CRITICAL("Errore non dovrebbe essere qui!")
+            break;
+    }*/
+
+    std::cin.ignore();
+    std::getline(std::cin, message);
+    AES_DEBUG("Message from user input: {}", message)
+
+    return message;
+}
+
+std::string request_input_file()
+{
+    std::string file_path;
+    std::cout << "Inserire path del file di input: ";
+    std::cin.ignore();
+    std::getline(std::cin, file_path);
+    AES_DEBUG("Input File path from user input: {}", file_path)
+
+    return file_path;
+}
+
+std::string request_output_file()
+{
+    std::string file_path;
+    std::cout << "Inserire path del file di output: ";
+    std::cin.ignore();
+    std::getline(std::cin, file_path);
+    AES_DEBUG("Output File path from user input: {}", file_path)
+
+    return file_path;
 }
 
 aes::pad::Paddings request_padding()
@@ -174,10 +295,57 @@ aes::pad::Paddings request_padding()
     return selected_padding_type;
 }
 
-std::string_view request_key()
+std::string request_key()
 {
-    //TODO:
-    return "";
+    unsigned short user_input_operation;
+    std::cout << "Inserire chiave da input o da file?" << '\n'; //TODO: riscrivere?
+    for(const auto& e : aes::ops::all_encryption_operations) {
+        std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+    }
+
+    std::cout << "Seleziona: ";
+    std::cin >> user_input_operation;
+    //TODO: < ops::get_operation_index(ops::all_encryption_operations.front()) || user_input_operation > ops::all_encryption_operations.size())
+    while((std::cin.fail()) || user_input_operation < 1 || user_input_operation > 2) { //!(std::cin >> encryption_operation) || (std::cin.fail())
+        std::cin.clear();
+        std::cout << "Inserire chiave da input o da file?" << '\n';
+        for(const auto& e : aes::ops::all_encryption_operations) {
+            std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        }
+        std::cout << "Seleziona: ";
+        std::cin >> user_input_operation;
+        std::cout << std::flush;
+        AES_DEBUG("user_input_operation: {}", user_input_operation)
+    }
+
+    std::cin.clear();
+
+    auto input_operation = static_cast<ops::EncryptionOperations>(user_input_operation);
+
+    std::string key;
+
+    switch(input_operation) {
+        case ops::EncryptionOperations::MESSAGE:
+            std::cout << "Inserire chiave: ";
+            std::cin.ignore();
+            std::getline(std::cin, key);
+            AES_DEBUG("Key from user input: {}", key)
+            break;
+        case ops::EncryptionOperations::FILE:
+            std::string file_path;
+            std::cout << "Inserire path del file: ";
+            std::cin.ignore();
+            std::getline(std::cin, file_path);
+            key = aes::fm::FileManager::get_key(file_path);
+            break;
+    }
+
+    //TODO: salare la chiave, metterci il pepe, iv, nonce, ecc.
+    //TODO: la key può essere o una stringa o una specifica classe. tipo: class Password/Key/KeyGenerator, ecc.
+    //TODO: in questa classe che prende come input una stringa, poi ci mette il sale e il pepe e niente, si può fare
+    //TODO: get_key(); get_original_key(); get_salt(); get_iv(); get_nonce(); ecc.
+
+    return key;
 }
 
 aes::mod::Modes request_mode()

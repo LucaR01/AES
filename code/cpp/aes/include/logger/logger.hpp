@@ -6,7 +6,7 @@
 #define AES_LOGGER_H
 
 #include "spdlog/spdlog.h"
-#include "os/os.h"
+#include "os/os.hpp"
 
 namespace aes::log {
 

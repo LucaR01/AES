@@ -32,6 +32,7 @@ static const std::map<Operations, std::string_view> operations_names = {
 // È in un namespace, perché mi dava errore di ridefinizione di FILE.
 
 //TODO: rinominare in qualcos'altro? EncryptionObjects?
+//TODO: rinominare in InputOperations?
 enum EncryptionOperations {
     MESSAGE = 1,
     FILE

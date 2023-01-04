@@ -66,6 +66,8 @@ std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::v
     std::vector<uint8_t> round_keys;
     //std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> round_keys;
 
+    //TODO: permettere a key_expansion/encrypt_block di poter prendere sia una matrice sia un vettore
+    //TODO: con std::variadic, std::variant
     aes::key_expansion(key, round_keys, aes::get_number_of_keys(aes));
     //TODO: non i < input.size(), ma i < 17, ovvero gal::BLOCK_SIZE + sizeof(unsigned char), ovvero 1.
     for(unsigned int i = 0; i < input.size(); i += gal::BLOCK_SIZE + 1) {
