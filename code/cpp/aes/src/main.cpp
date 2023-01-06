@@ -1,14 +1,19 @@
 #include <iostream>
+#include <cstdlib>
 
+//#ifndef RELEASE_MODE //TODO: così forse dà errore perché poi non vede i AES_TRACE, ecc.
 #include "logger/logger.hpp"
+//#endif
+
 #include "graphics/console/console.hpp"
 #include "file_manager/file_manager.hpp" //TODO: remove?
 
 //TODO: dove uso constexpr, metterli nell'.hpp; tipo negli enums.
 
-int main() {
+int main()
+{
 
-//TODO: mettere #ifndef #endif fuori dal main?
+//TODO: mettere #ifndef #endif fuori dal main? No, non va.
 #ifndef RELEASE_MODE
     //aes::log::Logger aes_logger;
     aes::log::Logger::init();
@@ -27,7 +32,7 @@ int main() {
 
     //TODO: remove, creare un test a riguardo.
     std::vector<std::string> data = { "hello ", " everyone ", "! " };
-    aes::fm::FileManager::get_instance().write_file_data("test.txt", data);
+    aes::fm::FileManager::write_file_data("test.txt", data);
     AES_DEBUG("Filename: {} exists: {}", aes::fm::FileManager::get_filename("test.txt"), aes::fm::FileManager::file_exists("test.txt"))
     std::vector<char*> data2 = aes::fm::FileManager::get_file_data("test.txt");
 

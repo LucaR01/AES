@@ -22,9 +22,14 @@ void show_console()
 //TODO: in get_user_input() posso volendo solo mettere le chiamate alle altre funzioni.
 void get_user_input()
 {
-    aes::ops::Operations operation = request_operation();
+    /*aes::ops::Operations operation = request_operation();
+    operation_encryption_decryption(operation);*/
 
-    switch(operation) {
+    //TODO: a questo punto, quasi rimuovere la funzione get_user_input() e semplicemente spostare questo codice in show_console();
+
+    operation_encryption_decryption(request_operation());
+
+    /*switch(operation) { //TODO: remove?
         case aes::ops::ENCRYPT:
             AES_INFO("Inside ENCRYPT case, operation_selected: {}", aes::ops::operations_names.at(operation))
             operation_encryption();
@@ -36,7 +41,7 @@ void get_user_input()
         default:
             AES_ERROR("operation_selected should not be in default branch, operation_selected: {}", aes::ops::operations_names.at(operation))
             exit(EXIT_FAILURE);
-    }
+    }*/
 }
 
 //TODO: però questa la utilizzo una singola volta, la tengo lo stesso? Per il principio di Single Responsability Principle.
@@ -120,13 +125,6 @@ void operation_encryption()
 
 void show_encrypt_message()
 {
-    //std::string_view message; //TODO: remove
-    /*std::string message;
-    std::cout << "Inserire messaggio: ";
-    std::cin.ignore();
-    std::getline(std::cin, message);
-    AES_DEBUG("Message from user input: {}", message)*/
-
     const std::string& message = request_message();
     const aes::mod::Modes& mode = request_mode();
     const aes::pad::Paddings& padding = request_padding();
@@ -159,6 +157,44 @@ void operation_decryption()
     //TODO: scelta tra decifratura di un messaggio o di un file.
     //TODO: chiedere messaggio cifrato, chiave, modalità, padding.
     //TODO: chiedere file input cifrato, path output file decifrato, estensione del file?, chiave, modalità, padding.
+
+    unsigned short decryption_operation;
+    std::cout << "Cosa si desidera decifrare?" << '\n';
+    for(const auto& e : aes::ops::all_encryption_operations) {
+        std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+    }
+    std::cout << "Seleziona: ";
+    std::cin >> decryption_operation;
+    while((std::cin.fail()) || (decryption_operation <= 0 || decryption_operation >= 3)) { //!(std::cin >> encryption_operation) || (std::cin.fail())
+        std::cin.clear();
+        std::cout << "Cosa si desidera decifrare?" << '\n';
+        for(const auto& e : aes::ops::all_encryption_operations) {
+            std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        }
+        std::cout << "Seleziona: ";
+        std::cin >> decryption_operation;
+        std::cout << std::flush;
+        AES_DEBUG("decryption_operation: {}", decryption_operation)
+    }
+
+    std::cin.clear();
+
+    aes::ops::EncryptionOperations decryption_operation_selected = static_cast<aes::ops::EncryptionOperations>(decryption_operation);
+    std::cout << "Operazione selezionata: " << aes::ops::encryption_operations_names.at(decryption_operation_selected) << std::endl;
+
+    switch(decryption_operation_selected) {
+        case aes::ops::EncryptionOperations::MESSAGE:
+            AES_INFO("Inside MESSAGE case, decryption_operation: {}", decryption_operation)
+            show_decrypt_message();
+            break;
+        case aes::ops::EncryptionOperations::FILE:
+            AES_INFO("Inside FILE case, decryption_operation: {}", decryption_operation)
+            show_decrypt_file();
+            break;
+        default:
+            AES_CRITICAL("decryption_operation should not be in default case, decryption_operation: {}", decryption_operation)
+            exit(EXIT_FAILURE);
+    }
 }
 
 void show_decrypt_message()
@@ -176,7 +212,52 @@ void show_decrypt_file()
 
 }
 
-void show_encrypt_decrypt_message(const ops::Operations& operation) //TODO: remove?
+// ENCRYPTION & DECRYPTION
+
+void operation_encryption_decryption(const ops::Operations& operation)
+{
+    unsigned short encryption_decryption_operation;
+    //TODO: prima era: Su cosa si desidera eseguire questa operazione?
+    std::cout << (operation == ops::Operations::ENCRYPT ? "Cosa si desidera cifrare?" : "Cosa si desidera decifrare?") << '\n';
+    for(const auto& e : aes::ops::all_encryption_operations) {
+        std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+    }
+    std::cout << "Seleziona: ";
+    std::cin >> encryption_decryption_operation;
+    //TODO: 0 e 3 sono magic numbers, usare gli enums
+    while((std::cin.fail()) || (encryption_decryption_operation <= 0 || encryption_decryption_operation >= 3)) { //!(std::cin >> encryption_operation) || (std::cin.fail())
+        std::cin.clear();
+        std::cout << (operation == ops::Operations::ENCRYPT ? "Cosa si desidera cifrare?" : "Cosa si desidera decifrare?") << '\n';
+        for(const auto& e : aes::ops::all_encryption_operations) {
+            std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        }
+        std::cout << "Seleziona: ";
+        std::cin >> encryption_decryption_operation;
+        std::cout << std::flush;
+        AES_DEBUG("encryption_decryption_operation: {}", encryption_decryption_operation)
+    }
+
+    std::cin.clear();
+
+    const aes::ops::EncryptionOperations& encryption_decryption_operation_selected = static_cast<aes::ops::EncryptionOperations>(encryption_decryption_operation);
+    std::cout << "Operazione selezionata: " << aes::ops::encryption_operations_names.at(encryption_decryption_operation_selected) << std::endl;
+
+    switch(encryption_decryption_operation_selected) {
+        case aes::ops::EncryptionOperations::MESSAGE:
+            AES_INFO("Inside MESSAGE case, encryption_decryption_operation: {}", encryption_decryption_operation)
+            show_encrypt_decrypt_message(operation);
+            break;
+        case aes::ops::EncryptionOperations::FILE:
+            AES_INFO("Inside FILE case, encryption_decryption_operation: {}", encryption_decryption_operation)
+            show_encrypt_decrypt_file(operation);
+            break;
+        default:
+            AES_CRITICAL("encryption_decryption_operation should not be in default case, encryption_decryption_operation: {}", encryption_decryption_operation)
+            exit(EXIT_FAILURE);
+    }
+}
+
+void show_encrypt_decrypt_message(const ops::Operations& operation)
 {
     const std::string& message = request_message();
     const aes::mod::Modes& mode = request_mode();
@@ -220,26 +301,10 @@ void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
 
 // REQUEST
 
-std::string request_message() //TODO: const aes::ops::Operations& operation
+std::string request_message()
 {
     std::string message;
-    std::cout << "Inserire messaggio: "; //TODO: uncomment.
-
-    //TODO: non ha senso a questo punto avere uno switch solo per quello, piuttosto fare
-    //TODO: std::cout << "Inserire messaggio: "; e rimuovere il parametro.
-
-    /*switch(operation) { //TODO: remove
-        case aes::ops::Operations::ENCRYPT:
-            std::cout << "Inserire messaggio: ";
-            break;
-        case aes::ops::Operations::DECRYPT:
-            std::cout << "Inserire testo cifrato: ";
-            break;
-        default:
-            AES_CRITICAL("Errore non dovrebbe essere qui!")
-            break;
-    }*/
-
+    std::cout << "Inserire messaggio: ";
     std::cin.ignore();
     std::getline(std::cin, message);
     AES_DEBUG("Message from user input: {}", message)

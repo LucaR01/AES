@@ -9,7 +9,7 @@ include_directories(include)
 file(GLOB SOURCES src/*.cpp src/logger/*.cpp src/math/*.cpp
         src/graphics/*.cpp src/graphics/console/*.cpp src/core/*.cpp
         src/core/operations/*.cpp src/core/padding/*.cpp src/core/modes/*.cpp
-        src/file_manager/*.cpp)
+        src/file_manager/*.cpp src/password/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
