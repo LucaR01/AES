@@ -198,6 +198,11 @@ void inverse_add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal
    add_round_key(state, key);
 }
 
+void inverse_add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, const uint8_t* keys)
+{
+    add_round_key(state, keys);
+}
+
 void inverse_sub_bytes(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state)
 {
     for(auto& i : state) {
@@ -271,6 +276,37 @@ void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK
             j++;
 
             //TODO: xor it with IV. output[j] ^= iv[j] oppure gal::galois_add_sub(output[j], iv[j])
+        }
+    }
+}
+
+void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, uint8_t* keys, const AES& aes)
+{
+    std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> state{};
+    unsigned short number_of_rounds = get_number_of_rounds(aes);
+
+    for(unsigned short i = 0; i < gal::BLOCK_WORDS; i++) {
+        for(unsigned short j = 0; j < gal::BLOCK_WORDS; j++) {
+            state[i][j] = input[i + gal::BLOCK_WORDS * j];
+        }
+    }
+
+    inverse_add_round_key(state, keys + number_of_rounds * gal::BLOCK_WORDS * gal::BLOCK_WORDS);
+
+    for(unsigned short round = number_of_rounds - 1; round >= 1; round--) {
+        inverse_sub_bytes(state);
+        inverse_shift_rows(state);
+        inverse_add_round_key(state, keys + round * gal::BLOCK_WORDS * gal::BLOCK_WORDS);
+        inverse_mix_columns(state);
+    }
+
+    inverse_sub_bytes(state);
+    inverse_shift_rows(state);
+    inverse_add_round_key(state, keys);
+
+    for(unsigned short i = 0; i < gal::BLOCK_WORDS; i++) {
+        for(unsigned short j = 0; j < gal::BLOCK_WORDS; j++) {
+            output[i + gal::BLOCK_WORDS * j] = state[i][j];
         }
     }
 }
@@ -354,6 +390,42 @@ void key_expansion_aes_256(const std::vector<uint8_t>& key, std::vector<std::arr
 //TODO: prima era std::string& key, std::string& word
 //TODO: volendo const uint8_t& number_of_keys
 void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, const unsigned short& number_of_keys)
+{
+    //number of keys = Nk = 4, 6, 8
+
+    std::array<uint8_t, gal::AES_128_NUMBER_OF_KEYS> temp{};
+    std::array<uint8_t, gal::AES_128_NUMBER_OF_KEYS> rcon{};
+
+    for(unsigned short i = 0; i < gal::AES_128_NUMBER_OF_KEYS * number_of_keys; i++) {
+        word[i] = key[i];
+    }
+
+    for(unsigned int j = gal::AES_128_NUMBER_OF_KEYS * number_of_keys; j < gal::AES_128_NUMBER_OF_KEYS * gal::BLOCK_WORDS * (number_of_keys + 1); j += 4) {
+        temp[0] = word[j - gal::AES_128_NUMBER_OF_KEYS + 0];
+        temp[1] = word[j - gal::AES_128_NUMBER_OF_KEYS + 1];
+        temp[2] = word[j - gal::AES_128_NUMBER_OF_KEYS + 2];
+        temp[3] = word[j - gal::AES_128_NUMBER_OF_KEYS + 3];
+
+        if(j / gal::BLOCK_WORDS % number_of_keys == 0) {
+            rot_word(temp);
+            sub_word(temp);
+            aes::rcon(rcon, j / (number_of_keys * gal::AES_128_NUMBER_OF_KEYS));
+
+            for(unsigned short k = 0; k < gal::AES_128_NUMBER_OF_KEYS; k++) { //TODO: mettere in una funzione a parte?
+                temp[k] = temp[k] ^ rcon[k]; //TODO: galois_add_sub()
+            }
+        } else if(number_of_keys > gal::AES_192_NUMBER_OF_KEYS && j / gal::AES_128_NUMBER_OF_KEYS % number_of_keys == gal::AES_128_NUMBER_OF_KEYS) {
+            sub_word(temp);
+        }
+
+        word[j + 0] = word[j - gal::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[0]; //TODO: galois_add_sub()
+        word[j + 1] = word[j + 1 - gal::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[1];
+        word[j + 2] = word[j + 2 - gal::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[2];
+        word[j + 3] = word[j + 3 - gal::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[3];
+    }
+}
+
+void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const unsigned short& number_of_keys)
 {
     //number of keys = Nk = 4, 6, 8
 

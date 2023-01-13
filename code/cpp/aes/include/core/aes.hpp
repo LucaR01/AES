@@ -163,6 +163,8 @@ void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, uint8_t* 
 // DECRYPTION
 void inverse_add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& key);
 
+void inverse_add_round_key(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state, const uint8_t* keys);
+
 void inverse_sub_bytes(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state);
 
 void inverse_shift_rows(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& state);
@@ -175,6 +177,8 @@ void inverse_mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::
 //TODO: std::array<uint8_t, gal::BLOCK_WORDS>& iv,
 void decrypt_block(std::string& input, std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>& keys, uint8_t& number_of_rounds,
                    std::array<uint8_t, gal::BLOCK_WORDS>& output );
+
+void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, uint8_t* keys, const AES& aes);
 
 // KEY EXPANSION | KEY SCHEDULE
 
@@ -189,6 +193,8 @@ void key_expansion_aes_192(const std::vector<uint8_t>& key, std::vector<std::arr
 void key_expansion_aes_256(const std::vector<uint8_t>& key, std::vector<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>>& keys);
 
 void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, const unsigned short& number_of_keys);
+
+void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const unsigned short& number_of_keys);
 
 void rot_word(std::array<uint8_t, gal::AES_128_NUMBER_OF_KEYS>& keys);
 

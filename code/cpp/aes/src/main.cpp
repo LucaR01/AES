@@ -1,5 +1,7 @@
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
+#include <string>
 
 //#ifndef RELEASE_MODE //TODO: così forse dà errore perché poi non vede i AES_TRACE, ecc.
 #include "logger/logger.hpp"
@@ -55,11 +57,73 @@ int main()
     //aes::con::show_console(); //TODO: remove/testare
 
     //TODO: da mettere in un test.
-    /*std::vector<unsigned char> plain = { 0x80, 0x11, 0x22, 0x13, 0x44, 0x12, 0x66, 0x77, 0x88, 0x99, 0xFF, 0xBB, 0xAA, 0x22, 0x33, 0x24 };
+    //std::cout << "TEST 0 " << std::endl;
+    std::vector<unsigned char> plain = { 0x80, 0x11, 0x22, 0x13, 0x44, 0x12, 0x66, 0x77, 0x88, 0x99, 0xFF, 0xBB, 0xAA, 0x22, 0x33, 0x24 };
     std::vector<unsigned char> key = { 0x02, 0x04, 0x12, 0x09, 0x04, 0x09, 0xBB, 0x06, 0x08, 0xDD, 0x0a, 0x0b, 0x0A, 0x0B, 0x0E, 0x0F };
 
+    std::cout << "plain text: ";
+    for(const auto& p : plain) {
+        std::cout << p;
+    }
+
+    std::cout << " " << std::endl;
+
+    std::string plain_text{plain.begin(), plain.end()};
+    std::cout << "plain_text in string: " << plain_text << std::endl;
+
     auto ciphertext = aes::mod::encrypt_ECB(plain, key, aes::AES::AES_128);
-    std::cout << "ciphertext: " << ciphertext << std::endl;*/
+    //std::cout.setf(std::ios::hex);
+    std::cout << "ciphertext: " << ciphertext << std::endl;
+    //std::cout.unsetf(std::ios::hex);
+
+    std::vector<unsigned char> out(*ciphertext);
+    std::vector<unsigned char> out2(ciphertext, ciphertext + 0);
+
+    auto deciphertext = aes::mod::decrypt_ECB(out, key, aes::AES::AES_128);
+    std::cout << "deciphertext: " << deciphertext << std::endl;
+
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TEST 1 - TESTO CIFRATO COMBACIA" << std::endl;
+    std::vector<unsigned char> plain2 = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
+    std::vector<unsigned char> key2 = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+    std::vector<unsigned char> right_output = {0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b, 0x04, 0x30, 0xd8, 0xcd, 0xb7, 0x80, 0x70, 0xb4, 0xc5, 0x5a};
+
+    std::string plain_text2{plain2.cbegin(), plain2.cend()};
+    std::cout << "plain_text2: " << plain_text2 << std::endl;
+
+    auto ciphertext2 = aes::mod::encrypt_ECB(plain2, key2, aes::AES::AES_128);
+    std::cout << "ciphertext2: " << ciphertext2 << std::endl;
+    //std::cout << "right_output: " << std::hex << right_output << std::endl; //TODO: non funziona
+    std::cout << "right_output: ";
+    for(const auto& o : right_output) {
+        //std::cout.setf(std::ios::hex);
+        std::cout << o;
+    }
+
+    //std::cout.unsetf(std::ios::hex);
+
+    std::cout << "" << std::endl;
+
+    auto deciphertext2 = aes::mod::decrypt_ECB(std::vector<unsigned char>(*ciphertext2), key2, aes::AES::AES_128);
+    std::cout << "deciphertext2: " << deciphertext2 << std::endl;
+
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "TEST 2" << std::endl;
+    std::string_view testo = "Helloworld!hello"; // 16 caratteri
+    std::vector<unsigned char> testo_in_vector(testo.cbegin(), testo.cend());
+
+    std::cout << "testo_in_vector: ";
+    for(const auto& t : testo_in_vector) {
+        std::cout << t;
+    }
+
+    std::cout << "" << std::endl;
+
+    auto ciphertext3 = aes::mod::encrypt_ECB(testo_in_vector, key2, aes::AES::AES_128);
+    auto deciphertext3 = aes::mod::decrypt_ECB(std::vector<unsigned char>(*ciphertext3), key2, aes::AES::AES_128);
+
+    std::cout << "ciphertext3: " << ciphertext3 << std::endl;
+    std::cout << "deciphertext3: " << deciphertext3 << std::endl;
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();

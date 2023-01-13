@@ -107,18 +107,36 @@ uint8_t* encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_
     /*static constexpr unsigned short array_size = gal::BLOCK_WORDS * gal::BLOCK_WORDS * (number_of_rounds + 1);
     std::array<uint8_t, array_size> round_keys;*/
     //std::vector<uint8_t> round_keys;
-    uint8_t* round_keys;
+    uint8_t* round_keys = new uint8_t[gal::BLOCK_WORDS * gal::BLOCK_WORDS * (number_of_rounds + 1)];
 
     //std::vector<uint8_t>* output; //TOOD: in realtà std::array<uint8_t, 17> output{};
     //uint8_t* output{};
     //auto* output{};
-    uint8_t* output = new uint8_t[17];
-    aes::key_expansion(key, reinterpret_cast<std::vector<uint8_t> &>(round_keys), number_of_rounds);
-    for(unsigned short i = 0; i < gal::BLOCK_SIZE + 1; i++) {
+    uint8_t* output = new uint8_t[gal::BLOCK_SIZE];
+    aes::key_expansion(key, round_keys, number_of_rounds);
+    for(unsigned short i = 0; i < gal::BLOCK_SIZE; i += gal::BLOCK_SIZE) {
         //aes::encrypt_block(input.at(i) + i, output + i, round_keys, aes);
         //aes::encrypt_block(input, output, round_keys, aes);
-        aes::encrypt_block(input, output + i, round_keys, aes);
+        aes::encrypt_block(input, output + i, round_keys, aes); //TODO: input + i
     }
+
+    delete[] round_keys;
+
+    return output;
+}
+
+uint8_t* decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
+{
+    unsigned short number_of_rounds = get_number_of_rounds(aes);
+    uint8_t* output = new uint8_t[gal::BLOCK_SIZE]; //TODO:
+    uint8_t* round_keys = new uint8_t[gal::BLOCK_WORDS * gal::BLOCK_WORDS * (number_of_rounds + 1)];
+
+    aes::key_expansion(key, round_keys, number_of_rounds);
+    for(unsigned short i = 0; i < gal::BLOCK_SIZE; i += gal::BLOCK_SIZE) {
+        aes::decrypt_block(input, output + i, round_keys, aes); //TODO: input + i
+    }
+
+    delete[] round_keys;
 
     return output;
 }
