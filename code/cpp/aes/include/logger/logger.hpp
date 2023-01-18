@@ -5,6 +5,8 @@
 #ifndef AES_LOGGER_H
 #define AES_LOGGER_H
 
+#include <source_location> //TODO: usare source_location::current(); .file(); .file_name(); .function_name();
+
 #include "spdlog/spdlog.h"
 #include "os/os.hpp"
 
@@ -28,6 +30,8 @@ public:
 
 //#define RELEASE_MODE //TODO: uncomment when running in release mode.
 
+//TODO: volendo usare __FUNCTION__ (fa la stessa cosa di __func__) e __PRETTY_FUNCTION__ (mostra return type e parameter types) ma non sono standard.
+
 #ifndef RELEASE_MODE
 #define AES_TRACE(...) spdlog::get(LOGGER_NAME) ? spdlog::get(LOGGER_NAME)->trace(__VA_ARGS__) : void();
 #define AES_DEBUG(...) spdlog::get(LOGGER_NAME) ? spdlog::get(LOGGER_NAME)->debug(__VA_ARGS__) : void();
@@ -36,10 +40,10 @@ public:
 #define AES_ERROR(...) spdlog::get(LOGGER_NAME) ? spdlog::get(LOGGER_NAME)->error(__VA_ARGS__) : void();
 #define AES_CRITICAL(...) spdlog::get(LOGGER_NAME) ? spdlog::get(LOGGER_NAME)->critical(__VA_ARGS__) : void();
 
-#define AES_ASSERT(condition, message) if(condition) {} else { AES_CRITICAL("ASSERT | {}\n\t{}\n\t in file: {}\n\t line: {}", #condition, \
-message, __FILE__, __LINE__); }
-#define AES_ASSERT_BREAK(condition, message) if(condition) {} else { AES_CRITICAL("ASSERT | {}\n\t{}\n\t in file: {}\n\t line: {}", #condition, \
-message, __FILE__, __LINE__); AES_BREAK; }
+#define AES_ASSERT(condition, message) if(condition) {} else { AES_CRITICAL("ASSERT | {}\n\t{}\n\t in file: {}\n\t function: {}\n\t line: {}", #condition, \
+message, __FILE__, __func__, __LINE__); }
+#define AES_ASSERT_BREAK(condition, message) if(condition) {} else { AES_CRITICAL("ASSERT | {}\n\t{}\n\t in file: {}\n\t function: {}\n\t line: {}", #condition, \
+message, __FILE__, __func__, __LINE__); AES_BREAK; }
 #else
 #define AES_TRACE(...)
 #define AES_DEBUG(...)

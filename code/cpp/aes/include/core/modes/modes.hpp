@@ -42,7 +42,23 @@ std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::v
 
 //int encrypt_ECB(const std::vector<uint8_t>& key, const AES& aes, std::vector<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>>& keys);
 
-std::vector<uint8_t> decrypt_ECB(); //TODO: remove
+//std::vector<uint8_t> decrypt_ECB(); //TODO:
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+uint8_t* encrypt_ECB(const uint8_t input[], const int& input_length, const uint8_t key[], const aes::AES& aes);
+
+uint8_t* decrypt_ECB(const uint8_t input[], const int& input_length, const uint8_t key[], const aes::AES& aes);
+
+/*std::vector<uint8_t> encrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes); //TODO: uncomment both.
+
+std::vector<uint8_t> decrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes);*/
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+//uint8_t* encrypt_ECB(const uint8_t input[], const uint8_t key[], const aes::AES& aes);
+
+//uint8_t* decrypt_ECB(const uint8_t input[], const uint8_t key[], const aes::AES& aes);
 
 uint8_t* encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes);
 
