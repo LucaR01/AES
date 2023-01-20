@@ -125,6 +125,56 @@ int main()
     std::cout << "ciphertext3: " << ciphertext3 << std::endl;
     std::cout << "deciphertext3: " << deciphertext3 << std::endl;
 
+    //TODO: c++20 std::to_array(c array);
+
+    /*unsigned char plain4[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+                             0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
+    unsigned char key4[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                           0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
+    unsigned char right4[] = {0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b, 0x04, 0x30,
+                             0xd8, 0xcd, 0xb7, 0x80, 0x70, 0xb4, 0xc5, 0x5a};
+
+    unsigned char* out4 = aes::mod::encrypt_ECB(plain4, 16 * sizeof(unsigned char), key4, aes::AES::AES_128);
+
+    std::cout << "test encryption corretta" << std::endl;
+    std::cout << "plain4: " << plain4 << std::endl;
+    std::cout << "key4: " << key4 << std::endl;
+    std::cout << "right4: " << right4 << std::endl;
+    std::cout << "out4: " << out4 << std::endl;
+
+    delete[] out4;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    unsigned char encrypted[] = {0x69, 0xc4, 0xe0, 0xd8, 0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b,
+                                 0x04, 0x30, 0xd8, 0xcd, 0xb7, 0x80,0x70, 0xb4, 0xc5, 0x5a};
+    unsigned char key5[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05,
+                            0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b,0x0c, 0x0d, 0x0e, 0x0f};
+    unsigned char right5[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
+                              0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb,0xcc, 0xdd, 0xee, 0xff};
+
+    unsigned char *out5 = aes::mod::decrypt_ECB(encrypted, 20 * sizeof(unsigned char), key5, aes::AES::AES_128);
+
+    std::cout << "test decryption corretta" << std::endl;
+    std::cout << "encrypted: " << encrypted << std::endl;
+    std::cout << "key5: " << key5 << std::endl;
+    std::cout << "right5: " << right5 << std::endl;
+    std::cout << "out5: " << out5 << std::endl;
+
+    std::cout << "right5: " << std::endl;
+    for(unsigned char r : right5) {
+        std::cout << "0x" << std::hex << (int)r << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "out5: " << std::endl;
+    for(unsigned short i = 0; i < 16; i++) {
+        std::cout << "0x" << std::hex << (int)out5[i] << ", ";
+    }
+
+    delete[] out5;*/
+
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();
 #endif

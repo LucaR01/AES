@@ -80,7 +80,7 @@ void sub_bytes(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORD
 
     unsigned char temp;
 
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < 4; i++) { //TODO: gal::BLOCK_WORDS
         for(int j = 0; j < 4; j++) {
             temp = state[i][j];
             state[i][j] = S_BOX[temp];
@@ -293,11 +293,11 @@ void inverse_mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::
 {
     std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> output{};
 
-    for(uint8_t i = 0; i < gal::BLOCK_WORDS; i++) {
-        for(uint8_t j = 0; j < gal::BLOCK_WORDS; j++) {
+    for(unsigned short i = 0; i < gal::BLOCK_WORDS; i++) {
+        for(unsigned short j = 0; j < gal::BLOCK_WORDS; j++) {
             //output[i][j] = 0x00; //TODO: uncomment?
-            for(uint8_t k = 0; k < gal::BLOCK_WORDS; k++) {
-                output[i][j] ^= gal::galois_multiplication(INVERSE_CIRCULANT_MDS_MATRIX[i][k], state[k][j]);
+            for(unsigned short k = 0; k < gal::BLOCK_WORDS; k++) {
+                output[i][k] ^= gal::galois_multiplication(INVERSE_CIRCULANT_MDS_MATRIX[i][j], state[j][k]);
             }
         }
     }
@@ -357,7 +357,7 @@ void inverse_mix_columns(std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::
 void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, uint8_t* keys, const AES& aes)
 {
     std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS> state{};
-    unsigned short number_of_rounds = get_number_of_rounds(aes);
+    const unsigned short& number_of_rounds = get_number_of_rounds(aes);
 
     for(unsigned short i = 0; i < gal::BLOCK_WORDS; i++) {
         for(unsigned short j = 0; j < gal::BLOCK_WORDS; j++) {
@@ -544,7 +544,7 @@ void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const AES& ae
         word[i] = key[i];
     }
 
-    for(unsigned int j = gal::AES_128_NUMBER_OF_KEYS * number_of_keys; j < gal::AES_128_NUMBER_OF_KEYS * gal::BLOCK_WORDS * (number_of_rounds + 1); j += 4) {
+    for(unsigned int j = gal::AES_128_NUMBER_OF_KEYS * number_of_keys; j < gal::AES_128_NUMBER_OF_KEYS * gal::BLOCK_WORDS * (number_of_rounds + 1); j += 4) { //TODO: gal::AES_128_keys
         temp[0] = word[j - gal::AES_128_NUMBER_OF_KEYS + 0];
         temp[1] = word[j - gal::AES_128_NUMBER_OF_KEYS + 1];
         temp[2] = word[j - gal::AES_128_NUMBER_OF_KEYS + 2];
@@ -618,7 +618,7 @@ void key_expansion(const uint8_t key[], unsigned char word[], const AES& aes)
 void rot_word(std::array<uint8_t, gal::AES_128_NUMBER_OF_KEYS>& keys)
 {
     //TODO: magari utilizzare un for
-    uint8_t temp = keys[0];
+    uint8_t temp = keys[0]; //TODO: const
     keys[0] = keys[1];
     keys[1] = keys[2];
     keys[2] = keys[3];
@@ -636,7 +636,7 @@ void rcon(std::array<uint8_t, gal::AES_128_NUMBER_OF_KEYS>& keys, const unsigned
 {
     //Nk = number of keys = 4, 6, 8
     uint8_t temp = 1;
-    for(uint8_t i = 0; i < number_of_keys - 1; i++) {
+    for(unsigned int i = 0; i < number_of_keys - 1; i++) { //TODO: uint8_t i = 0;
         temp = gal::xtime(temp); //TODO: warning, rimuovendo il constexpr si fixa.
     }
 
