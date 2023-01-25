@@ -17,7 +17,7 @@ unsigned short get_mode_index(const Modes& mode)
     return static_cast<std::underlying_type_t<Modes>>(mode);
 }
 
-std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const uint16_t& number_of_rounds )
+/*std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const uint16_t& number_of_rounds )
 {
     //C++20 std::to_array();
     // std::span
@@ -33,7 +33,7 @@ std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::v
     }
 
     return output;
-}
+}*/
 
 /*std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes )
 {
@@ -135,12 +135,13 @@ uint8_t* decrypt_ECB(const uint8_t input[], const uint8_t key[], const aes::AES&
     return output;
 }*/
 
-uint8_t* encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
+//TODO: funziona, ma è da fattorizzare.
+/*uint8_t* encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
 {
     unsigned short number_of_rounds = aes::get_number_of_rounds(aes);
     //AES_DEBUG("number_of_rounds: {}", number_of_rounds)
-    /*static constexpr unsigned short array_size = gal::BLOCK_WORDS * gal::BLOCK_WORDS * (number_of_rounds + 1);
-    std::array<uint8_t, array_size> round_keys;*/
+    //static constexpr unsigned short array_size = gal::BLOCK_WORDS * gal::BLOCK_WORDS * (number_of_rounds + 1);
+    //std::array<uint8_t, array_size> round_keys;
     //std::vector<uint8_t> round_keys;
     uint8_t* round_keys = new uint8_t[gal::BLOCK_WORDS * gal::BLOCK_WORDS * (number_of_rounds + 1)];
 
@@ -158,9 +159,10 @@ uint8_t* encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_
     delete[] round_keys;
 
     return output;
-}
+}*/
 
-uint8_t* decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
+//TODO: funziona, ma è da fattorizzare.
+/*uint8_t* decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
 {
     const unsigned short& number_of_rounds = get_number_of_rounds(aes);
     //AES_DEBUG("number_of_rounds: {}", number_of_rounds)
@@ -175,7 +177,7 @@ uint8_t* decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_
     delete[] round_keys;
 
     return output;
-}
+}*/
 
 // ------------------------------------------------------------------------------------------
 
@@ -211,7 +213,7 @@ uint8_t* decrypt_ECB(const uint8_t input[], const int& input_length, const uint8
     return output;
 }
 
-/*std::vector<uint8_t> encrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes) //TODO: uncomment
+std::vector<uint8_t> encrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes) //TODO: uncomment
 {
     uint8_t* output = aes::mod::encrypt_ECB(input.data(), input.size(), key.data(), aes);
     std::vector<uint8_t> vec(output, output + input.size() * sizeof(unsigned char));
@@ -227,6 +229,13 @@ std::vector<uint8_t> decrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t
     delete[] output;
 
     return vec;
+}
+
+/*void verify_length(unsigned int size)
+{
+    if(size % gal::BLOCK_SIZE != 0) {
+        throw std::length_error("Il messaggio deve essere divisibile per " + std::to_string(gal::BLOCK_SIZE));
+    }
 }*/
 
 // ------------------------------------------------------------------------------------------

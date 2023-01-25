@@ -9,7 +9,7 @@
 
 namespace aes::gal {
 
-/*[[nodiscard("Pure function")]] constexpr uint8_t galois_addition_subtraction(const uint8_t& x, const uint8_t& y) noexcept
+/*[[nodiscard("Pure function")]] constexpr uint8_t galois_addition_subtraction(const uint8_t& x, const uint8_t& y) noexcept //TODO: remove
 {
     return x ^ y;
 }*/

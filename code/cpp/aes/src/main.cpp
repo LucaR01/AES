@@ -58,7 +58,7 @@ int main()
 
     //TODO: da mettere in un test.
     //std::cout << "TEST 0 " << std::endl;
-    std::vector<unsigned char> plain = { 0x80, 0x11, 0x22, 0x13, 0x44, 0x12, 0x66, 0x77, 0x88, 0x99, 0xFF, 0xBB, 0xAA, 0x22, 0x33, 0x24 };
+    /*std::vector<unsigned char> plain = { 0x80, 0x11, 0x22, 0x13, 0x44, 0x12, 0x66, 0x77, 0x88, 0x99, 0xFF, 0xBB, 0xAA, 0x22, 0x33, 0x24 };
     std::vector<unsigned char> key = { 0x02, 0x04, 0x12, 0x09, 0x04, 0x09, 0xBB, 0x06, 0x08, 0xDD, 0x0a, 0x0b, 0x0A, 0x0B, 0x0E, 0x0F };
 
     std::cout << "plain text: ";
@@ -123,11 +123,11 @@ int main()
     auto deciphertext3 = aes::mod::decrypt_ECB(std::vector<unsigned char>(*ciphertext3), key2, aes::AES::AES_128);
 
     std::cout << "ciphertext3: " << ciphertext3 << std::endl;
-    std::cout << "deciphertext3: " << deciphertext3 << std::endl;
+    std::cout << "deciphertext3: " << deciphertext3 << std::endl;*/
 
     //TODO: c++20 std::to_array(c array);
 
-    /*unsigned char plain4[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+    unsigned char plain4[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
                              0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
     unsigned char key4[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                            0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
@@ -146,7 +146,7 @@ int main()
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    unsigned char encrypted[] = {0x69, 0xc4, 0xe0, 0xd8, 0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b,
+    /*unsigned char encrypted[] = {0x69, 0xc4, 0xe0, 0xd8, 0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b,
                                  0x04, 0x30, 0xd8, 0xcd, 0xb7, 0x80,0x70, 0xb4, 0xc5, 0x5a};
     unsigned char key5[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05,
                             0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b,0x0c, 0x0d, 0x0e, 0x0f};
@@ -174,6 +174,73 @@ int main()
     }
 
     delete[] out5;*/
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    std::vector<unsigned char> encrypted6 = {0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b,
+                                            0x04, 0x30, 0xd8, 0xcd, 0xb7, 0x80,
+                                            0x70, 0xb4, 0xc5, 0x5a};
+
+    std::vector<unsigned char> key6 = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05,
+                                      0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b,
+                                      0x0c, 0x0d, 0x0e, 0x0f};
+
+    std::vector<unsigned char> right6 = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
+                                        0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb,
+                                        0xcc, 0xdd, 0xee, 0xff};
+
+    //TODO: la decrypt continua a dare risultati diversi ogni volta!
+    std::vector<unsigned char> clear_message6 = aes::mod::decrypt_ECB(encrypted6, key6, aes::AES::AES_128);
+
+    std::cout << "encrypted6: " << std::endl;
+    for(const auto& e : encrypted6) {
+        std::cout << e;
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "right6: " << std::endl;
+    for(const auto& r : right6) {
+        std::cout << r;
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "clear_message6: " << std::endl;
+    for(const auto& c : clear_message6) {
+        std::cout << c;
+    }
+
+    std::cout << "" << std::endl;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    //TODO: questo sotto è sbagliato, è sempre diverso!
+    /*std::string s = "helloeverybodyye";
+    std::string key = "key";
+    std::vector<unsigned char> ciphertext7 = aes::mod::encrypt_ECB(std::vector<unsigned char>(s.begin(), s.end()), std::vector<unsigned char>(key.cbegin(), key.cend()), aes::AES::AES_128);
+    std::vector<unsigned char> deciphertext7 = aes::mod::decrypt_ECB(ciphertext7, std::vector<unsigned char>(key.cbegin(), key.cend()), aes::AES::AES_128);
+
+    std::cout << "stringa: " << std::endl;
+    for(const auto& x : std::vector<unsigned char>(s.cbegin(), s.cend())) {
+        std::cout << x;
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "ciphertext7: " << std::endl;
+    for(const auto& c : ciphertext7) {
+        std::cout << c;
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "deciphertext7: " << std::endl;
+    for(const auto& d : deciphertext7) {
+        std::cout << d;
+    }
+
+    std::cout << "" << std::endl;*/
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();

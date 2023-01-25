@@ -36,7 +36,7 @@ static const std::map<Modes, std::string_view> modes_names = {
         {Modes::CTR, "CTR"}
 };
 
-std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const uint16_t& number_of_rounds ); //TODO: remove
+//std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const uint16_t& number_of_rounds ); //TODO: remove
 
 //std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes );
 
@@ -50,9 +50,11 @@ uint8_t* encrypt_ECB(const uint8_t input[], const int& input_length, const uint8
 
 uint8_t* decrypt_ECB(const uint8_t input[], const int& input_length, const uint8_t key[], const aes::AES& aes);
 
-/*std::vector<uint8_t> encrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes); //TODO: uncomment both.
+std::vector<uint8_t> encrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes); //TODO: uncomment both.
 
-std::vector<uint8_t> decrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes);*/
+std::vector<uint8_t> decrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes);
+
+//void verify_length(unsigned int size);
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -60,9 +62,9 @@ std::vector<uint8_t> decrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t
 
 //uint8_t* decrypt_ECB(const uint8_t input[], const uint8_t key[], const aes::AES& aes);
 
-uint8_t* encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes);
+//uint8_t* encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes); //TODO: funziona, ma è da fattorizzare.
 
-uint8_t* decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes);
+//uint8_t* decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes); //TODO: funziona, ma è da fattorizzare.
 
 } // aes::mod
 
