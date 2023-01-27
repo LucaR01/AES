@@ -52,7 +52,7 @@ aes::ops::Operations request_operation()
     //TODO: volendo aggiungere la possibilità di avere più lingue.
     std::cout << "Seleziona l'operazione:" << '\n';
     for(const auto& op : aes::ops::all_operations) {
-        std::cout << aes::ops::get_operation_index(op) << ". " << aes::ops::operations_names.at(op) << '\n';
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(op)) << ". " << aes::ops::operations_names.at(op) << '\n';
     }
     std::cout << "[Input: 1|2] Scelta: ";
 
@@ -62,7 +62,7 @@ aes::ops::Operations request_operation()
     while((std::cin.fail()) || (operation_selected < aes::ops::get_operation_index(aes::ops::all_operations.front()) || operation_selected > aes::ops::all_operations.size())) {
         //std::cout << "[Input: 1|2] Scelta: "; //TODO: uncomment se lascio solo questo al posto di quello sotto.
         for(const auto& op : aes::ops::all_operations) { //TODO: forse è quasi meglio non ristamparli. (non serve, sono già sopra)
-            std::cout << aes::ops::get_operation_index(op) << ". " << aes::ops::operations_names.at(op) << '\n';
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(op)) << ". " << aes::ops::operations_names.at(op) << '\n';
         }
         std::cout << "[Input: 1|2] Scelta: ";
         std::cin >> operation_selected;
@@ -87,7 +87,7 @@ void operation_encryption()
     //TODO: chiedere file input, path output file, estensione del file?, chiave, modalità, padding.
     std::cout << "Cosa si desidera cifrare?" << '\n';
     for(const auto& e : aes::ops::all_encryption_operations) {
-        std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
     }
     std::cout << "Seleziona: ";
     std::cin >> encryption_operation;
@@ -95,7 +95,7 @@ void operation_encryption()
         std::cin.clear();
         std::cout << "Cosa si desidera cifrare?" << '\n';
         for(const auto& e : aes::ops::all_encryption_operations) {
-            std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
         }
         std::cout << "Seleziona: ";
         std::cin >> encryption_operation;
@@ -161,7 +161,7 @@ void operation_decryption()
     unsigned short decryption_operation;
     std::cout << "Cosa si desidera decifrare?" << '\n';
     for(const auto& e : aes::ops::all_encryption_operations) {
-        std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
     }
     std::cout << "Seleziona: ";
     std::cin >> decryption_operation;
@@ -169,7 +169,7 @@ void operation_decryption()
         std::cin.clear();
         std::cout << "Cosa si desidera decifrare?" << '\n';
         for(const auto& e : aes::ops::all_encryption_operations) {
-            std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
         }
         std::cout << "Seleziona: ";
         std::cin >> decryption_operation;
@@ -220,7 +220,7 @@ void operation_encryption_decryption(const ops::Operations& operation)
     //TODO: prima era: Su cosa si desidera eseguire questa operazione?
     std::cout << (operation == ops::Operations::ENCRYPT ? "Cosa si desidera cifrare?" : "Cosa si desidera decifrare?") << '\n';
     for(const auto& e : aes::ops::all_encryption_operations) {
-        std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
     }
     std::cout << "Seleziona: ";
     std::cin >> encryption_decryption_operation;
@@ -229,7 +229,7 @@ void operation_encryption_decryption(const ops::Operations& operation)
         std::cin.clear();
         std::cout << (operation == ops::Operations::ENCRYPT ? "Cosa si desidera cifrare?" : "Cosa si desidera decifrare?") << '\n';
         for(const auto& e : aes::ops::all_encryption_operations) {
-            std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
         }
         std::cout << "Seleziona: ";
         std::cin >> encryption_decryption_operation;
@@ -339,7 +339,7 @@ aes::pad::Paddings request_padding()
     unsigned short padding_type;
     std::cout << "Seleziona tipo di padding: " << '\n';
     for(const auto& p : aes::pad::all) {
-        std::cout << aes::pad::get_padding_index(p) << ". " << aes::pad::padding_names.at(p) << '\n';
+        std::cout << static_cast<unsigned short>(aes::pad::get_padding_index(p)) << ". " << aes::pad::padding_names.at(p) << '\n';
     }
     std::cout << "Seleziona: ";
     std::cin >> padding_type;
@@ -348,7 +348,7 @@ aes::pad::Paddings request_padding()
         std::cin.clear();
         std::cout << "Seleziona tipo di padding: " << '\n';
         for(const auto& p : aes::pad::all) {
-            std::cout << aes::pad::get_padding_index(p) << ". " << aes::pad::padding_names.at(p) << '\n';
+            std::cout << static_cast<unsigned short>(aes::pad::get_padding_index(p)) << ". " << aes::pad::padding_names.at(p) << '\n';
         }
         std::cout << "Seleziona: " << std::flush;
         std::cin >> padding_type;
@@ -365,7 +365,7 @@ std::string request_key()
     unsigned short user_input_operation;
     std::cout << "Inserire chiave da input o da file?" << '\n'; //TODO: riscrivere?
     for(const auto& e : aes::ops::all_encryption_operations) {
-        std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
     }
 
     std::cout << "Seleziona: ";
@@ -375,7 +375,7 @@ std::string request_key()
         std::cin.clear();
         std::cout << "Inserire chiave da input o da file?" << '\n';
         for(const auto& e : aes::ops::all_encryption_operations) {
-            std::cout << aes::ops::get_operation_index(e) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
         }
         std::cout << "Seleziona: ";
         std::cin >> user_input_operation;
@@ -418,7 +418,7 @@ aes::mod::Modes request_mode()
     unsigned short mode;
     std::cout << "Seleziona modalità: " << '\n';
     for(const auto& m : aes::mod::all) {
-        std::cout << aes::mod::get_mode_index(m) << ". " << aes::mod::modes_names.at(m) << '\n';
+        std::cout << static_cast<unsigned short>(aes::mod::get_mode_index(m)) << ". " << aes::mod::modes_names.at(m) << '\n';
     }
     std::cout << "Seleziona: ";
     std::cin >> mode;
@@ -426,7 +426,8 @@ aes::mod::Modes request_mode()
     while((std::cin.fail()) || (mode < aes::mod::get_mode_index(aes::mod::Modes::ECB) || mode > aes::mod::get_mode_index(aes::mod::Modes::CTR))) {
         std::cin.clear();
         for(const auto& e : aes::mod::all) {
-            std::cout << aes::mod::get_mode_index(e) << ". " << aes::mod::modes_names.at(e) << '\n';
+            //TODO: if mode == ECB, stampare anche [deprecated] affianco alla scelta.
+            std::cout << static_cast<unsigned short>(aes::mod::get_mode_index(e)) << ". " << aes::mod::modes_names.at(e) << '\n';
         }
         std::cout << "Seleziona: ";
         std::cin >> mode;

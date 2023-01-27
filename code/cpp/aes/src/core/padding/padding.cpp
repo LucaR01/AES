@@ -8,9 +8,11 @@
 
 namespace aes::pad {
 
-unsigned short get_padding_index(const Paddings& padding)
+//TODO: remove file
+
+/*unsigned short get_padding_index(const Paddings& padding)
 {
     return static_cast<std::underlying_type_t<Paddings>>(padding);
-}
+}*/
 
 }

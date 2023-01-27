@@ -10,6 +10,7 @@
 #include <array>
 #include <cstdint>
 #include <vector>
+#include <memory>
 
 #include "core/aes.hpp"
 
@@ -25,10 +26,11 @@ static constexpr unsigned short NUM_OF_MODES = 3;
 
 static constexpr std::array<Modes, NUM_OF_MODES> all = { Modes::ECB, Modes::CBC, Modes::CTR };
 
-//TODO: static constexpr?
 //TODO: ritornare un byte? uint8_t? char?
-//TODO: [[nodiscard]]
-unsigned short get_mode_index(const Modes& mode);
+[[nodiscard]] static constexpr uint8_t get_mode_index(const Modes& mode)
+{
+    return static_cast<std::underlying_type_t<Modes>>(mode);
+}
 
 static const std::map<Modes, std::string_view> modes_names = {
         {Modes::ECB, "ECB"},
@@ -36,13 +38,7 @@ static const std::map<Modes, std::string_view> modes_names = {
         {Modes::CTR, "CTR"}
 };
 
-//std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const uint16_t& number_of_rounds ); //TODO: remove
-
-//std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes );
-
 //int encrypt_ECB(const std::vector<uint8_t>& key, const AES& aes, std::vector<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>>& keys);
-
-//std::vector<uint8_t> decrypt_ECB(); //TODO:
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -50,11 +46,13 @@ uint8_t* encrypt_ECB(const uint8_t input[], const int& input_length, const uint8
 
 uint8_t* decrypt_ECB(const uint8_t input[], const int& input_length, const uint8_t key[], const aes::AES& aes);
 
-std::vector<uint8_t> encrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes); //TODO: uncomment both.
+std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const AES& aes); //TODO: uncomment both.
 
-std::vector<uint8_t> decrypt_ECB(std::vector<uint8_t> input, std::vector<uint8_t> key, const AES& aes);
+std::vector<uint8_t> decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const AES& aes);
 
-//void verify_length(unsigned int size);
+//std::unique_ptr<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes); //TODO:
+
+void verify_length(const unsigned int& size);
 
 // ---------------------------------------------------------------------------------------------------------------------
 

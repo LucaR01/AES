@@ -9,13 +9,10 @@
 
 namespace aes::gal {
 
-/*[[nodiscard("Pure function")]] constexpr uint8_t galois_addition_subtraction(const uint8_t& x, const uint8_t& y) noexcept //TODO: remove
-{
-    return x ^ y;
-}*/
+//TODO: remove file?
 
 //TODO: forse si può riscrivere così: return (x << 1) ^ (((x >> 7) & 1) * MIX_COLUMNS_IRREDUCIBLE);
-[[nodiscard]] uint8_t galois_multiplication(uint8_t x, uint8_t y) noexcept
+/*[[nodiscard]] uint8_t galois_multiplication(uint8_t x, uint8_t y) noexcept
 {
     uint8_t result = 0;
 
@@ -34,11 +31,6 @@ namespace aes::gal {
     }
 
     return result;
-}
-
-/*[[nodiscard]] uint8_t xtime(const uint8_t& x) noexcept
-{
-    return (x << 0x01) ^ (((x >> 0x07) & 0x01) * gal::IRREDUCIBLE_POLYNOMIAL);
 }*/
 
 }

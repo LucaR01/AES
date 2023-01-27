@@ -22,8 +22,10 @@ static constexpr unsigned short TYPES_OF_PADDINGS = 2;
 
 static constexpr std::array<Paddings, TYPES_OF_PADDINGS> all{Paddings::NO_PADDING, Paddings::PKCS5};
 
-//TODO: static constexpr?
-unsigned short get_padding_index(const Paddings& padding);
+[[nodiscard]] static constexpr uint8_t get_padding_index(const Paddings& padding)
+{
+    return static_cast<std::underlying_type_t<Paddings>>(padding);
+}
 
 static const std::map<Paddings, std::string_view> padding_names = {
         {Paddings::NO_PADDING, "No padding"},

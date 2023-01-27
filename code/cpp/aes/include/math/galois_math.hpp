@@ -10,25 +10,8 @@
 
 namespace aes::gal {
 
-static constexpr uint8_t BLOCK_WORDS = 4; //TODO: rename
-static constexpr unsigned short BLOCK_SIZE = 16; //TODO: uint8_t
-
-static constexpr unsigned short AES_128 = 128; //TODO: usare l'enum?
-static constexpr unsigned short AES_192 = 192;
-static constexpr unsigned short AES_256 = 256;
-
-//TODO: usare uint8_t?
-static constexpr unsigned short ROUNDS_AES_128 = 10; //TODO: Creare un enum? Oppure metterlo nell'enum Aes?
-static constexpr unsigned short ROUNDS_AES_192 = 12; //TODO: spostarli in aes.hpp?
-static constexpr unsigned short ROUNDS_AES_256 = 14;
-
-//TODO: prima era unsigned short; metterli tuti a uint8_t
-static constexpr unsigned short AES_128_NUMBER_OF_KEYS = 4; //TODO: spostarlo in galois_math.hpp? fare un enum?
-static constexpr unsigned short AES_192_NUMBER_OF_KEYS = 6;
-static constexpr unsigned short AES_256_NUMBER_OF_KEYS = 8;
-
 //TODO: usare std::bitset?
-static constexpr unsigned short IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00011011 = x^4 + x^3 + x + 1.
+static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00011011 = x^4 + x^3 + x + 1.
 
 //TODO: usare std::byte o uint8_t?
 
@@ -44,7 +27,26 @@ static constexpr unsigned short IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 
     return x ^ y;
 }
 
-[[nodiscard]] uint8_t galois_multiplication(uint8_t x, uint8_t y) noexcept;
+[[nodiscard]] static constexpr uint8_t galois_multiplication(uint8_t x, uint8_t y) noexcept
+{
+    uint8_t result = 0;
+
+    for(unsigned short i = 0; i < 8; i++) {
+        if(y & 0x01) {
+            result ^= x; // ^= è l'addizione in GF(2^8); potrei anche fare result = galois_addition_subtraction(result, x);
+        }
+
+        const bool high_bit = x & 0x80; // x >= 0x80 = 128
+        x <<= 1; // ruotiamo x di 1 (moltiplicazione in GF(2^8)
+        if(high_bit) {
+            x ^= IRREDUCIBLE_POLYNOMIAL; // x -= 0x1B, ovvero mod(x^8 + x^4 + x^3 + x + 1)
+        }
+
+        y >>= 1; // ruotiamo y a destra (divisione in GF(2^8)
+    }
+
+    return result;
+}
 
 //TODO: inline?
 [[nodiscard]] static constexpr inline uint8_t xtime(const uint8_t& x) noexcept

@@ -47,7 +47,14 @@ static const std::map<EncryptionOperations, std::string_view> encryption_operati
         {EncryptionOperations::FILE, "File"}
 };
 
-unsigned short get_operation_index(const std::variant<Operations, EncryptionOperations>& op);
+[[nodiscard]] static constexpr uint8_t get_operation_index(const std::variant<Operations, EncryptionOperations>& op)
+{
+    if(std::holds_alternative<Operations>(op)) {
+        return static_cast<std::underlying_type_t<Operations>>(std::get<Operations>(op));
+    } else {
+        return static_cast<std::underlying_type_t<Operations>>(std::get<EncryptionOperations>(op));
+    }
+}
 
 } //namespace aes::ops
 

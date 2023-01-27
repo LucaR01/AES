@@ -216,9 +216,9 @@ int main()
     // -----------------------------------------------------------------------------------------------------------------
 
     //TODO: questo sotto è sbagliato, è sempre diverso!
-    /*std::string s = "helloeverybodyye";
+    std::string s = "helloeverybodyye";
     std::string key = "key";
-    std::vector<unsigned char> ciphertext7 = aes::mod::encrypt_ECB(std::vector<unsigned char>(s.begin(), s.end()), std::vector<unsigned char>(key.cbegin(), key.cend()), aes::AES::AES_128);
+    std::vector<unsigned char> ciphertext7 = aes::mod::encrypt_ECB(std::vector<unsigned char>(s.cbegin(), s.cend()), std::vector<unsigned char>(key.cbegin(), key.cend()), aes::AES::AES_128);
     std::vector<unsigned char> deciphertext7 = aes::mod::decrypt_ECB(ciphertext7, std::vector<unsigned char>(key.cbegin(), key.cend()), aes::AES::AES_128);
 
     std::cout << "stringa: " << std::endl;
@@ -240,7 +240,7 @@ int main()
         std::cout << d;
     }
 
-    std::cout << "" << std::endl;*/
+    std::cout << "" << std::endl;
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();
