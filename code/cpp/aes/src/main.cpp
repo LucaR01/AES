@@ -2,6 +2,8 @@
 #include <iomanip>
 #include <cstdlib>
 #include <string>
+#include <cstdint>
+#include <memory>
 
 //#ifndef RELEASE_MODE //TODO: così forse dà errore perché poi non vede i AES_TRACE, ecc.
 #include "logger/logger.hpp"
@@ -241,6 +243,35 @@ int main()
     }
 
     std::cout << "" << std::endl;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    //TODO: questo sotto è sbagliato, è sempre diverso!
+    /*std::string s2 = "helloeverybodyye";
+    std::string key2 = "key";
+    std::vector<uint8_t> ciphertext8 = aes::mod::encrypt_ECB3(std::vector<unsigned char>(s2.cbegin(), s2.cend()), std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
+    std::vector<uint8_t> deciphertext8 = aes::mod::decrypt_ECB3(ciphertext8, std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
+
+    std::cout << "stringa2: " << std::endl;
+    for(const auto& x : std::vector<unsigned char>(s2.cbegin(), s2.cend())) {
+        std::cout << x;
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "ciphertext8: " << std::endl;
+    for(const auto& c : ciphertext8) {
+        std::cout << c;
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "deciphertext8: " << std::endl;
+    for(const auto& d : deciphertext8) {
+        std::cout << d;
+    }
+
+    std::cout << "" << std::endl;*/
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();

@@ -9,6 +9,7 @@
 #include <array>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "math/galois_math.hpp"
 
@@ -17,10 +18,6 @@ namespace aes {
 static constexpr uint8_t BLOCK_WORDS = 4; //TODO: rename in AES_BLOCK_WORDS?
 static constexpr uint8_t BLOCK_SIZE = 16; //TODO: rename in AES_BLOCK_SIZE?
 
-/*static constexpr uint8_t AES_128 = 128; //TODO: remove?
-static constexpr uint8_t AES_192 = 192;
-static constexpr unsigned short AES_256 = 256; //TODO: lo tengo unsigned short perché unsigned char::max() = 255;*/
-
 static constexpr uint8_t ROUNDS_AES_128 = 10; //TODO: Creare un enum? Oppure metterlo nell'enum Aes?
 static constexpr uint8_t ROUNDS_AES_192 = 12; //TODO: spostarli in aes.hpp?
 static constexpr uint8_t ROUNDS_AES_256 = 14; //TOOD: rename in AES_256_ROUNDS
@@ -28,6 +25,12 @@ static constexpr uint8_t ROUNDS_AES_256 = 14; //TOOD: rename in AES_256_ROUNDS
 static constexpr uint8_t AES_128_NUMBER_OF_KEYS = 4; //TODO: fare un enum?
 static constexpr uint8_t AES_192_NUMBER_OF_KEYS = 6;
 static constexpr uint8_t AES_256_NUMBER_OF_KEYS = 8;
+
+static constexpr uint8_t FIRST_SHIFT_ROW = 1;
+static constexpr uint8_t SECOND_SHIFT_ROW = 2;
+static constexpr uint8_t THIRD_SHIFT_ROW = 3;
+
+//static constexpr uint8_t SHIFT_FIRST_ROW_POSITIONS = 1; //TODO: remove
 
 //TODO: mettere questo enum in un altro file?
 enum AES {
@@ -119,9 +122,11 @@ static constexpr std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WO
 };
 
 // ENCRYPTION
-void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t* keys); //TODO: uint8_t*
+void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t* keys);
 
-//void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, std::vector<uint8_t>& keys); //TODO: *; remove?
+void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t& key); //TODO: *; remove?
+
+void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::shared_ptr<uint8_t>& key); //TODO:
 
 void sub_bytes(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
@@ -131,12 +136,18 @@ void shift_rows(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WOR
 
 void mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
-void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, uint8_t* keys, const AES& aes); //TODO: uncomment
+void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const std::vector<uint8_t>& keys, const AES& aes); //TODO: uncomment
 
-void encrypt_block(const uint8_t input[], uint8_t output[], uint8_t* keys, const AES& aes);
+//void encrypt_block(const uint8_t& input, uint8_t& output, const std::vector<uint8_t>& keys, const AES& aes); //TODO: remove?
+
+void encrypt_block(const uint8_t input[], uint8_t output[], const uint8_t* keys, const AES& aes);
 
 // DECRYPTION
 void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t* keys);
+
+void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t& keys);
+
+void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::shared_ptr<uint8_t>& keys);
 
 void inverse_sub_bytes(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
@@ -144,15 +155,15 @@ void inverse_shift_rows(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::B
 
 void inverse_mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
-void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, uint8_t* keys, const AES& aes); //TODO: uncomment
+void decrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const std::vector<uint8_t>& keys, const AES& aes);
 
 void decrypt_block(const uint8_t input[], uint8_t output[], uint8_t* keys, const AES& aes);
 
 // KEY EXPANSION | KEY SCHEDULE
 
-void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, const unsigned short& number_of_keys); //TODO: uncomment?
+void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, const AES& aes); //TODO: uncomment?
 
-void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const AES& aes); //TODO: uncomment
+void key_expansion(const std::vector<uint8_t>& key, std::shared_ptr<uint8_t>& word, const AES& aes); //TODO: uncomment
 
 void key_expansion(const uint8_t key[], unsigned char word[], const AES& aes);
 

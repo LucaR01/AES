@@ -91,7 +91,7 @@ uint8_t* decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_
 
 //TODO: usare smart pointers
 
-uint8_t* encrypt_ECB(const uint8_t input[], const int& input_length, const uint8_t key[], const aes::AES& aes)
+uint8_t* encrypt_ECB(const uint8_t input[], const unsigned int& input_length, const uint8_t key[], const aes::AES& aes)
 {
     verify_length(input_length);
 
@@ -109,7 +109,7 @@ uint8_t* encrypt_ECB(const uint8_t input[], const int& input_length, const uint8
     return output;
 }
 
-uint8_t* decrypt_ECB(const uint8_t input[], const int& input_length, const uint8_t key[], const aes::AES& aes)
+uint8_t* decrypt_ECB(const uint8_t input[], const unsigned int& input_length, const uint8_t key[], const aes::AES& aes)
 {
     verify_length(input_length);
 
@@ -154,5 +154,92 @@ void verify_length(const unsigned int& size)
 }
 
 // ------------------------------------------------------------------------------------------
+
+/*std::vector<uint8_t> encrypt_ECB2(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const AES& aes)
+{
+    verify_length(input.size());
+    std::vector<uint8_t> output;
+    std::vector<uint8_t> round_keys;
+
+    aes::key_expansion(key, round_keys, aes);
+    for(unsigned int i = 0; i < input.size(); i += aes::BLOCK_SIZE) {
+        aes::encrypt_block(input, output, round_keys, aes); //TODO: prima input.at(i), output.at(i)
+    }
+
+    //aes::encrypt_block(input, output, round_keys, aes); //TODO: remove
+
+    return output;
+}
+
+std::vector<uint8_t> decrypt_ECB2(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const AES& aes)
+{
+    verify_length(input.size());
+    std::vector<uint8_t> output;
+    std::vector<uint8_t> round_keys;
+
+    aes::key_expansion(key, round_keys, aes);
+    for(unsigned int i = 0; i < input.size(); i += aes::BLOCK_SIZE) { //TODO: a cosa serve la i in questo loop?
+        aes::decrypt_block(input, output, round_keys, aes);
+    }
+
+    //aes::decrypt_block(input, output, round_keys, aes); //TODO: remove
+
+    return output;
+}*/
+
+//TODO: uncomment and retry
+/*std::shared_ptr<uint8_t> encrypt_ECB3(const uint8_t input[], const unsigned int& input_length, const uint8_t key[], const aes::AES& aes)
+{
+    verify_length(input_length);
+
+    const unsigned short& number_of_rounds = aes::get_number_of_rounds(aes);
+    std::shared_ptr<uint8_t> output; //TODO: prima = new unsigned char[input_length]
+    std::shared_ptr<uint8_t> round_keys; //TODO: prima = new unsigned char[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)];
+
+    aes::key_expansion(key, round_keys.get(), aes);
+    for(unsigned int i = 0; i < input_length; i += aes::BLOCK_WORDS * aes::BLOCK_WORDS * sizeof(unsigned char)) {
+        aes::encrypt_block(input + i, output.get() + i, round_keys.get(), aes);
+    }
+
+    //delete[] round_keys;
+
+    return output;
+}
+
+std::shared_ptr<uint8_t> decrypt_ECB3(const uint8_t input[], const unsigned int& input_length, const uint8_t key[], const aes::AES& aes)
+{
+    verify_length(input_length);
+
+    const unsigned short& number_of_rounds = aes::get_number_of_rounds(aes);
+    std::shared_ptr<uint8_t> output; //TODO: prima = new unsigned char[input_length];
+    std::shared_ptr<uint8_t> round_keys; //TODO: prima era = new unsigned char[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)];
+
+    aes::key_expansion(key, round_keys.get(), aes);
+    for(unsigned int i = 0; i < input_length; i += aes::BLOCK_WORDS * aes::BLOCK_WORDS * sizeof(unsigned char)) {
+        aes::decrypt_block(input + i, output.get() + i, round_keys.get(), aes);
+    }
+
+    //delete[] round_keys;
+
+    return output;
+}
+
+std::vector<uint8_t> encrypt_ECB3(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const AES& aes)
+{
+    std::shared_ptr<uint8_t> output = aes::mod::encrypt_ECB3(input.data(), input.size(), key.data(), aes);
+    std::vector<uint8_t> vec(output.get(), output.get() + input.size() * sizeof(unsigned char));
+    //delete[] output;
+
+    return vec;
+}
+
+std::vector<uint8_t> decrypt_ECB3(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const AES& aes)
+{
+    std::shared_ptr<uint8_t> output = aes::mod::decrypt_ECB3(input.data(), input.size(), key.data(), aes);
+    std::vector<uint8_t> vec(output.get(), output.get() + input.size() * sizeof(unsigned char));
+    //delete[] output;
+
+    return vec;
+}*/
 
 } // namespace aes::mod

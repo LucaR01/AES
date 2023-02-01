@@ -13,13 +13,6 @@ namespace aes::gal {
 //TODO: usare std::bitset?
 static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00011011 = x^4 + x^3 + x + 1.
 
-//TODO: usare std::byte o uint8_t?
-
-//TODO: aggiungere la s-box
-
-//TODO: aggiornare in galois_add_sub?
-//TODO: static?
-
 //TODO: se voglio metterle constexpr le devo definire nel .hpp non nel .cpp
 
 [[nodiscard("Pure function")]] static constexpr inline uint8_t galois_addition_subtraction(const uint8_t& x, const uint8_t& y) noexcept
