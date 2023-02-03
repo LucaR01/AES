@@ -124,9 +124,9 @@ static constexpr std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WO
 // ENCRYPTION
 void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t* keys);
 
-void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t& key); //TODO: *; remove?
+void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t& key); //TODO:
 
-void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::shared_ptr<uint8_t>& key); //TODO:
+void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::vector<uint8_t>& key);
 
 void sub_bytes(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
@@ -138,7 +138,10 @@ void mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WO
 
 void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const std::vector<uint8_t>& keys, const AES& aes); //TODO: uncomment
 
-//void encrypt_block(const uint8_t& input, uint8_t& output, const std::vector<uint8_t>& keys, const AES& aes); //TODO: remove?
+//TODO: avevo fatto std::vector output e andava prima
+void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uint8_t* keys, const AES& aes); //TODO: const uint8_t& keys ma poi non va nella key expansion
+
+void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes);
 
 void encrypt_block(const uint8_t input[], uint8_t output[], const uint8_t* keys, const AES& aes);
 
@@ -147,13 +150,18 @@ void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes
 
 void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t& keys);
 
-void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::shared_ptr<uint8_t>& keys);
+void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::vector<uint8_t>& keys);
 
 void inverse_sub_bytes(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
 void inverse_shift_rows(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
 void inverse_mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
+
+//TODO: avevo fatto std::vector output e andava prima
+void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uint8_t* keys, const AES& aes);
+
+void decrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes);
 
 void decrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const std::vector<uint8_t>& keys, const AES& aes);
 
@@ -163,7 +171,7 @@ void decrypt_block(const uint8_t input[], uint8_t output[], uint8_t* keys, const
 
 void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, const AES& aes); //TODO: uncomment?
 
-void key_expansion(const std::vector<uint8_t>& key, std::shared_ptr<uint8_t>& word, const AES& aes); //TODO: uncomment
+void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const AES& aes); //TODO: uncomment
 
 void key_expansion(const uint8_t key[], unsigned char word[], const AES& aes);
 

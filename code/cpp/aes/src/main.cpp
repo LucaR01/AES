@@ -247,10 +247,10 @@ int main()
     // -----------------------------------------------------------------------------------------------------------------
 
     //TODO: questo sotto è sbagliato, è sempre diverso!
-    /*std::string s2 = "helloeverybodyye";
+    std::string s2 = "helloeverybodyye";
     std::string key2 = "key";
-    std::vector<uint8_t> ciphertext8 = aes::mod::encrypt_ECB3(std::vector<unsigned char>(s2.cbegin(), s2.cend()), std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
-    std::vector<uint8_t> deciphertext8 = aes::mod::decrypt_ECB3(ciphertext8, std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
+    uint8_t* ciphertext8 = aes::mod::encrypt_ECB4(std::vector<unsigned char>(s2.cbegin(), s2.cend()), std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
+    uint8_t* deciphertext8 = aes::mod::decrypt_ECB4(std::vector<unsigned char>(ciphertext8, ciphertext8 + 16), std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
 
     std::cout << "stringa2: " << std::endl;
     for(const auto& x : std::vector<unsigned char>(s2.cbegin(), s2.cend())) {
@@ -259,19 +259,50 @@ int main()
 
     std::cout << "" << std::endl;
 
-    std::cout << "ciphertext8: " << std::endl;
+    std::cout << "ciphertext8: " << ciphertext8 << std::endl;
+    /*std::cout << "ciphertext8: " << std::endl;
     for(const auto& c : ciphertext8) {
+        std::cout << c;
+    }*/
+
+    std::cout << "" << std::endl;
+
+    std::cout << "deciphertext8: " << deciphertext8 << std::endl;
+    /*std::cout << "deciphertext8: " << std::endl;
+    for(const auto& d : deciphertext8) {
+        std::cout << d;
+    }*/
+
+    std::cout << "" << std::endl;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    //TODO: questo sotto è sbagliato, è sempre diverso!
+    std::vector<uint8_t> ciphertext9 = aes::mod::encrypt_ECB5(std::vector<unsigned char>(s2.cbegin(), s2.cend()), std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
+    std::vector<uint8_t> deciphertext9 = aes::mod::decrypt_ECB5(ciphertext9, std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
+
+    std::cout << "stringa2: " << std::endl;
+    for(const auto& x : std::vector<unsigned char>(s2.cbegin(), s2.cend())) {
+        std::cout << x;
+    }
+
+    std::cout << "" << std::endl;
+
+    //std::cout << "ciphertext8: " << ciphertext8 << std::endl;
+    std::cout << "ciphertext9: " << std::endl;
+    for(const auto& c : ciphertext9) {
         std::cout << c;
     }
 
     std::cout << "" << std::endl;
 
-    std::cout << "deciphertext8: " << std::endl;
-    for(const auto& d : deciphertext8) {
+    //std::cout << "deciphertext8: " << deciphertext8 << std::endl;
+    std::cout << "deciphertext9: " << std::endl;
+    for(const auto& d : deciphertext9) {
         std::cout << d;
     }
 
-    std::cout << "" << std::endl;*/
+    std::cout << "" << std::endl;
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();

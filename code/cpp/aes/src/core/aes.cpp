@@ -35,11 +35,11 @@ void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_
     }
 }
 
-void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::shared_ptr<uint8_t>& key)
+void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::vector<uint8_t>& key)
 {
     for(unsigned short i = 0; i < aes::BLOCK_WORDS; i++) {
         for(unsigned short j = 0; j < aes::BLOCK_WORDS; j++) {
-            state[i][j] = state[i][j] ^ key.get()[i + aes::BLOCK_WORDS * j];
+            state[i][j] = state[i][j] ^ key.at(i + aes::BLOCK_WORDS * j);
         }
     }
 }
@@ -101,7 +101,7 @@ void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& outp
         }
     }
 
-    add_round_key(state, keys.data());
+    add_round_key(state, keys); //TODO: .data(); .at(0);
 
     for(uint8_t round = 1; round <= number_of_rounds - 1; round++) {
         sub_bytes(state);
@@ -121,7 +121,8 @@ void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& outp
     }
 }
 
-/*void encrypt_block(const uint8_t& input, uint8_t& output, const std::vector<uint8_t>& keys, const AES& aes)
+//TODO: stavo utilizzando questo
+void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uint8_t* keys, const AES& aes)
 {
     std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
     const unsigned short number_of_rounds = aes::get_number_of_rounds(aes);
@@ -132,7 +133,7 @@ void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& outp
         }
     }
 
-    add_round_key(state, keys.data());
+    add_round_key(state, keys);
 
     for(uint8_t round = 1; round <= number_of_rounds - 1; round++) {
         sub_bytes(state);
@@ -150,7 +151,38 @@ void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& outp
             output[i + aes::BLOCK_WORDS * j] = state[i][j];
         }
     }
-}*/
+}
+
+void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes)
+{
+    std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
+    const unsigned short number_of_rounds = aes::get_number_of_rounds(aes);
+
+    for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
+        for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
+            state[i][j] = input[i + aes::BLOCK_WORDS * j];
+        }
+    }
+
+    add_round_key(state, keys);
+
+    for(uint8_t round = 1; round <= number_of_rounds - 1; round++) {
+        sub_bytes(state);
+        shift_rows(state);
+        mix_columns(state);
+        add_round_key(state, keys + round * aes::BLOCK_WORDS * aes::BLOCK_WORDS);
+    }
+
+    sub_bytes(state);
+    shift_rows(state);
+    add_round_key(state, keys + number_of_rounds * aes::BLOCK_WORDS * aes::BLOCK_WORDS);
+
+    for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
+        for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
+            output[i + aes::BLOCK_WORDS * j] = state[i][j];
+        }
+    }
+}
 
 void encrypt_block(const uint8_t input[], uint8_t output[], const uint8_t* keys, const AES& aes)
 {
@@ -195,11 +227,10 @@ void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes
     add_round_key(state, keys);
 }
 
-void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::shared_ptr<uint8_t>& keys)
+void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::vector<uint8_t>& keys)
 {
     add_round_key(state, keys);
 }
-
 
 void inverse_sub_bytes(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state)
 {
@@ -233,6 +264,69 @@ void inverse_mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::
 }
 
 //TODO: decrypt_block( vector, vector, vector, AES)
+//TODO: stavo utilizzando questo, quando nella encrypt_ECB e decrypt usavo uint8_t* round_keys
+void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uint8_t* keys, const AES& aes)
+{
+    std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
+    const unsigned short& number_of_rounds = get_number_of_rounds(aes);
+
+    for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
+        for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
+            state[i][j] = input[i + aes::BLOCK_WORDS * j];
+        }
+    }
+
+    inverse_add_round_key(state, keys + number_of_rounds * aes::BLOCK_WORDS * aes::BLOCK_WORDS);
+
+    for(uint8_t round = number_of_rounds - 1; round >= 1; round--) {
+        inverse_sub_bytes(state);
+        inverse_shift_rows(state);
+        inverse_add_round_key(state, keys + round * aes::BLOCK_WORDS * aes::BLOCK_WORDS);
+        inverse_mix_columns(state);
+    }
+
+    inverse_sub_bytes(state);
+    inverse_shift_rows(state);
+    inverse_add_round_key(state, keys);
+
+    for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
+        for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
+            output[i + aes::BLOCK_WORDS * j] = state[i][j];
+        }
+    }
+}
+
+void decrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes)
+{
+    std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
+    const unsigned short& number_of_rounds = get_number_of_rounds(aes);
+
+    for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
+        for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
+            state[i][j] = input[i + aes::BLOCK_WORDS * j];
+        }
+    }
+
+    inverse_add_round_key(state, keys + number_of_rounds * aes::BLOCK_WORDS * aes::BLOCK_WORDS);
+
+    for(uint8_t round = number_of_rounds - 1; round >= 1; round--) {
+        inverse_sub_bytes(state);
+        inverse_shift_rows(state);
+        inverse_add_round_key(state, keys + round * aes::BLOCK_WORDS * aes::BLOCK_WORDS);
+        inverse_mix_columns(state);
+    }
+
+    inverse_sub_bytes(state);
+    inverse_shift_rows(state);
+    inverse_add_round_key(state, keys);
+
+    for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
+        for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
+            output[i + aes::BLOCK_WORDS * j] = state[i][j];
+        }
+    }
+}
+
 void decrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const std::vector<uint8_t>& keys, const AES& aes)
 {
     std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
@@ -255,7 +349,7 @@ void decrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& outp
 
     inverse_sub_bytes(state);
     inverse_shift_rows(state);
-    inverse_add_round_key(state, keys.data());
+    inverse_add_round_key(state, keys); //TODO: .data(); .at(0);
 
     for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
         for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
@@ -333,7 +427,7 @@ void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, 
     }
 }
 
-void key_expansion(const std::vector<uint8_t>& key, std::shared_ptr<uint8_t>& word, const AES& aes) //TODO: uncomment
+void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const AES& aes) //TODO: uncomment
 {
     std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS> temp{};
     std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS> rcon{};
@@ -342,14 +436,14 @@ void key_expansion(const std::vector<uint8_t>& key, std::shared_ptr<uint8_t>& wo
     const unsigned short& number_of_rounds = aes::get_number_of_rounds(aes);
 
     for(unsigned short i = 0; i < aes::AES_128_NUMBER_OF_KEYS * number_of_keys; i++) {
-        word.get()[i] = key[i];
+        word[i] = key[i];
     }
 
     for(unsigned int j = aes::AES_128_NUMBER_OF_KEYS * number_of_keys; j < aes::AES_128_NUMBER_OF_KEYS * aes::BLOCK_WORDS * (number_of_rounds + 1); j += aes::BLOCK_WORDS) { //TODO: aes::AES_128_keys
-        temp[0] = word.get()[j - aes::AES_128_NUMBER_OF_KEYS + 0];
-        temp[1] = word.get()[j - aes::AES_128_NUMBER_OF_KEYS + 1];
-        temp[2] = word.get()[j - aes::AES_128_NUMBER_OF_KEYS + 2];
-        temp[3] = word.get()[j - aes::AES_128_NUMBER_OF_KEYS + 3];
+        temp[0] = word[j - aes::AES_128_NUMBER_OF_KEYS + 0];
+        temp[1] = word[j - aes::AES_128_NUMBER_OF_KEYS + 1];
+        temp[2] = word[j - aes::AES_128_NUMBER_OF_KEYS + 2];
+        temp[3] = word[j - aes::AES_128_NUMBER_OF_KEYS + 3];
 
         if(j / aes::BLOCK_WORDS % number_of_keys == 0) {
             rot_word(temp);
@@ -363,10 +457,10 @@ void key_expansion(const std::vector<uint8_t>& key, std::shared_ptr<uint8_t>& wo
             sub_word(temp);
         }
 
-        word.get()[j + 0] = word.get()[j - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[0]; //TODO: galois_add_sub()
-        word.get()[j + 1] = word.get()[j + 1 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[1];
-        word.get()[j + 2] = word.get()[j + 2 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[2];
-        word.get()[j + 3] = word.get()[j + 3 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[3];
+        word[j + 0] = word[j - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[0]; //TODO: galois_add_sub()
+        word[j + 1] = word[j + 1 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[1];
+        word[j + 2] = word[j + 2 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[2];
+        word[j + 3] = word[j + 3 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[3];
     }
 }
 

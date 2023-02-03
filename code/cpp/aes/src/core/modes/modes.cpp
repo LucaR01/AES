@@ -44,24 +44,16 @@ uint8_t* decrypt_ECB(const uint8_t input[], const uint8_t key[], const aes::AES&
 }*/
 
 //TODO: funziona, ma è da fattorizzare.
-/*uint8_t* encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
+uint8_t* encrypt_ECB4(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
 {
-    unsigned short number_of_rounds = aes::get_number_of_rounds(aes);
-    //AES_DEBUG("number_of_rounds: {}", number_of_rounds)
-    //static constexpr unsigned short array_size = aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1);
-    //std::array<uint8_t, array_size> round_keys;
-    //std::vector<uint8_t> round_keys;
-    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)];
+    const unsigned short& number_of_rounds = aes::get_number_of_rounds(aes);
+    //TODO: rendere round_keys un std::vector<uint8_t>; per fare questo l'unica funzione da cambiare è l'add_round_key();
+    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)]; //TODO: uint8_t* e funziona
+    uint8_t* output = new uint8_t[input.size()];//TODO: std::vector<uint8_t> output; uint8_t* output = new uint8_t[input.size()];
 
-    //std::vector<uint8_t>* output; //TOOD: in realtà std::array<uint8_t, 17> output{};
-    //uint8_t* output{};
-    //auto* output{};
-    uint8_t* output = new uint8_t[aes::BLOCK_SIZE];
     aes::key_expansion(key, round_keys, aes);
-    for(unsigned short i = 0; i < aes::BLOCK_SIZE; i += aes::BLOCK_SIZE) {
-        //aes::encrypt_block(input.at(i) + i, output + i, round_keys, aes);
-        //aes::encrypt_block(input, output, round_keys, aes);
-        aes::encrypt_block(input, output + i, round_keys, aes); //TODO: forse non serve input + i
+    for(unsigned int i = 0; i < input.size(); i += aes::BLOCK_SIZE) {
+        aes::encrypt_block(input, output + i, round_keys, aes); //TODO: forse non serve input + i, output + i
     }
 
     delete[] round_keys;
@@ -70,22 +62,57 @@ uint8_t* decrypt_ECB(const uint8_t input[], const uint8_t key[], const aes::AES&
 }
 
 //TODO: funziona, ma è da fattorizzare.
-uint8_t* decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
+uint8_t* decrypt_ECB4(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
 {
     const unsigned short& number_of_rounds = get_number_of_rounds(aes);
-    //AES_DEBUG("number_of_rounds: {}", number_of_rounds)
-    uint8_t* output = new uint8_t[aes::BLOCK_SIZE]; //TODO:
-    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)];
+    uint8_t* output = new uint8_t[input.size()]; //TODO: std::vector<uint8_t> output; uint8_t* output = new uint8_t[input.size()];
+    //TODO: rendere round_keys un std::vector<uint8_t>; per fare questo l'unica funzione da cambiare è l'add_round_key();
+    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)]; //TODO: uint8_t* e funziona
 
     aes::key_expansion(key, round_keys, aes);
-    for(unsigned short i = 0; i < aes::BLOCK_SIZE; i += aes::BLOCK_SIZE) {
-        aes::decrypt_block(input, output + i, round_keys, aes); //TODO: forse non serve input + i
+    for(unsigned int i = 0; i < input.size(); i += aes::BLOCK_SIZE) {
+        aes::decrypt_block(input, output + i, round_keys, aes); //TODO: forse non serve input + i, output + i
     }
 
     delete[] round_keys;
 
     return output;
-}*/
+}
+
+std::vector<uint8_t> encrypt_ECB5(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes) //TODO: non va
+{
+    const unsigned short& number_of_rounds = get_number_of_rounds(aes);
+    std::vector<uint8_t> output; // = new uint8_t[input.size()]; //TODO: std::vector<uint8_t> output; uint8_t* output = new uint8_t[input.size()];
+    //std::array<uint8_t, input.size()> out{};
+    //TODO: rendere round_keys un std::vector<uint8_t>; per fare questo l'unica funzione da cambiare è l'add_round_key();
+    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)]; //TODO: uint8_t* e funziona
+
+    aes::key_expansion(key, round_keys, aes);
+    for(unsigned int i = 0; i < input.size(); i += aes::BLOCK_SIZE) {
+        aes::decrypt_block(input, output, round_keys, aes); //TODO: forse non serve input + i, output + i
+    }
+
+    delete[] round_keys;
+
+    return output;
+}
+
+std::vector<uint8_t> decrypt_ECB5(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes) //TODO: non va
+{
+    const unsigned short& number_of_rounds = get_number_of_rounds(aes);
+    std::vector<uint8_t> output; // = new uint8_t[input.size()]; //TODO: std::vector<uint8_t> output; uint8_t* output = new uint8_t[input.size()];
+    //TODO: rendere round_keys un std::vector<uint8_t>; per fare questo l'unica funzione da cambiare è l'add_round_key();
+    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)]; //TODO: uint8_t* e funziona
+
+    aes::key_expansion(key, round_keys, aes);
+    for(unsigned int i = 0; i < input.size(); i += aes::BLOCK_SIZE) {
+        aes::decrypt_block(input, output, round_keys, aes); //TODO: forse non serve input + i, output + i
+    }
+
+    delete[] round_keys;
+
+    return output;
+}
 
 // ------------------------------------------------------------------------------------------
 
