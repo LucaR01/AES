@@ -423,7 +423,8 @@ aes::mod::Modes request_mode()
     std::cout << "Seleziona: ";
     std::cin >> mode;
 
-    while((std::cin.fail()) || (mode < aes::mod::get_mode_index(aes::mod::Modes::ECB) || mode > aes::mod::get_mode_index(aes::mod::Modes::CTR))) {
+    //TODO: prima era get_mode_index(aes::mod::Modes::CFB))
+    while((std::cin.fail()) || (mode < aes::mod::get_mode_index(aes::mod::Modes::ECB) || mode > aes::mod::NUM_OF_MODES - 1)) {
         std::cin.clear();
         for(const auto& e : aes::mod::all) {
             //TODO: if mode == ECB, stampare anche [deprecated] affianco alla scelta.

@@ -79,11 +79,13 @@ uint8_t* decrypt_ECB4(const std::vector<uint8_t>& input, const std::vector<uint8
     return output;
 }
 
-std::vector<uint8_t> encrypt_ECB5(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes) //TODO: non va
+//TODO: non va
+std::vector<uint8_t> encrypt_ECB5(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
 {
     const unsigned short& number_of_rounds = get_number_of_rounds(aes);
-    std::vector<uint8_t> output; // = new uint8_t[input.size()]; //TODO: std::vector<uint8_t> output; uint8_t* output = new uint8_t[input.size()];
+    //std::vector<uint8_t> output; // = new uint8_t[input.size()]; //TODO: std::vector<uint8_t> output; uint8_t* output = new uint8_t[input.size()];
     //std::array<uint8_t, input.size()> out{};
+    uint8_t* output = new uint8_t[input.size()];
     //TODO: rendere round_keys un std::vector<uint8_t>; per fare questo l'unica funzione da cambiare è l'add_round_key();
     uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)]; //TODO: uint8_t* e funziona
 
@@ -92,15 +94,19 @@ std::vector<uint8_t> encrypt_ECB5(const std::vector<uint8_t>& input, const std::
         aes::decrypt_block(input, output, round_keys, aes); //TODO: forse non serve input + i, output + i
     }
 
+    const std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
+
     delete[] round_keys;
 
-    return output;
+    return vec;
 }
 
-std::vector<uint8_t> decrypt_ECB5(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes) //TODO: non va
+//TODO: non va
+std::vector<uint8_t> decrypt_ECB5(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
 {
     const unsigned short& number_of_rounds = get_number_of_rounds(aes);
-    std::vector<uint8_t> output; // = new uint8_t[input.size()]; //TODO: std::vector<uint8_t> output; uint8_t* output = new uint8_t[input.size()];
+    //std::vector<uint8_t> output; // = new uint8_t[input.size()]; //TODO: std::vector<uint8_t> output; uint8_t* output = new uint8_t[input.size()];
+    uint8_t* output = new uint8_t[input.size()];
     //TODO: rendere round_keys un std::vector<uint8_t>; per fare questo l'unica funzione da cambiare è l'add_round_key();
     uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)]; //TODO: uint8_t* e funziona
 
@@ -109,9 +115,11 @@ std::vector<uint8_t> decrypt_ECB5(const std::vector<uint8_t>& input, const std::
         aes::decrypt_block(input, output, round_keys, aes); //TODO: forse non serve input + i, output + i
     }
 
+    const std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
+
     delete[] round_keys;
 
-    return output;
+    return vec;
 }
 
 // ------------------------------------------------------------------------------------------
@@ -268,5 +276,139 @@ std::vector<uint8_t> decrypt_ECB3(const std::vector<uint8_t>& input, const std::
 
     return vec;
 }*/
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+uint8_t* encrypt_CBC(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const AES& aes)
+{
+    verify_length(input_length);
+
+    const uint8_t& number_of_rounds = aes::get_number_of_rounds(aes);
+
+    uint8_t* output = new uint8_t[input_length];
+    uint8_t block[aes::BLOCK_SIZE];
+    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)];
+
+    aes::key_expansion(key, round_keys, aes);
+    std::memcpy(block, iv, aes::BLOCK_SIZE);
+    for(unsigned int i = 0; i < input_length; i += aes::BLOCK_SIZE) {
+        aes::xor_blocks(block, input + i, block, aes::BLOCK_SIZE);
+        aes::encrypt_block(block, output + i, round_keys, aes);
+        std::memcpy(block, output + i, aes::BLOCK_SIZE);
+    }
+
+    delete[] round_keys;
+
+    return output;
+}
+
+uint8_t* decrypt_CBC(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const AES& aes)
+{
+    verify_length(input_length);
+
+    const uint8_t& number_of_rounds = aes::get_number_of_rounds(aes);
+
+    uint8_t* output = new uint8_t[input_length];
+    uint8_t block[aes::BLOCK_SIZE];
+    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)];
+
+    aes::key_expansion(key, round_keys, aes);
+    std::memcpy(block, iv, aes::BLOCK_SIZE);
+    for(unsigned int i = 0; i < input_length; i += aes::BLOCK_SIZE) {
+        aes::decrypt_block(input + i, output + i, round_keys, aes);
+        aes::xor_blocks(block, output + i, output + i, aes::BLOCK_SIZE);
+        std::memcpy(block, input + i, aes::BLOCK_SIZE);
+    }
+
+    delete[] round_keys;
+
+    return output;
+}
+
+std::vector<uint8_t> encrypt_CBC(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const AES& aes)
+{
+    uint8_t* output = mod::encrypt_CBC(input.data(), input.size(), key.data(), iv.data(), aes);
+    std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
+    delete[] output;
+
+    return vec;
+}
+
+std::vector<uint8_t> decrypt_CBC(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const AES& aes)
+{
+    uint8_t* output = mod::decrypt_CBC(input.data(), input.size(), key.data(), iv.data(), aes);
+    std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
+    delete[] output;
+
+    return vec;
+}
+
+// CFB MODE
+
+uint8_t* encrypt_CFB(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const AES& aes)
+{
+    verify_length(input_length);
+
+    const uint8_t& number_of_rounds = aes::get_number_of_rounds(aes);
+
+    uint8_t* output = new uint8_t[input_length];
+    uint8_t block[aes::BLOCK_SIZE];
+    uint8_t encrypted_block[aes::BLOCK_SIZE];
+    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)];
+
+    aes::key_expansion(key, round_keys, aes);
+    std::memcpy(block, iv, aes::BLOCK_SIZE);
+    for(unsigned int i = 0; i < input_length; i += aes::BLOCK_SIZE) {
+        aes::encrypt_block(block, encrypted_block, round_keys, aes);
+        aes::xor_blocks(input + i, encrypted_block, output + i, aes::BLOCK_SIZE);
+        std::memcpy(block, output + i, aes::BLOCK_SIZE);
+    }
+
+    delete[] round_keys;
+
+    return output;
+}
+
+uint8_t* decrypt_CFB(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const AES& aes)
+{
+    verify_length(input_length);
+
+    const uint8_t& number_of_rounds = aes::get_number_of_rounds(aes);
+
+    uint8_t* output = new uint8_t[input_length];
+    uint8_t block[aes::BLOCK_SIZE];
+    uint8_t encrypted_block[aes::BLOCK_SIZE];
+    uint8_t* round_keys = new uint8_t[aes::BLOCK_WORDS * aes::BLOCK_WORDS * (number_of_rounds + 1)];
+
+    aes::key_expansion(key, round_keys, aes);
+    std::memcpy(block, iv, aes::BLOCK_SIZE);
+    for(unsigned int i = 0; i < input_length; i += aes::BLOCK_SIZE) {
+        aes::encrypt_block(block, encrypted_block, round_keys, aes); //TODO:
+        aes::xor_blocks(input + i, encrypted_block, output + i, aes::BLOCK_SIZE);
+        std::memcpy(block, input + i, aes::BLOCK_SIZE);
+    }
+
+    delete[] round_keys;
+
+    return output;
+}
+
+std::vector<uint8_t> encrypt_CFB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const AES& aes)
+{
+    uint8_t* output = mod::encrypt_CFB(input.data(), input.size(), key.data(), iv.data(), aes);
+    std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
+    delete[] output;
+
+    return vec;
+}
+
+std::vector<uint8_t> decrypt_CFB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const AES& aes)
+{
+    uint8_t* output = mod::decrypt_CFB(input.data(), input.size(), key.data(), iv.data(), aes);
+    std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
+    delete[] output;
+
+    return vec;
+}
 
 } // namespace aes::mod

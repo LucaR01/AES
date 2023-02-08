@@ -66,6 +66,8 @@ std::string request_key();
 
 aes::mod::Modes request_mode();
 
+//TODO: std::string request_IV();
+
 }
 
 #endif //AES_CONSOLE_H

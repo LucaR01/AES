@@ -18,22 +18,6 @@
 int main()
 {
 
-//TODO: mettere #ifndef #endif fuori dal main? No, non va.
-#ifndef RELEASE_MODE
-    aes::log::Logger::init();
-#endif
-
-    //TODO: remove unnecessary logs
-    AES_TRACE("Tracing AES v{}.{}.{}", 1, 0, 0)
-    AES_DEBUG("Debugging...")
-    AES_INFO("Info.")
-    AES_WARN("warn")
-    AES_ERROR("error")
-    AES_CRITICAL("critical")
-
-    AES_ASSERT(1 == 2, "1 is not equal to 2.")
-    //AES_ASSERT_BREAK(1 == 2, "1 is not equal to 2.")
-
     //TODO: remove, creare un test a riguardo.
     /*std::vector<std::string> data = { "hello ", " everyone ", "! " };
     aes::fm::FileManager::write_file_data("test.txt", data);
@@ -278,7 +262,8 @@ int main()
     // -----------------------------------------------------------------------------------------------------------------
 
     //TODO: questo sotto è sbagliato, è sempre diverso!
-    std::vector<uint8_t> ciphertext9 = aes::mod::encrypt_ECB5(std::vector<unsigned char>(s2.cbegin(), s2.cend()), std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
+    //TODO: non va!
+    /*std::vector<uint8_t> ciphertext9 = aes::mod::encrypt_ECB5(std::vector<unsigned char>(s2.cbegin(), s2.cend()), std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
     std::vector<uint8_t> deciphertext9 = aes::mod::decrypt_ECB5(ciphertext9, std::vector<unsigned char>(key2.cbegin(), key2.cend()), aes::AES::AES_128);
 
     std::cout << "stringa2: " << std::endl;
@@ -302,11 +287,87 @@ int main()
         std::cout << d;
     }
 
+    std::cout << "" << std::endl;*/
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // CBC
+
+    std::vector<unsigned char> plain5 = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
+                                        0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb,
+                                        0xcc, 0xdd, 0xee, 0xff};
+
+    std::vector<unsigned char> iv = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                     0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                     0xff, 0xff, 0xff, 0xff};
+
+    std::vector<unsigned char> key3 = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
+                                       0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
+                                       0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f};
+
+    std::vector<unsigned char> encryptedCBC = aes::mod::encrypt_CBC(plain5, key3, iv, aes::AES::AES_256);
+    std::vector<unsigned char> decryptedCBC = aes::mod::decrypt_CBC(encryptedCBC, key3, iv, aes::AES::AES_256);
+
+    std::cout << "encryptedCBC: " << std::endl;
+    for(const auto& e : encryptedCBC) {
+        std::cout << e << ", ";
+    }
+
     std::cout << "" << std::endl;
 
-#ifndef RELEASE_MODE
-    aes::log::Logger::shutdown();
-#endif
+    std::cout << "plain5: " << std::endl;
+    for(const auto& p : plain5) {
+        std::cout << p << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "decryptedCBC: " << std::endl;
+    for(const auto& d : decryptedCBC) {
+        std::cout << d << ", ";
+    }
+
+    std::cout << "----------------------------------------------------------------" << std::endl;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // CFB
+
+    std::vector<unsigned char> plain6 = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
+                                        0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb,
+                                        0xcc, 0xdd, 0xee, 0xff};
+
+    std::vector<unsigned char> iv2 = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                     0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                     0xff, 0xff, 0xff, 0xff};
+
+    std::vector<unsigned char> key5 = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
+                                        0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
+                                        0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f};
+
+    std::vector<unsigned char> encryptedCFB = aes::mod::encrypt_CBC(plain6, key5, iv2, aes::AES::AES_256);
+    std::vector<unsigned char> decryptedCFB = aes::mod::decrypt_CBC(encryptedCFB, key5, iv2, aes::AES::AES_256);
+
+    std::cout << "encryptedCFB: " << std::endl;
+    for(const auto& e : encryptedCFB) {
+        std::cout << e << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "plain6: " << std::endl;
+    for(const auto& p : plain6) {
+        std::cout << p << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "decryptedCFB: " << std::endl;
+    for(const auto& d : decryptedCFB) {
+        std::cout << d << ", ";
+    }
+
+    std::cout << "" << std::endl;
 
     return EXIT_SUCCESS;
 }
