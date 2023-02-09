@@ -162,7 +162,7 @@ uint8_t* decrypt_ECB(const uint8_t input[], const unsigned int& input_length, co
     return output;
 }
 
-std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const AES& aes) //TODO: uncomment both
+std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes) //TODO: uncomment both
 {
     uint8_t* output = aes::mod::encrypt_ECB(input.data(), input.size(), key.data(), aes);
     std::vector<uint8_t> vec(output, output + input.size() * sizeof(unsigned char));
@@ -171,7 +171,7 @@ std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::v
     return vec;
 }
 
-std::vector<uint8_t> decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const AES& aes)
+std::vector<uint8_t> decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
 {
     uint8_t* output = aes::mod::decrypt_ECB(input.data(), input.size(), key.data(), aes);
     std::vector<uint8_t> vec(output, output + input.size() * sizeof(unsigned char));
@@ -279,7 +279,7 @@ std::vector<uint8_t> decrypt_ECB3(const std::vector<uint8_t>& input, const std::
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-uint8_t* encrypt_CBC(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const AES& aes)
+uint8_t* encrypt_CBC(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const aes::AES& aes)
 {
     verify_length(input_length);
 
@@ -302,7 +302,7 @@ uint8_t* encrypt_CBC(const uint8_t input[], unsigned int input_length, const uin
     return output;
 }
 
-uint8_t* decrypt_CBC(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const AES& aes)
+uint8_t* decrypt_CBC(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const aes::AES& aes)
 {
     verify_length(input_length);
 
@@ -325,7 +325,7 @@ uint8_t* decrypt_CBC(const uint8_t input[], unsigned int input_length, const uin
     return output;
 }
 
-std::vector<uint8_t> encrypt_CBC(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const AES& aes)
+std::vector<uint8_t> encrypt_CBC(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const aes::AES& aes)
 {
     uint8_t* output = mod::encrypt_CBC(input.data(), input.size(), key.data(), iv.data(), aes);
     std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
@@ -334,7 +334,7 @@ std::vector<uint8_t> encrypt_CBC(const std::vector<uint8_t>& input, const std::v
     return vec;
 }
 
-std::vector<uint8_t> decrypt_CBC(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const AES& aes)
+std::vector<uint8_t> decrypt_CBC(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const aes::AES& aes)
 {
     uint8_t* output = mod::decrypt_CBC(input.data(), input.size(), key.data(), iv.data(), aes);
     std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
@@ -345,7 +345,7 @@ std::vector<uint8_t> decrypt_CBC(const std::vector<uint8_t>& input, const std::v
 
 // CFB MODE
 
-uint8_t* encrypt_CFB(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const AES& aes)
+uint8_t* encrypt_CFB(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const aes::AES& aes)
 {
     verify_length(input_length);
 
@@ -369,7 +369,7 @@ uint8_t* encrypt_CFB(const uint8_t input[], unsigned int input_length, const uin
     return output;
 }
 
-uint8_t* decrypt_CFB(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const AES& aes)
+uint8_t* decrypt_CFB(const uint8_t input[], unsigned int input_length, const uint8_t key[], const uint8_t* iv, const aes::AES& aes)
 {
     verify_length(input_length);
 
@@ -393,7 +393,7 @@ uint8_t* decrypt_CFB(const uint8_t input[], unsigned int input_length, const uin
     return output;
 }
 
-std::vector<uint8_t> encrypt_CFB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const AES& aes)
+std::vector<uint8_t> encrypt_CFB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const aes::AES& aes)
 {
     uint8_t* output = mod::encrypt_CFB(input.data(), input.size(), key.data(), iv.data(), aes);
     std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));
@@ -402,7 +402,7 @@ std::vector<uint8_t> encrypt_CFB(const std::vector<uint8_t>& input, const std::v
     return vec;
 }
 
-std::vector<uint8_t> decrypt_CFB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const AES& aes)
+std::vector<uint8_t> decrypt_CFB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const aes::AES& aes)
 {
     uint8_t* output = mod::decrypt_CFB(input.data(), input.size(), key.data(), iv.data(), aes);
     std::vector<uint8_t> vec(output, output + input.size() * sizeof(uint8_t));

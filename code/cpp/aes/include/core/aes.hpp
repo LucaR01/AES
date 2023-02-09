@@ -13,8 +13,8 @@
 #include <optional>
 
 #include "math/galois_math.hpp"
-#include "core/padding/padding.hpp"
-#include "core/modes/modes.hpp"
+//#include "core/padding/padding.hpp"
+//#include "core/modes/modes.hpp"
 
 namespace aes {
 
@@ -189,7 +189,8 @@ void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, unsigned int blo
 // FUNZIONI DA CHIAMARE
 
 //TODO: da chiamare nella console.
-std::vector<uint8_t> encrypt(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const pad::Paddings& padding, const mod::Modes& mode);
+//TODO: uncomment
+//std::vector<uint8_t> encrypt(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode);
 
 //TODO: uncomment
 //std::string_view encrypt2(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const pad::Paddings& padding, const mod::Modes& mode);

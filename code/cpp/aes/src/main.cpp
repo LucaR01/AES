@@ -18,6 +18,10 @@
 int main()
 {
 
+#ifndef RELEASE_MODE
+    aes::log::Logger::init();
+#endif
+
     //TODO: remove, creare un test a riguardo.
     /*std::vector<std::string> data = { "hello ", " everyone ", "! " };
     aes::fm::FileManager::write_file_data("test.txt", data);
@@ -345,8 +349,8 @@ int main()
                                         0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
                                         0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f};
 
-    std::vector<unsigned char> encryptedCFB = aes::mod::encrypt_CBC(plain6, key5, iv2, aes::AES::AES_256);
-    std::vector<unsigned char> decryptedCFB = aes::mod::decrypt_CBC(encryptedCFB, key5, iv2, aes::AES::AES_256);
+    std::vector<unsigned char> encryptedCFB = aes::mod::encrypt_CFB(plain6, key5, iv2, aes::AES::AES_256);
+    std::vector<unsigned char> decryptedCFB = aes::mod::decrypt_CFB(encryptedCFB, key5, iv2, aes::AES::AES_256);
 
     std::cout << "encryptedCFB: " << std::endl;
     for(const auto& e : encryptedCFB) {
@@ -368,6 +372,10 @@ int main()
     }
 
     std::cout << "" << std::endl;
+
+#ifndef RELEASE_MODE
+    aes::log::Logger::shutdown();
+#endif
 
     return EXIT_SUCCESS;
 }
