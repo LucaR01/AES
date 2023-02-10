@@ -9,9 +9,12 @@
 #include "logger/logger.hpp"
 //#endif
 
+#include "core/aes_api.hpp"
+
 #include "graphics/console/console.hpp"
 #include "file_manager/file_manager.hpp" //TODO: remove?
 #include "core/modes/modes.hpp"
+#include "core/padding/padding.hpp"
 
 //TODO: dove uso constexpr, metterli nell'.hpp; tipo negli enums.
 
@@ -331,6 +334,8 @@ int main()
         std::cout << d << ", ";
     }
 
+    std::cout << std::endl;
+
     std::cout << "----------------------------------------------------------------" << std::endl;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -372,6 +377,54 @@ int main()
     }
 
     std::cout << "" << std::endl;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // AES::API
+
+    /*std::cout << "--------------------------" << std::endl;
+    std::cout << "AES API" << std::endl;
+
+    std::vector<unsigned char> plain7 = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
+                                         0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb,
+                                         0xcc, 0xdd, 0xee, 0xff};
+
+    std::vector<unsigned char> iv3 = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                      0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                      0xff, 0xff, 0xff, 0xff};
+
+    std::vector<unsigned char> key7 = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
+                                        0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
+                                        0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f};
+
+    std::string plain7_string(plain7.cbegin(), plain7.cend());
+    std::string key7_string(key7.cbegin(), key7.cend());
+    std::vector<unsigned char> encryptedCFB2 = aes::api::encrypt(plain7_string, key7_string, iv3, aes::pad::Paddings::NO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
+
+    std::string encryptedCFB2_string(encryptedCFB2.cbegin(), encryptedCFB2.cend());
+
+    std::vector<unsigned char> decryptedCFB2 = aes::api::decrypt(encryptedCFB2_string, key7_string, iv3, aes::pad::Paddings::NO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
+
+    std::cout << "encryptedCFB2: " << std::endl;
+    for(const auto& e : encryptedCFB2) {
+        std::cout << e << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "plain7: " << std::endl;
+    for(const auto& p : plain7) {
+        std::cout << p << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "decryptedCFB2: " << std::endl;
+    for(const auto& d : decryptedCFB2) {
+        std::cout << d << ", ";
+    }
+
+    std::cout << "" << std::endl;*/
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();

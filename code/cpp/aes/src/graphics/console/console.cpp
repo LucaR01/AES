@@ -344,7 +344,7 @@ aes::pad::Paddings request_padding()
     std::cout << "Seleziona: ";
     std::cin >> padding_type;
 
-    while((std::cin.fail()) || (padding_type < 1 || padding_type > 2)) {
+    while((std::cin.fail()) || (padding_type < aes::pad::get_padding_index(aes::pad::Paddings::NO_PADDING) || padding_type > aes::pad::TYPES_OF_PADDINGS - 1)) {
         std::cin.clear();
         std::cout << "Seleziona tipo di padding: " << '\n';
         for(const auto& p : aes::pad::all) {

@@ -527,10 +527,10 @@ void sub_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys)
     }
 }
 
-void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const unsigned short& number_of_keys)
+void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const uint8_t& number_of_keys)
 {
     uint8_t temp = 1;
-    for(uint8_t i = 0; i < number_of_keys - 1; i++) { //TODO: uint8_t i = 0;
+    for(uint8_t i = 0; i < number_of_keys - 1; i++) {
         temp = gal::xtime(temp); //TODO: warning, rimuovendo il constexpr si fixa.
     }
 
@@ -538,21 +538,11 @@ void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const unsigned
     keys[1] = keys[2] = keys[3] = 0;
 }
 
-void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, unsigned int block_length) //TODO: riscrivere?
+void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, const unsigned int& block_length) //TODO: riscrivere?
 {
     for(unsigned int i = 0; i < block_length; i++) {
         z[i] = x[i] ^ y[i]; //TODO: usare galois_add_sub()?
     }
 }
-
-// FUNZIONI DA CHIAMARE
-
-//TODO: uncomment
-/*std::vector<uint8_t> encrypt(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode)
-{
-    aes::pad::add_padding(message, padding);
-    return std::vector<uint8_t>{}; //TODO: da completare
-}*/
-
 
 } // namespace aes

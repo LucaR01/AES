@@ -35,7 +35,7 @@ static constexpr std::array<Modes, NUM_OF_MODES> all = { Modes::ECB, Modes::CBC,
     return static_cast<std::underlying_type_t<Modes>>(mode);
 }
 
-static const std::map<Modes, std::string_view> modes_names = {
+static const std::map<Modes, std::string_view>& modes_names = {
         {Modes::ECB, "ECB"},
         {Modes::CBC, "CBC"},
         {Modes::CFB, "CFB"}

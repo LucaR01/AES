@@ -13,7 +13,7 @@
 #include <optional>
 
 #include "math/galois_math.hpp"
-//#include "core/padding/padding.hpp"
+//#include "core/padding/padding.hpp" // Non è possibile includerli, perché sarebbero headers che si includono a vicenda.
 //#include "core/modes/modes.hpp"
 
 namespace aes {
@@ -182,18 +182,9 @@ void rot_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys);
 
 void sub_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys);
 
-void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const unsigned short& number_of_keys);
+void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const uint8_t& number_of_keys);
 
-void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, unsigned int block_length); //TODO: riscrivere?
-
-// FUNZIONI DA CHIAMARE
-
-//TODO: da chiamare nella console.
-//TODO: uncomment
-//std::vector<uint8_t> encrypt(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode);
-
-//TODO: uncomment
-//std::string_view encrypt2(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const pad::Paddings& padding, const mod::Modes& mode);
+void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, const unsigned int& block_length); //TODO: riscrivere?
 
 }
 

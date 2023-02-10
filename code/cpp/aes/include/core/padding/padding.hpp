@@ -27,7 +27,7 @@ enum class Paddings {
 
 //TODO: ANSI x9.23 Padding
 
-static constexpr uint8_t TYPES_OF_PADDINGS = 6; //TODO: &
+static constexpr uint8_t TYPES_OF_PADDINGS = 6;
 
 static constexpr std::array<Paddings, TYPES_OF_PADDINGS> all{Paddings::NO_PADDING, Paddings::ZERO_PADDING, Paddings::ONE_ZERO_PADDING,
                                                              Paddings::ANSI_X9_23_PADDING, Paddings::ISO_10126_PADDING, Paddings::PKCS7};
@@ -37,7 +37,7 @@ static constexpr std::array<Paddings, TYPES_OF_PADDINGS> all{Paddings::NO_PADDIN
     return static_cast<std::underlying_type_t<Paddings>>(padding);
 }
 
-static const std::map<Paddings, std::string_view> padding_names = {
+static const std::map<Paddings, std::string_view>& padding_names = {
         {Paddings::NO_PADDING, "No Padding"},
         {Paddings::ZERO_PADDING, "0-Padding"},
         {Paddings::ONE_ZERO_PADDING, "1-0-Padding"},
@@ -50,15 +50,10 @@ static const std::map<Paddings, std::string_view> padding_names = {
 //TODO: volendo string_view
 std::string add_padding(std::string& message, const Paddings& padding);
 
+std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& padding);
+
 //TODO: rename in remove_padding_from_message()?
-std::vector<uint8_t> remove_padding(std::vector<uint8_t>, const Paddings& padding);
-
-//TODO: spostare in un file a parte, tipo Random.hpp
-unsigned int get_seed();
-
-char get_random_byte();
-
-std::vector<char> get_random_bytes(const unsigned int& number_of_random_bytes);
+std::vector<uint8_t> remove_padding(std::vector<uint8_t>& encrypted_message, const Paddings& padding);
 
 } // aes::pad
 
