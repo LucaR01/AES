@@ -8,9 +8,11 @@
 #include <cstdint>
 #include <array>
 #include <string>
+#include <string_view>
 #include <vector>
 #include <memory>
 #include <optional>
+#include <map>
 
 #include "math/galois_math.hpp"
 //#include "core/padding/padding.hpp" // Non è possibile includerli, perché sarebbero headers che si includono a vicenda.
@@ -35,21 +37,37 @@ static constexpr uint8_t THIRD_SHIFT_ROW = 3;
 
 //static constexpr uint8_t SHIFT_FIRST_ROW_POSITIONS = 1; //TODO: remove
 
-//TODO: mettere questo enum in un altro file?
-enum AES {
+//TODO: enum class
+enum class AES {
     AES_128 = 128,
     AES_192 = 192,
     AES_256 = 256
 };
 
+static constexpr uint8_t NUM_OF_AES_TYPES = 3;
+
+static constexpr std::array<AES, NUM_OF_AES_TYPES> ALL_AES_TYPES = {AES::AES_128, AES::AES_192, AES::AES_256 };
+
+static const std::map<AES, std::string_view>& ALL_AES_TYPES_NAMES = {
+        {AES::AES_128, "AES 128"},
+        {AES::AES_192, "AES 192"},
+        {AES::AES_256, "AES 256"}
+};
+
+//TODO: rename in get_aes_value?
+[[nodiscard]] static constexpr unsigned short get_aes_index(const AES& aes)
+{
+    return static_cast<std::underlying_type_t<AES>>(aes);
+}
+
 [[nodiscard]] static constexpr uint8_t get_number_of_rounds(const AES& aes)
 {
     switch(aes) {
-        case AES_192:
+        case AES::AES_192:
             return aes::ROUNDS_AES_192;
-        case AES_256:
+        case AES::AES_256:
             return aes::ROUNDS_AES_256;
-        case AES_128:
+        case AES::AES_128:
         default:
             return aes::ROUNDS_AES_128;
     }
@@ -58,18 +76,18 @@ enum AES {
 [[nodiscard]] static constexpr uint8_t get_number_of_keys(const AES& aes)
 {
     switch(aes) {
-        case AES_192:
+        case AES::AES_192:
             return aes::AES_192_NUMBER_OF_KEYS;
-        case AES_256:
+        case AES::AES_256:
             return aes::AES_256_NUMBER_OF_KEYS;
-        case AES_128:
+        case AES::AES_128:
         default:
             return aes::AES_128_NUMBER_OF_KEYS;
     }
 }
 
 //TODO: fare delle costanti per lo shift delle righe nello shift_rows()?
-static constexpr std::array<uint8_t, aes::AES_256> S_BOX = {
+static constexpr std::array<uint8_t, get_aes_index(aes::AES::AES_256)> S_BOX = {
         0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
         0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15,
@@ -88,7 +106,7 @@ static constexpr std::array<uint8_t, aes::AES_256> S_BOX = {
         0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16
 };
 
-static constexpr std::array<uint8_t, aes::AES_256> INVERSE_S_BOX = {
+static constexpr std::array<uint8_t, get_aes_index(aes::AES::AES_256)> INVERSE_S_BOX = {
         0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
         0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87, 0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb,
         0x54, 0x7b, 0x94, 0x32, 0xa6, 0xc2, 0x23, 0x3d, 0xee, 0x4c, 0x95, 0x0b, 0x42, 0xfa, 0xc3, 0x4e,

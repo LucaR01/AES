@@ -12,7 +12,7 @@
 #include <vector>
 #include <string>
 
-//TODO: rename directory in Paddings?
+//TODO: rename directory in paddings?
 
 namespace aes::pad {
 
@@ -24,8 +24,6 @@ enum class Paddings {
     ISO_10126_PADDING,
     PKCS7
 };
-
-//TODO: ANSI x9.23 Padding
 
 static constexpr uint8_t TYPES_OF_PADDINGS = 6;
 
@@ -48,7 +46,7 @@ static const std::map<Paddings, std::string_view>& padding_names = {
 
 //TODO: rename in update_padding()? include_padding()?
 //TODO: volendo string_view
-std::string add_padding(std::string& message, const Paddings& padding);
+[[maybe_unused]] std::string add_padding(std::string& message, const Paddings& padding);
 
 std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& padding);
 

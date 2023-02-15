@@ -13,8 +13,8 @@
 
 #include "graphics/console/console.hpp"
 #include "file_manager/file_manager.hpp" //TODO: remove?
-#include "core/modes/modes.hpp"
-#include "core/padding/padding.hpp"
+//#include "core/modes/modes.hpp"
+//#include "core/padding/padding.hpp"
 
 //TODO: dove uso constexpr, metterli nell'.hpp; tipo negli enums.
 
@@ -47,7 +47,7 @@ int main()
 
     AES_DEBUG("Filename: {} exists: {}", aes::fm::FileManager::get_filename("test.txt"), aes::fm::FileManager::file_exists("test.txt"))*/
 
-    //aes::con::show_console(); //TODO: remove/testare
+    aes::con::show_console(); //TODO: remove/testare
 
     //TODO: da mettere in un test.
     //std::cout << "TEST 0 " << std::endl;
@@ -382,7 +382,8 @@ int main()
 
     // AES::API
 
-    /*std::cout << "--------------------------" << std::endl;
+    //TODO: uncomment
+    std::cout << "--------------------------" << std::endl;
     std::cout << "AES API" << std::endl;
 
     std::vector<unsigned char> plain7 = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
@@ -399,11 +400,11 @@ int main()
 
     std::string plain7_string(plain7.cbegin(), plain7.cend());
     std::string key7_string(key7.cbegin(), key7.cend());
-    std::vector<unsigned char> encryptedCFB2 = aes::api::encrypt(plain7_string, key7_string, iv3, aes::pad::Paddings::NO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
+    std::vector<unsigned char> encryptedCFB2 = aes::api::encrypt(plain7_string, key7_string, iv3, aes::pad::Paddings::ONE_ZERO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
 
     std::string encryptedCFB2_string(encryptedCFB2.cbegin(), encryptedCFB2.cend());
 
-    std::vector<unsigned char> decryptedCFB2 = aes::api::decrypt(encryptedCFB2_string, key7_string, iv3, aes::pad::Paddings::NO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
+    std::vector<unsigned char> decryptedCFB2 = aes::api::decrypt(encryptedCFB2_string, key7_string, iv3, aes::pad::Paddings::ONE_ZERO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
 
     std::cout << "encryptedCFB2: " << std::endl;
     for(const auto& e : encryptedCFB2) {
@@ -424,7 +425,7 @@ int main()
         std::cout << d << ", ";
     }
 
-    std::cout << "" << std::endl;*/
+    std::cout << "" << std::endl;
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();

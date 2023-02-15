@@ -5,7 +5,10 @@
 #ifndef AES_CONSOLE_H
 #define AES_CONSOLE_H
 
+#include <string>
 #include <string_view>
+#include <cstdint>
+#include <vector>
 
 #include "core/padding/padding.hpp"
 #include "core/modes/modes.hpp"
@@ -27,19 +30,19 @@ void get_user_input();
 
 // ENCRYPTION
 
-void operation_encryption(); //TODO: remove?
+//void operation_encryption(); //TODO: remove?
 
-void show_encrypt_message(); //TODO: remove?
+//void show_encrypt_message(); //TODO: remove?
 
-void show_encrypt_file(); //TODO: remove?
+//void show_encrypt_file(); //TODO: remove?
 
 // DECRYPTION
 
-void operation_decryption(); //TODO: remove?
+//void operation_decryption(); //TODO: remove?
 
-void show_decrypt_message(); //TODO: remove?
+//void show_decrypt_message(); //TODO: remove?
 
-void show_decrypt_file(); //TODO: remove?
+//void show_decrypt_file(); //TODO: remove?
 
 // ENCRYPTION & DECRYPTION
 
@@ -65,6 +68,10 @@ aes::pad::Paddings request_padding(); //TODO: rename in get_padding() o altro?
 std::string request_key();
 
 aes::mod::Modes request_mode();
+
+std::vector<uint8_t> request_iv(const aes::mod::Modes& mode); //TODO: rename in selected_mode
+
+aes::AES request_aes_type(); //TODO: rename in request_aes_size() oppure request_aes?
 
 //TODO: std::string request_IV();
 

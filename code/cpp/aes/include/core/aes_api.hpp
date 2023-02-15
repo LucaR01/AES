@@ -11,9 +11,19 @@
 #include <string_view>
 #include <optional>
 
-#include "core/padding/padding.hpp"
-#include "core/modes/modes.hpp"
-#include "core/aes.hpp"
+// Forward Declaration to avoid Circular Dependency of Header files.
+// In realtà non c'era bisogno, ma velocizza il compile time.
+namespace aes::pad {
+    enum class Paddings;
+}
+
+namespace aes::mod {
+    enum class Modes;
+}
+
+namespace aes {
+    enum class AES;
+}
 
 //TODO: rename in aes::api or just aes?
 namespace aes::api {
@@ -22,12 +32,13 @@ namespace aes::api {
 
 //TODO: encrypt che prende come parametro un vector uint8_t message, vector uint8_t key
 
-//TODO: da chiamare nella console.
+//TODO: usare string_view?
+//TODO: std::optional = std::nullopt_t as default value
 std::vector<uint8_t> encrypt(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
 
-//TODO: uncomment
-//std::string_view encrypt2(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const pad::Paddings& padding, const mod::Modes& mode, const aes::AES& aes);
+//TODO: creare una encrypt e una decrypt che prende un std::vector<uint8_t> come message e come key?
 
+//TODO: std::optional = std::nullopt_t as default value
 std::vector<uint8_t> decrypt(std::string& encrypted_message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
 
 } // namespace aes::api

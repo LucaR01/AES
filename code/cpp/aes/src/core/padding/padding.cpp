@@ -2,10 +2,6 @@
 // Created by Luca on 14/12/2022.
 //
 
-/*#ifndef RELEASE_MODE //TODO: remove
-#include <iostream>
-#endif*/
-
 #include "core/padding/padding.hpp"
 #include "core/aes.hpp"
 #include "math/random/aes_random.hpp"
@@ -14,7 +10,7 @@
 
 namespace aes::pad {
 
-std::string add_padding(std::string& message, const Paddings& padding)
+[[maybe_unused]] std::string add_padding(std::string& message, const Paddings& padding)
 {
     const unsigned int& remainder = message.size() % aes::BLOCK_SIZE;
     const unsigned int& missing_length = aes::BLOCK_SIZE - remainder;
@@ -82,7 +78,6 @@ std::string add_padding(std::string& message, const Paddings& padding)
         }
     }
 
-    //return std::vector<uint8_t>(message, message.size() + 0);
     return message;
 }
 
@@ -156,13 +151,6 @@ std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& 
     }
 
     AES_DEBUG("message dopo l'aggiunta del padding: {}", std::string(message.cbegin(), message.cend()))
-
-/*#ifndef RELEASE_MODE //TODO: remove
-    for(const auto& m : message) {
-        std::cout << m;
-    }
-    std::cout << std::flush;
-#endif*/
 
     return message;
 }

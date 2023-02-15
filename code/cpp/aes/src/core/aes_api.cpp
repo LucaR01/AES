@@ -5,6 +5,10 @@
 #include "core/aes_api.hpp"
 #include "logger/logger.hpp"
 
+#include "core/aes.hpp"
+#include "core/padding/padding.hpp"
+#include "core/modes/modes.hpp"
+
 namespace aes::api {
 
 // FUNZIONI DA CHIAMARE
@@ -16,16 +20,7 @@ std::vector<uint8_t> encrypt(std::string& message, std::string& key, const std::
     std::vector<uint8_t> message_vector(message.cbegin(), message.cend());
     const std::vector<uint8_t>& message_with_padding = aes::pad::add_padding(message_vector, padding);
 
-    AES_DEBUG("message_with_padding: {}", std::string(message_with_padding.cbegin(), message_with_padding.cend()))
-
-/*#ifndef RELEASE_MODE //TODO: remove
-    //std::string_view sv(message_with_padding, message_with_padding.size());
-    for(const auto& mp : message_with_padding) {
-        std::cout << mp;
-    }
-
-    std::cout << std::flush;
-#endif*/
+    AES_DEBUG("unencrypted message_with_padding: {}", std::string(message_with_padding.cbegin(), message_with_padding.cend()))
 
     switch(mode) {
         case mod::Modes::ECB:
@@ -40,7 +35,8 @@ std::vector<uint8_t> encrypt(std::string& message, std::string& key, const std::
     }
 }
 
-std::vector<uint8_t> decrypt(std::string& encrypted_message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes)
+std::vector<uint8_t> decrypt(std::string& encrypted_message, std::string& key, const std::optional<std::vector<uint8_t>>& iv,
+                             const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes)
 {
     std::vector<uint8_t> key_vector(key.cbegin(), key.cend());
     std::vector<uint8_t> encrypted_message_vector(encrypted_message.cbegin(), encrypted_message.cend());
