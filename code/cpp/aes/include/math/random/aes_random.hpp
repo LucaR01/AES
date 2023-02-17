@@ -9,11 +9,11 @@
 
 namespace aes::rnd {
 
-unsigned int get_seed();
+[[nodiscard]] unsigned int get_seed();
 
-char get_random_byte();
+[[nodiscard]] char get_random_byte();
 
-std::vector<char> get_random_bytes(const unsigned int& number_of_random_bytes);
+[[nodiscard]] std::vector<char> get_random_bytes(const unsigned int& number_of_random_bytes);
 
 } // namespace aes::rnd
 

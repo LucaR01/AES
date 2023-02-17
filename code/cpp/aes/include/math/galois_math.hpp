@@ -47,6 +47,6 @@ static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00
     return (x << 0x01) ^ (((x >> 0x07) & 0x01) * gal::IRREDUCIBLE_POLYNOMIAL);
 }
 
-}
+} // namespace aes::gal
 
 #endif //AES_GALOIS_MATH_H

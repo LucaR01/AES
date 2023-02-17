@@ -28,22 +28,6 @@ void show_console();
 
 void get_user_input();
 
-// ENCRYPTION
-
-//void operation_encryption(); //TODO: remove?
-
-//void show_encrypt_message(); //TODO: remove?
-
-//void show_encrypt_file(); //TODO: remove?
-
-// DECRYPTION
-
-//void operation_decryption(); //TODO: remove?
-
-//void show_decrypt_message(); //TODO: remove?
-
-//void show_decrypt_file(); //TODO: remove?
-
 // ENCRYPTION & DECRYPTION
 
 //TODO: rename in qualcosa di più carino.
@@ -75,6 +59,6 @@ aes::AES request_aes_type(); //TODO: rename in request_aes_size() oppure request
 
 //TODO: std::string request_IV();
 
-}
+} // namespace aes::con
 
 #endif //AES_CONSOLE_H

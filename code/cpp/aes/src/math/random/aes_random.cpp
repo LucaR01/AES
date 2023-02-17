@@ -11,9 +11,7 @@
 
 namespace aes::rnd {
 
-//TODO: spostare in un altro file tipo Random.hpp
-
-unsigned int get_seed()
+[[nodiscard]] unsigned int get_seed()
 {
     std::random_device random_device;
     std::mt19937 random_device_generator(random_device());
@@ -22,7 +20,7 @@ unsigned int get_seed()
 }
 
 //TODO: questa è da rifattorizzare
-char get_random_byte()
+[[nodiscard]] char get_random_byte()
 {
     std::independent_bits_engine<std::default_random_engine, CHAR_BIT, uint8_t> random_byte_engine(get_seed()); //TODO: prima srand(time(NULL)) ma non andava.
     std::vector<char> data(1); // 1 perché ci serve un singolo byte, quindi un singolo carattere.
@@ -30,7 +28,7 @@ char get_random_byte()
     return data.at(0);
 }
 
-std::vector<char> get_random_bytes(const unsigned int& number_of_random_bytes)
+[[nodiscard]] std::vector<char> get_random_bytes(const unsigned int& number_of_random_bytes)
 {
     std::independent_bits_engine<std::default_random_engine, CHAR_BIT, uint8_t> random_byte_engine(get_seed());
     //std::array<uint8_t, number_of_random_bytes> data{}; //TODO: questo non è possibile.

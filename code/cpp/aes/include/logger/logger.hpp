@@ -24,7 +24,7 @@ public:
     static void shutdown();
 };
 
-}
+} // namespace aes::log
 
 #define LOGGER_NAME "AES_LOGGER"
 

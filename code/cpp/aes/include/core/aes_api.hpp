@@ -25,21 +25,20 @@ namespace aes {
     enum class AES;
 }
 
-//TODO: rename in aes::api or just aes?
 namespace aes::api {
 
 // FUNZIONI DA CHIAMARE
-
-//TODO: encrypt che prende come parametro un vector uint8_t message, vector uint8_t key
 
 //TODO: usare string_view?
 //TODO: std::optional = std::nullopt_t as default value
 std::vector<uint8_t> encrypt(std::string& message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
 
-//TODO: creare una encrypt e una decrypt che prende un std::vector<uint8_t> come message e come key?
+std::vector<uint8_t> encrypt(std::vector<uint8_t>& message, std::vector<uint8_t>& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
 
 //TODO: std::optional = std::nullopt_t as default value
 std::vector<uint8_t> decrypt(std::string& encrypted_message, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
+
+std::vector<uint8_t> decrypt(std::vector<uint8_t>& encrypted_message, std::vector<uint8_t>& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
 
 } // namespace aes::api
 

@@ -13,6 +13,7 @@
 #include <string>
 
 //TODO: rename directory in paddings?
+//TODO: rename file in paddings?
 
 namespace aes::pad {
 
@@ -27,7 +28,8 @@ enum class Paddings {
 
 static constexpr uint8_t TYPES_OF_PADDINGS = 6;
 
-static constexpr std::array<Paddings, TYPES_OF_PADDINGS> all{Paddings::NO_PADDING, Paddings::ZERO_PADDING, Paddings::ONE_ZERO_PADDING,
+//TODO: rename in ALL_PADDING_TYPES?
+static constexpr std::array<Paddings, TYPES_OF_PADDINGS> ALL_PADDINGS{Paddings::NO_PADDING, Paddings::ZERO_PADDING, Paddings::ONE_ZERO_PADDING,
                                                              Paddings::ANSI_X9_23_PADDING, Paddings::ISO_10126_PADDING, Paddings::PKCS7};
 
 [[nodiscard]] static constexpr uint8_t get_padding_index(const Paddings& padding)
@@ -35,7 +37,8 @@ static constexpr std::array<Paddings, TYPES_OF_PADDINGS> all{Paddings::NO_PADDIN
     return static_cast<std::underlying_type_t<Paddings>>(padding);
 }
 
-static const std::map<Paddings, std::string_view>& padding_names = {
+//TODO: rename in PADDINGS_NAMES?
+static const std::map<Paddings, std::string_view>& PADDING_NAMES = {
         {Paddings::NO_PADDING, "No Padding"},
         {Paddings::ZERO_PADDING, "0-Padding"},
         {Paddings::ONE_ZERO_PADDING, "1-0-Padding"},
@@ -44,7 +47,6 @@ static const std::map<Paddings, std::string_view>& padding_names = {
         {Paddings::PKCS7, "PKCS7"}
 };
 
-//TODO: rename in update_padding()? include_padding()?
 //TODO: volendo string_view
 [[maybe_unused]] std::string add_padding(std::string& message, const Paddings& padding);
 

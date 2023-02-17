@@ -65,6 +65,34 @@ std::vector<std::string> FileManager::get_file_data2(const std::string& file_pat
     return buffer;
 }
 
+std::string FileManager::get_file_data3(const std::string& file_path) // Same code as get_key();
+{
+    std::vector<std::string> buffer;
+    std::stringstream ss;
+
+    std::ifstream file; //TODO: std::ifstream file(file_path);
+    file.open(file_path);
+
+    //TODO: while(getline(file, line)) { ss << line }
+
+    if(file.is_open()) {
+        std::string line;
+        while(std::getline(file, line)) {
+            buffer.push_back(line);
+            AES_DEBUG("line of file: {}", line)
+            AES_DEBUG("buffer.size(): {}", buffer.size())
+        }
+    }
+
+    for(const auto& line : buffer) {
+        ss << line;
+    }
+
+    AES_DEBUG("data: {}", ss.str())
+
+    return ss.str();
+}
+
 std::string FileManager::get_key(const std::string& file_path)
 {
     std::vector<std::string> buffer;
@@ -93,7 +121,7 @@ std::string FileManager::get_key(const std::string& file_path)
     return ss.str();
 }
 
-void FileManager::write_file_data(const std::string &file_path, const std::vector<std::string> &data)
+void FileManager::write_file_data(const std::string& file_path, const std::vector<std::string>& data)
 {
     std::ofstream file;
     file.open(file_path, get_file_mode(FileModes::APPEND));
@@ -106,6 +134,45 @@ void FileManager::write_file_data(const std::string &file_path, const std::vecto
     } else {
         std::cout << "File doesn't exist or is not open." << std::endl;
         //TODO: throw error?
+    }
+
+    file.close();
+
+    AES_INFO("file size: {}", get_file_size(file_path))
+}
+
+void FileManager::write_file_data(const std::string& file_path, const std::vector<uint8_t>& data)
+{
+    std::ofstream file;
+    file.open(file_path, get_file_mode(FileModes::APPEND));
+
+    if(file.is_open()) {
+        for(const auto& line : data) {
+            file << line;
+            AES_DEBUG("line: {}", line)
+        }
+    } else {
+        std::cout << "File doesn't exist or is not open." << std::endl; //TODO: remove?
+        throw std::runtime_error("File not found or not open");
+    }
+
+    file.close();
+
+    AES_INFO("file size: {}", get_file_size(file_path))
+}
+
+void FileManager::write_file_data(const std::string& file_path, const std::string& data)
+{
+    std::ofstream file;
+    file.open(file_path, get_file_mode(FileModes::APPEND));
+
+    if(file.is_open()) {
+        for(const auto& line : data) {
+            file << line;
+            AES_DEBUG("line: {}", line)
+        }
+    } else {
+        throw std::runtime_error("File not found or not open");
     }
 
     file.close();

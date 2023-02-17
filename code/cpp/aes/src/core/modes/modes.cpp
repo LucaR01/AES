@@ -184,7 +184,7 @@ void verify_length(const unsigned int& size)
 {
     if(size % aes::BLOCK_SIZE != 0) {
         //TODO: se non lo mostra nella console, fare un std::cout o std::cerr
-        throw std::length_error("Il messaggio deve essere divisibile per " + std::to_string(aes::BLOCK_SIZE)); //TODO: si potrebbe aggiungere il messaggio (input)
+        throw std::length_error("Il messaggio di grandezza: " + std::to_string(size) + " deve essere divisibile per " + std::to_string(aes::BLOCK_SIZE)); //TODO: si potrebbe aggiungere il messaggio (input)
     }
 }
 

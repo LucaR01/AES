@@ -427,6 +427,43 @@ int main()
 
     std::cout << "" << std::endl;
 
+    // -----------------------------------------------------------------------------------------------------------------
+
+    std::cout << "================= CON SOLO STRINGHE TEST =====================" << std::endl;
+
+    std::string plain7_s = "\u0011\u0002 3\u0004@U\u0006`w\b\u0080\u0099\n"" »\fÀÝ\u000Eàÿ";
+
+    std::string iv3_s = "\u000Fðÿ\u000Fðÿ\u000Fðÿ\u000Fðÿ\u000Fðÿ\u000Fðÿ\u000Fðÿ\u000Fðÿ";
+
+    std::string key7_s = "\u0001 \u0003@\u0005`\u0007\u0080\t \u000BÀ\n""à\u000F\u0001\u0011\u0001 \u0013\u0001@\u0015\u0001`\u0017\u0001\u0080\u0019\u0001 \u001B\u0001À\u001D\u0001à\u001F";
+
+    std::vector<unsigned char> encryptedCFB3 = aes::api::encrypt(plain7_s, key7_s, std::vector<uint8_t>(iv3_s.cbegin(), iv3_s.cend()), aes::pad::Paddings::ONE_ZERO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
+
+    std::string encryptedCFB3_string(encryptedCFB3.cbegin(), encryptedCFB3.cend());
+
+    std::vector<unsigned char> decryptedCFB3 = aes::api::decrypt(encryptedCFB3_string, key7_s, std::vector<uint8_t>(iv3_s.cbegin(), iv3_s.cend()), aes::pad::Paddings::ONE_ZERO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
+
+    std::cout << "encryptedCFB3: " << std::endl;
+    for(const auto& e : encryptedCFB3) {
+        std::cout << e << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "plain7_s: " << std::endl;
+    for(const auto& p : plain7_s) {
+        std::cout << p << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "decryptedCFB3: " << std::endl;
+    for(const auto& d : decryptedCFB3) {
+        std::cout << d << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();
 #endif

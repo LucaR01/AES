@@ -28,4 +28,4 @@ void Logger::shutdown()
     spdlog::shutdown();
 }
 
-}
+} // namespace aes::log

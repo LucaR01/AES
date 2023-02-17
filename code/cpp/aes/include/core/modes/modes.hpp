@@ -27,7 +27,7 @@ enum class Modes {
 
 static constexpr uint8_t NUM_OF_MODES = 3;
 
-static constexpr std::array<Modes, NUM_OF_MODES> all = { Modes::ECB, Modes::CBC, Modes::CFB };
+static constexpr std::array<Modes, NUM_OF_MODES> ALL_MODES = { Modes::ECB, Modes::CBC, Modes::CFB };
 
 //TODO: ritornare un byte? uint8_t? char?
 [[nodiscard]] static constexpr uint8_t get_mode_index(const Modes& mode)
@@ -35,7 +35,7 @@ static constexpr std::array<Modes, NUM_OF_MODES> all = { Modes::ECB, Modes::CBC,
     return static_cast<std::underlying_type_t<Modes>>(mode);
 }
 
-static const std::map<Modes, std::string_view>& modes_names = {
+static const std::map<Modes, std::string_view>& MODES_NAMES = {
         {Modes::ECB, "ECB"},
         {Modes::CBC, "CBC"},
         {Modes::CFB, "CFB"}

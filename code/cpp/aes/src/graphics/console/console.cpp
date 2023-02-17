@@ -24,26 +24,8 @@ void show_console()
 //TODO: in get_user_input() posso volendo solo mettere le chiamate alle altre funzioni.
 void get_user_input()
 {
-    /*aes::ops::Operations operation = request_operation();
-    operation_encryption_decryption(operation);*/
-
     //TODO: a questo punto, quasi rimuovere la funzione get_user_input() e semplicemente spostare questo codice in show_console();
-
     operation_encryption_decryption(request_operation());
-
-    /*switch(operation) { //TODO: remove?
-        case aes::ops::ENCRYPT:
-            AES_INFO("Inside ENCRYPT case, operation_selected: {}", aes::ops::operations_names.at(operation))
-            operation_encryption();
-            break;
-        case aes::ops::DECRYPT:
-            AES_INFO("Inside DECRYPT case, operation_selected: {}", aes::ops::operations_names.at(operation))
-            operation_decryption();
-            break;
-        default:
-            AES_ERROR("operation_selected should not be in default branch, operation_selected: {}", aes::ops::operations_names.at(operation))
-            exit(EXIT_FAILURE);
-    }*/
 }
 
 //TODO: però questa la utilizzo una singola volta, la tengo lo stesso? Per il principio di Single Responsability Principle.
@@ -79,140 +61,6 @@ aes::ops::Operations request_operation()
 
     return op;
 }
-
-// ENCRYPTION
-
-/*void operation_encryption() //TODO: remove
-{
-    unsigned short encryption_operation;
-    //TODO: chiedere messaggio, chiave, modalità, padding.
-    //TODO: chiedere file input, path output file, estensione del file?, chiave, modalità, padding.
-    std::cout << "Cosa si desidera cifrare?" << '\n';
-    for(const auto& e : aes::ops::all_encryption_operations) {
-        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
-    }
-    std::cout << "Seleziona: ";
-    std::cin >> encryption_operation;
-    while((std::cin.fail()) || (encryption_operation <= 0 || encryption_operation >= 3)) { //!(std::cin >> encryption_operation) || (std::cin.fail())
-        std::cin.clear();
-        std::cout << "Cosa si desidera cifrare?" << '\n';
-        for(const auto& e : aes::ops::all_encryption_operations) {
-            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
-        }
-        std::cout << "Seleziona: ";
-        std::cin >> encryption_operation;
-        std::cout << std::flush;
-        AES_DEBUG("encryption_operation: {}", encryption_operation)
-    }
-
-    std::cin.clear();
-
-    aes::ops::EncryptionOperations encryption_operation_selected = static_cast<aes::ops::EncryptionOperations>(encryption_operation);
-    std::cout << "Operazione selezionata: " << aes::ops::encryption_operations_names.at(encryption_operation_selected) << std::endl;
-
-    switch(encryption_operation_selected) {
-        case aes::ops::EncryptionOperations::MESSAGE:
-            AES_INFO("Inside MESSAGE case, encryption_operation: {}", encryption_operation)
-            show_encrypt_message();
-            break;
-        case aes::ops::EncryptionOperations::FILE:
-            AES_INFO("Inside FILE case, encryption_operation: {}", encryption_operation)
-            show_encrypt_file();
-            break;
-        default:
-            AES_CRITICAL("encryption_operation should not be in default case, encryption_operation: {}", encryption_operation)
-            exit(EXIT_FAILURE);
-    }
-}*/
-
-/*void show_encrypt_message() //TODO: remove?
-{
-    const std::string& message = request_message();
-    const aes::mod::Modes& mode = request_mode();
-    const aes::pad::Paddings& padding = request_padding();
-    const std::string& key = request_key(); //TODO: usare magari una classe al posto di una stringa.
-    //TODO: chiamare funzione per cifrare
-    //TODO: mostrare a schermo il messaggio cifrato.
-}*/
-
-/*void show_encrypt_file() //TODO: remove?
-{
-    const std::string& input_file_path = request_input_file();
-    const std::vector<char*>& file_data = aes::fm::FileManager::get_file_data(input_file_path); //TODO: o questo
-    const std::vector<std::string>& file_data2 = aes::fm::FileManager::get_file_data2(input_file_path); //TODO: o questo
-    const std::string& file_data3 = aes::fm::FileManager::get_key(input_file_path); //TODO: oppure questo.
-
-    const aes::mod::Modes& mode = request_mode();
-    const aes::pad::Paddings& padding = request_padding();
-    const std::string& key = request_key(); //TODO: questo forse da cambiare.
-
-    const std::string& output_file_path = request_output_file();
-
-    //TODO: chiamare la funzione per cifrare
-    //TODO: cifrare i dati e scriverli in un altro file.
-}*/
-
-// DECRYPTION
-
-/*void operation_decryption() //TODO: remove?
-{
-    //TODO: scelta tra decifratura di un messaggio o di un file.
-    //TODO: chiedere messaggio cifrato, chiave, modalità, padding.
-    //TODO: chiedere file input cifrato, path output file decifrato, estensione del file?, chiave, modalità, padding.
-
-    unsigned short decryption_operation;
-    std::cout << "Cosa si desidera decifrare?" << '\n';
-    for(const auto& e : aes::ops::all_encryption_operations) {
-        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
-    }
-    std::cout << "Seleziona: ";
-    std::cin >> decryption_operation;
-    while((std::cin.fail()) || (decryption_operation <= 0 || decryption_operation >= 3)) { //!(std::cin >> encryption_operation) || (std::cin.fail())
-        std::cin.clear();
-        std::cout << "Cosa si desidera decifrare?" << '\n';
-        for(const auto& e : aes::ops::all_encryption_operations) {
-            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
-        }
-        std::cout << "Seleziona: ";
-        std::cin >> decryption_operation;
-        std::cout << std::flush;
-        AES_DEBUG("decryption_operation: {}", decryption_operation)
-    }
-
-    std::cin.clear();
-
-    aes::ops::EncryptionOperations decryption_operation_selected = static_cast<aes::ops::EncryptionOperations>(decryption_operation);
-    std::cout << "Operazione selezionata: " << aes::ops::encryption_operations_names.at(decryption_operation_selected) << std::endl;
-
-    switch(decryption_operation_selected) {
-        case aes::ops::EncryptionOperations::MESSAGE:
-            AES_INFO("Inside MESSAGE case, decryption_operation: {}", decryption_operation)
-            show_decrypt_message();
-            break;
-        case aes::ops::EncryptionOperations::FILE:
-            AES_INFO("Inside FILE case, decryption_operation: {}", decryption_operation)
-            show_decrypt_file();
-            break;
-        default:
-            AES_CRITICAL("decryption_operation should not be in default case, decryption_operation: {}", decryption_operation)
-            exit(EXIT_FAILURE);
-    }
-}*/
-
-/*void show_decrypt_message() //TODO: remove?
-{
-    const std::string& message = request_message();
-    const aes::mod::Modes& mode = request_mode();
-    const aes::pad::Paddings& padding = request_padding();
-    const std::string& key = request_key(); //TODO: questo forse da cambiare.
-    //TODO: chiamare funzione per decifrare
-    //TODO: mostrare a schermo il messaggio decifrato.
-}*/
-
-/*void show_decrypt_file() //TODO: remove?
-{
-
-}*/
 
 // ENCRYPTION & DECRYPTION
 
@@ -263,9 +111,11 @@ void show_encrypt_decrypt_message(const ops::Operations& operation)
     std::string message = request_message();
     const aes::mod::Modes& mode = request_mode();
     const aes::pad::Paddings& padding = request_padding();
-    std::string key = request_key(); //TODO: usare magari una classe al posto di una stringa.
+    std::string key = request_key(); //TODO: usare magari una classe Key al posto di una stringa.
     const std::vector<uint8_t>& iv = request_iv(mode);
     const aes::AES& aes = request_aes_type();
+
+    AES_DEBUG("aes type: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
 
     switch(operation) {
         case ops::Operations::ENCRYPT:
@@ -288,23 +138,33 @@ void show_encrypt_decrypt_message(const ops::Operations& operation)
 void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
 {
     const std::string& input_file_path = request_input_file();
-    const std::vector<char*>& file_data = aes::fm::FileManager::get_file_data(input_file_path); //TODO: o questo
-    const std::vector<std::string>& file_data2 = aes::fm::FileManager::get_file_data2(input_file_path); //TODO: o questo
-    const std::string& file_data3 = aes::fm::FileManager::get_key(input_file_path); //TODO: oppure questo.
+    //const std::vector<char*>& file_data = aes::fm::FileManager::get_file_data(input_file_path); //TODO: remove
+    //const std::vector<std::string>& file_data2 = aes::fm::FileManager::get_file_data2(input_file_path); //TODO: remove
+    std::string file_data3 = aes::fm::FileManager::get_file_data3(input_file_path); //TODO: rename in file_data
 
     const aes::mod::Modes& mode = request_mode();
     const aes::pad::Paddings& padding = request_padding();
-    const std::string& key = request_key(); //TODO: questo forse da cambiare.
+    std::string key = request_key();
+    const std::vector<uint8_t>& iv = request_iv(mode);
+    const aes::AES& aes = request_aes_type();
 
     const std::string& output_file_path = request_output_file();
 
     switch(operation) {
         case ops::Operations::ENCRYPT:
-            //TODO: chiamare funzione per cifrare il file.
+        {
+            const std::vector<uint8_t>& ciphertext = aes::api::encrypt(file_data3, key, iv, padding, mode, aes);
+            AES_DEBUG("ciphertext: {}", std::string(ciphertext.cbegin(), ciphertext.cend()))
+            aes::fm::FileManager::write_file_data(output_file_path, ciphertext);
             break;
+        }
         case ops::Operations::DECRYPT:
-            //TODO: chiamare funzione per decifrare il file.
+        {
+            const std::vector<uint8_t>& deciphered_plaintext = aes::api::decrypt(file_data3, key, iv, padding, mode, aes);
+            AES_DEBUG("ciphertext: {}", std::string(deciphered_plaintext.cbegin(), deciphered_plaintext.cend()))
+            aes::fm::FileManager::write_file_data(output_file_path, deciphered_plaintext);
             break;
+        }
     }
 }
 
@@ -347,17 +207,17 @@ aes::pad::Paddings request_padding()
 {
     unsigned short padding_type;
     std::cout << "Seleziona tipo di padding: " << '\n';
-    for(const auto& p : aes::pad::all) {
-        std::cout << static_cast<unsigned short>(aes::pad::get_padding_index(p)) << ". " << aes::pad::padding_names.at(p) << '\n';
+    for(const auto& p : aes::pad::ALL_PADDINGS) {
+        std::cout << static_cast<unsigned short>(aes::pad::get_padding_index(p)) << ". " << aes::pad::PADDING_NAMES.at(p) << '\n';
     }
     std::cout << "Seleziona: ";
     std::cin >> padding_type;
 
-    while((std::cin.fail()) || (padding_type < aes::pad::get_padding_index(aes::pad::Paddings::NO_PADDING) || padding_type > aes::pad::TYPES_OF_PADDINGS - 1)) {
+    while((std::cin.fail()) || (padding_type < aes::pad::get_padding_index(aes::pad::ALL_PADDINGS.front()) || padding_type > aes::pad::get_padding_index(aes::pad::ALL_PADDINGS.back()))) {
         std::cin.clear();
         std::cout << "Seleziona tipo di padding: " << '\n';
-        for(const auto& p : aes::pad::all) {
-            std::cout << static_cast<unsigned short>(aes::pad::get_padding_index(p)) << ". " << aes::pad::padding_names.at(p) << '\n';
+        for(const auto& p : aes::pad::ALL_PADDINGS) {
+            std::cout << static_cast<unsigned short>(aes::pad::get_padding_index(p)) << ". " << aes::pad::PADDING_NAMES.at(p) << '\n';
         }
         std::cout << "Seleziona: " << std::flush;
         std::cin >> padding_type;
@@ -365,7 +225,7 @@ aes::pad::Paddings request_padding()
     }
 
     aes::pad::Paddings selected_padding_type = static_cast<aes::pad::Paddings>(padding_type);
-    std::cout << "Hai selezionato: " << aes::pad::padding_names.at(selected_padding_type) << std::endl;
+    std::cout << "Hai selezionato: " << aes::pad::PADDING_NAMES.at(selected_padding_type) << std::endl;
     return selected_padding_type;
 }
 
@@ -426,18 +286,18 @@ aes::mod::Modes request_mode()
 {
     unsigned short mode;
     std::cout << "Seleziona modalità: " << '\n';
-    for(const auto& m : aes::mod::all) {
-        std::cout << static_cast<unsigned short>(aes::mod::get_mode_index(m)) << ". " << aes::mod::modes_names.at(m) << '\n';
+    for(const auto& m : aes::mod::ALL_MODES) {
+        std::cout << static_cast<unsigned short>(aes::mod::get_mode_index(m)) << ". " << aes::mod::MODES_NAMES.at(m) << '\n';
     }
     std::cout << "Seleziona: ";
     std::cin >> mode;
 
     //TODO: prima era get_mode_index(aes::mod::Modes::CFB))
-    while((std::cin.fail()) || (mode < aes::mod::get_mode_index(aes::mod::Modes::ECB) || mode > aes::mod::NUM_OF_MODES - 1)) {
+    while((std::cin.fail()) || (mode < aes::mod::get_mode_index(mod::ALL_MODES.front()) || mode > aes::mod::get_mode_index(mod::ALL_MODES.back()))) {
         std::cin.clear();
-        for(const auto& e : aes::mod::all) {
+        for(const auto& e : aes::mod::ALL_MODES) {
             //TODO: if mode == ECB, stampare anche [deprecated] affianco alla scelta.
-            std::cout << static_cast<unsigned short>(aes::mod::get_mode_index(e)) << ". " << aes::mod::modes_names.at(e) << '\n';
+            std::cout << static_cast<unsigned short>(aes::mod::get_mode_index(e)) << ". " << aes::mod::MODES_NAMES.at(e) << '\n';
         }
         std::cout << "Seleziona: ";
         std::cin >> mode;
@@ -445,7 +305,7 @@ aes::mod::Modes request_mode()
     }
 
     aes::mod::Modes selected_mode = static_cast<aes::mod::Modes>(mode);
-    std::cout << "Hai selezionato: " << aes::mod::modes_names.at(selected_mode) << std::endl;
+    std::cout << "Hai selezionato: " << aes::mod::MODES_NAMES.at(selected_mode) << std::endl;
     return selected_mode;
 }
 
@@ -474,7 +334,7 @@ aes::AES request_aes_type()
     }
     std::cout << "Seleziona: ";
     std::cin >> aes_type;
-    while((std::cin.fail()) || (aes_type < aes::get_aes_index(aes::ALL_AES_TYPES.front()) || aes_type > aes::get_aes_index(aes::ALL_AES_TYPES.back()))) {
+    while((std::cin.fail()) || !aes::AES_VALUES.contains(aes_type)) {
         std::cin.clear();
         for(const auto& t : aes::ALL_AES_TYPES) {
             std::cout << aes::get_aes_index(t) << ". " << aes::ALL_AES_TYPES_NAMES.at(t) << '\n';
@@ -487,7 +347,7 @@ aes::AES request_aes_type()
 
     std::cin.clear();
 
-    return static_cast<AES>(aes_type);
+    return static_cast<aes::AES>(aes_type);
 }
 
 } //namespace aes::con

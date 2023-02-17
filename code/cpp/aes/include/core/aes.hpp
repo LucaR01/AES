@@ -13,10 +13,9 @@
 #include <memory>
 #include <optional>
 #include <map>
+#include <set>
 
 #include "math/galois_math.hpp"
-//#include "core/padding/padding.hpp" // Non è possibile includerli, perché sarebbero headers che si includono a vicenda.
-//#include "core/modes/modes.hpp"
 
 namespace aes {
 
@@ -37,7 +36,6 @@ static constexpr uint8_t THIRD_SHIFT_ROW = 3;
 
 //static constexpr uint8_t SHIFT_FIRST_ROW_POSITIONS = 1; //TODO: remove
 
-//TODO: enum class
 enum class AES {
     AES_128 = 128,
     AES_192 = 192,
@@ -58,6 +56,20 @@ static const std::map<AES, std::string_view>& ALL_AES_TYPES_NAMES = {
 [[nodiscard]] static constexpr unsigned short get_aes_index(const AES& aes)
 {
     return static_cast<std::underlying_type_t<AES>>(aes);
+}
+
+static const std::set<unsigned short> AES_VALUES = { get_aes_index(AES::AES_128), get_aes_index(AES::AES_192), get_aes_index(AES::AES_256) };
+
+[[nodiscard]] static constexpr AES get_aes_type_from_number(const unsigned short& type) //TODO: remove?
+{
+    switch(type) {
+        case 128:
+            return aes::AES::AES_128;
+        case 192:
+            return aes::AES::AES_192;
+        case 256:
+            return aes::AES::AES_256;
+    }
 }
 
 [[nodiscard]] static constexpr uint8_t get_number_of_rounds(const AES& aes)
@@ -86,7 +98,6 @@ static const std::map<AES, std::string_view>& ALL_AES_TYPES_NAMES = {
     }
 }
 
-//TODO: fare delle costanti per lo shift delle righe nello shift_rows()?
 static constexpr std::array<uint8_t, get_aes_index(aes::AES::AES_256)> S_BOX = {
         0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
@@ -204,6 +215,6 @@ void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const uint8_t&
 
 void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, const unsigned int& block_length); //TODO: riscrivere?
 
-}
+} // namespace aes
 
 #endif //AES_AES_H

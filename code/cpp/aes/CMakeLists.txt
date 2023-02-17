@@ -10,8 +10,7 @@ include_directories(include)
 file(GLOB SOURCES src/*.cpp src/logger/*.cpp src/math/*.cpp src/math/random/*.cpp
         src/graphics/*.cpp src/graphics/console/*.cpp src/core/*.cpp src/core/aes_api.cpp
         src/core/operations/*.cpp src/core/padding/*.cpp src/core/modes/*.cpp
-        src/file_manager/*.cpp src/password/*.cpp
-        include/convert/aes_convert.hpp src/convert/*.cpp)
+        src/file_manager/*.cpp include/convert/aes_convert.hpp src/convert/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

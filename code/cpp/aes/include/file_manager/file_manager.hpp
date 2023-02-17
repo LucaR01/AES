@@ -12,6 +12,9 @@
 #include <fstream>
 #include <cstdint>
 #include <filesystem>
+#include <type_traits>
+
+#include "logger/logger.hpp"
 
 namespace aes::fm {
 
@@ -22,7 +25,8 @@ namespace aes::fm {
 
 // ATE = at end of file.
 
-enum FileModes {
+//TODO: enum class?
+enum class FileModes {
     READ,
     WRITE,
     APPEND,
@@ -30,7 +34,8 @@ enum FileModes {
     BINARY
 };
 
-static const std::map<FileModes, std::_Ios_Openmode> file_modes_map = {
+//TODO: rename in just FILE_MODES?
+static const std::map<FileModes, std::_Ios_Openmode>& FILE_MODES_MAP = {
         {FileModes::READ, std::ios::in},
         {FileModes::WRITE, std::ios::out},
         {FileModes::APPEND, std::ios::app},
@@ -41,7 +46,7 @@ static const std::map<FileModes, std::_Ios_Openmode> file_modes_map = {
 //prima std::ios::openmode
 static std::_Ios_Openmode get_file_mode(const FileModes& file_mode)
 {
-    return file_modes_map.at(file_mode);
+    return FILE_MODES_MAP.at(file_mode);
 }
 
 //TODO: rename in FileHandler? then rename namespace in aes::fh?
@@ -60,11 +65,111 @@ public:
     [[nodiscard]] static std::string get_filename(const std::string_view& file_path); //TODO: inline dava errore!
 
     //TODO: std::string_view non andava come return type.
-    static std::vector<char*> get_file_data(const std::string& file_path);
+    static std::vector<char*> get_file_data(const std::string& file_path); //TODO: remove?
     static std::vector<std::string> get_file_data2(const std::string& file_path);
-    static std::string get_key(const std::string& file_path); //TODO: rinominare in get_file_data_single_stream o qualcosa del genere.
+    static std::string get_file_data3(const std::string& file_path); //TODO: remove this or get_key() qui sotto.
+    static std::string get_key(const std::string& file_path); //TODO: rinominare in get_file_data_single_stream o qualcosa del genere. //TODO: remove?
 
-    static void write_file_data(const std::string& file_path, const std::vector<std::string>& data);
+    template<typename T, typename FP>
+    static std::vector<T>& get_file_data(const FP& file_path) //TODO: remove
+    {
+        std::vector<T> buffer;
+        std::ifstream file;
+        file.open(file_path);
+
+        if(file.is_open()) {
+            std::string line;
+            while(std::getline(file, line)) {
+                buffer.push_back(line);
+                AES_DEBUG("line of file: {}", line)
+                AES_DEBUG("buffer.size(): {}", buffer.size())
+            }
+        }
+
+        // If T is a char* then do this.
+        //TODO: update?
+        if(std::is_same_v<T, char*>) { //TODO: decltype()?
+            for(const auto& line : buffer) {
+                buffer.push_back(const_cast<char*>(line.c_str()));
+            }
+        }
+
+        file.close();
+
+        return buffer;
+    }
+
+    template<typename T, typename FP>
+    /*concept char_like = requires(T d) //TODO: doesn't work so remove
+    {
+        std::is_same_v<T, std::string>;
+    };*/
+    // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
+    [[nodiscard]] static T get_file_data(const FP file_path) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
+    {
+
+        std::ifstream file; //TODO: std::ifstream file(file_path);
+        file.open(file_path);
+
+        std::vector<T> buffer;
+        std::stringstream ss;
+
+        if(file.is_open()) {
+            std::string line;
+
+            if(std::is_same_v<T, std::string>) {
+                while(std::getline(file, line)) {
+                    ss << line;
+                }
+            } else {
+                while(std::getline(file, line)) {
+                    buffer.push_back(line);
+                    AES_DEBUG("line of file: {}", line)
+                    AES_DEBUG("buffer.size(): {}", buffer.size())
+                }
+            }
+        }
+
+        /*if(std::is_same_v<T, std::string>) { //TODO: remove
+            for(const auto& line : buffer) {
+                ss << line;
+            }
+        }*/
+
+        if(std::is_same_v<T, std::string>) {
+            AES_DEBUG("data: {}", ss.str())
+        } else {
+            AES_DEBUG("data: {}", std::string(buffer.cbegin(), buffer.cend()))
+        }
+
+        return std::is_same_v<T, std::string> ? ss.str() : buffer;
+    }
+
+    static void write_file_data(const std::string& file_path, const std::vector<std::string>& data); //TODO: remove?
+    static void write_file_data(const std::string& file_path, const std::vector<uint8_t>& data); //TODO: remove?
+    static void write_file_data(const std::string& file_path, const std::string& data); //TODO: remove?
+
+    template<typename T, typename FP> //TODO: typename FP for file_path, typename T for data
+    // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
+    static void write_file_data(const FP file_path, const T& data) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
+    {
+        std::ofstream file;
+        file.open(file_path, get_file_mode(FileModes::APPEND));
+
+        if(file.is_open()) {
+            for(const auto& line : data) {
+                file << line;
+                AES_DEBUG("line: {}", line)
+            }
+        } else {
+            throw std::runtime_error("File not found or not open");
+        }
+
+        file.close();
+
+        AES_INFO("file size: {}", get_file_size(file_path))
+    }
+
     [[nodiscard]] static inline bool has_data(const std::string_view& file_path);
 
     [[nodiscard]] static inline uintmax_t get_file_size(const std::string_view& file_path);
@@ -77,6 +182,6 @@ private:
     ~FileManager() = default;
 };
 
-}
+} // namespace aes::fm
 
 #endif //AES_FILEMANAGER_H
