@@ -5,6 +5,7 @@
 #ifndef AES_AES_ALL_HPP
 #define AES_AES_ALL_HPP
 
+#include "convert/aes_convert.hpp"
 #include "core/aes.hpp"
 #include "core/aes_api.hpp"
 #include "core/padding/padding.hpp"

@@ -1,3 +1,9 @@
 [submodule "code/cpp/aes/external/spdlog"]
 	path = code/cpp/aes/external/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "code/cpp/aes/external/imgui"]
+	path = code/cpp/aes/external/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "code/cpp/aes/external/glfw"]
+	path = code/cpp/aes/external/glfw
+	url = https://github.com/glfw/glfw.git

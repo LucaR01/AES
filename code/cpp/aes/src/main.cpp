@@ -464,6 +464,58 @@ int main()
 
     std::cout << "" << std::endl;
 
+    // -----------------------------------------------------------------------------------------------------------------
+
+    std::cout << "================= STRINGHE INPUT TEST =====================" << std::endl;
+
+    std::cout << "Insert plaintext: " << std::endl;
+    std::string plain8_s;
+    std::cin >> plain8_s;
+    std::cin.ignore();
+
+    AES_DEBUG("plain8_s: {}", plain8_s)
+
+    std::cout << "Insert iv: " << std::endl;
+    std::string iv4_s;
+    std::cin >> iv4_s;
+    std::cin.ignore();
+
+    AES_DEBUG("iv4_s: {}", iv4_s)
+
+    std::cout << "Insert key: " << std::endl;
+    std::string key8_s;
+    std::cin >> key8_s;
+    std::cin.ignore();
+
+    AES_DEBUG("key8_s: {}", key8_s)
+
+    std::vector<unsigned char> encryptedCFB4 = aes::api::encrypt(plain8_s, key8_s, std::vector<uint8_t>(iv4_s.cbegin(), iv4_s.cend()), aes::pad::Paddings::ONE_ZERO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
+
+    std::string encryptedCFB4_string(encryptedCFB4.cbegin(), encryptedCFB4.cend());
+
+    std::vector<unsigned char> decryptedCFB4 = aes::api::decrypt(encryptedCFB4_string, key8_s, std::vector<uint8_t>(iv4_s.cbegin(), iv4_s.cend()), aes::pad::Paddings::ONE_ZERO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);
+
+    std::cout << "encryptedCFB4: " << std::endl;
+    for(const auto& e : encryptedCFB4) {
+        std::cout << e << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "plain8_s: " << std::endl;
+    for(const auto& p : plain8_s) {
+        std::cout << p << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
+    std::cout << "decryptedCFB4: " << std::endl;
+    for(const auto& d : decryptedCFB4) {
+        std::cout << d << ", ";
+    }
+
+    std::cout << "" << std::endl;
+
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();
 #endif

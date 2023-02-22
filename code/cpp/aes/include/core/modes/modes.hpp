@@ -15,7 +15,6 @@
 #include <string>
 
 #include "core/aes.hpp"
-//#include "core/padding/padding.hpp"
 
 namespace aes::mod {
 
@@ -29,7 +28,6 @@ static constexpr uint8_t NUM_OF_MODES = 3;
 
 static constexpr std::array<Modes, NUM_OF_MODES> ALL_MODES = { Modes::ECB, Modes::CBC, Modes::CFB };
 
-//TODO: ritornare un byte? uint8_t? char?
 [[nodiscard]] static constexpr uint8_t get_mode_index(const Modes& mode)
 {
     return static_cast<std::underlying_type_t<Modes>>(mode);
@@ -96,6 +94,8 @@ std::vector<uint8_t> encrypt_CBC(const std::vector<uint8_t>& input, const std::v
 
 std::vector<uint8_t> decrypt_CBC(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const aes::AES& aes);
 
+//TODO: fare quelle che restsituiscono std::vector proprio come encrypt_ECB4
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // CFB MODE
@@ -107,6 +107,8 @@ uint8_t* decrypt_CFB(const uint8_t input[], unsigned int input_length, const uin
 std::vector<uint8_t> encrypt_CFB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const aes::AES& aes);
 
 std::vector<uint8_t> decrypt_CFB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv, const aes::AES& aes);
+
+//TODO: fare quelle che restsituiscono std::vector proprio come encrypt_ECB4
 
 } // aes::mod
 

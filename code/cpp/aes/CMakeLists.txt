@@ -19,3 +19,49 @@ add_subdirectory(external/spdlog)
 target_include_directories(${PROJECT_NAME} PUBLIC external/spdlog/include)
 
 target_link_directories(${PROJECT_NAME} PRIVATE external/spdlog/src)
+
+# -------------------------------------------------------
+
+# IMGUI - GLFW - GLAD - OPENGL SETUP
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(external/glfw)
+add_subdirectory(external/glad)
+
+set(DEAR_IMGUI_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/imgui")
+
+set(DEAR_IMGUI_SOURCE
+        "external/imgui/imgui.cpp"
+        "external/imgui/imgui_demo.cpp"
+        "external/imgui/imgui_draw.cpp"
+        "external/imgui/imgui_tables.cpp"
+        "external/imgui/imgui_widgets.cpp")
+
+add_library(ImGui ${DEAR_IMGUI_SOURCE}) #ImGui
+target_include_directories(ImGui PUBLIC ${DEAR_IMGUI_INCLUDE_DIR})
+
+# GLFW OpenGL3 backend
+
+set(DEAR_IMGUI_GLFW_OGL3_BACKEND_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/imgui/backends")
+
+set(DEAR_IMGUI_GLFW_OGL3_BACKEND_SOURCE
+        "external/imgui/backends/imgui_impl_opengl3.cpp"
+        "external/imgui/backends/imgui_impl_glfw.cpp")
+
+add_library(DearImGUIGlfwOgl3Backend ${DEAR_IMGUI_GLFW_OGL3_BACKEND_SOURCE})
+target_include_directories(DearImGUIGlfwOgl3Backend PUBLIC ${DEAR_IMGUI_GLFW_OGL3_BACKEND_INCLUDE_DIR})
+target_link_libraries(DearImGUIGlfwOgl3Backend PUBLIC glfw ImGui)
+
+find_package(OpenGL REQUIRED) # I think this should not be here! But without it, it doesn't work.
+
+target_link_libraries(${PROJECT_NAME} PUBLIC
+        glfw
+        glad
+        DearImGUIGlfwOgl3Backend
+        ImGui
+        OpenGL::GL)
+
+# -------------------------------------------------------
+
