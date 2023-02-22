@@ -26,14 +26,14 @@ void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_
     }
 }
 
-void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const auto& keys)
+/*void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const auto& keys) //TODO: uncomment
 {
     for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
         for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
             state[i][j] = state[i][j] ^ keys[i + aes::BLOCK_WORDS * j];
         }
     }
-}
+}*/
 
 void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t& key) //TODO: uncomment
 {
@@ -162,7 +162,7 @@ void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uin
     }
 }
 
-void encrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes)
+/*void encrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes) //TODO: uncomment
 {
     std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
     const unsigned short number_of_rounds = aes::get_number_of_rounds(aes);
@@ -191,7 +191,7 @@ void encrypt_block(const std::vector<uint8_t>& input, auto output, const auto& k
             output[i + aes::BLOCK_WORDS * j] = state[i][j];
         }
     }
-}
+}*/
 
 void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes)
 {
@@ -336,7 +336,7 @@ void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uin
     }
 }
 
-void decrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes)
+/*void decrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes) //TODO: uncomment
 {
     std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
     const unsigned short& number_of_rounds = get_number_of_rounds(aes);
@@ -365,7 +365,7 @@ void decrypt_block(const std::vector<uint8_t>& input, auto output, const auto& k
             output[i + aes::BLOCK_WORDS * j] = state[i][j];
         }
     }
-}
+}*/
 
 void decrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes)
 {
@@ -535,7 +535,7 @@ void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const AES& ae
     }
 }
 
-void key_expansion(const std::vector<uint8_t>& key, auto word, const AES& aes)
+/*void key_expansion(const std::vector<uint8_t>& key, auto word, const AES& aes) //TODO: uncomment
 {
     std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS> temp{};
     std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS> rcon{};
@@ -570,7 +570,7 @@ void key_expansion(const std::vector<uint8_t>& key, auto word, const AES& aes)
         word[j + 2] = word[j + 2 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[2];
         word[j + 3] = word[j + 3 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[3];
     }
-}
+}*/
 
 void key_expansion(const uint8_t key[], unsigned char word[], const AES& aes)
 {

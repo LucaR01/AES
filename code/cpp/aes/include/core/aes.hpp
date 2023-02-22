@@ -53,6 +53,7 @@ static const std::map<AES, std::string_view>& ALL_AES_TYPES_NAMES = {
 };
 
 //TODO: rename in get_aes_value?
+//TODO: posso templetizzare tutti i get_index dei vari enums da poi mettere in un folder generic_templates o generics o templates
 [[nodiscard]] static constexpr unsigned short get_aes_index(const AES& aes)
 {
     return static_cast<std::underlying_type_t<AES>>(aes);
@@ -160,7 +161,7 @@ void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_
 
 void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::vector<uint8_t>& key);
 
-void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const auto& keys);
+//void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const auto& keys); //TODO: uncomment
 
 void sub_bytes(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
@@ -175,7 +176,7 @@ void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& outp
 //TODO: avevo fatto std::vector output e andava prima
 void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uint8_t* keys, const AES& aes); //TODO: const uint8_t& keys ma poi non va nella key expansion
 
-void encrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes);
+//void encrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes); //TODO: uncomment
 
 void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes);
 
@@ -197,7 +198,7 @@ void inverse_mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::
 //TODO: avevo fatto std::vector output e andava prima
 void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uint8_t* keys, const AES& aes);
 
-void decrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes);
+//void decrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes); //TODO: uncomment
 
 void decrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes);
 
@@ -211,7 +212,7 @@ void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, 
 
 void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const AES& aes); //TODO: uncomment
 
-void key_expansion(const std::vector<uint8_t>& key, auto word, const AES& aes);
+//void key_expansion(const std::vector<uint8_t>& key, auto word, const AES& aes); //TODO: uncomment
 
 void key_expansion(const uint8_t key[], unsigned char word[], const AES& aes);
 

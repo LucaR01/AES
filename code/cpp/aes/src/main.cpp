@@ -12,6 +12,7 @@
 #include "core/aes_api.hpp"
 
 #include "graphics/console/console.hpp"
+#include "graphics/gui/gui.hpp"
 #include "file_manager/file_manager.hpp" //TODO: remove?
 //#include "core/modes/modes.hpp"
 //#include "core/padding/padding.hpp"
@@ -47,7 +48,7 @@ int main()
 
     AES_DEBUG("Filename: {} exists: {}", aes::fm::FileManager::get_filename("test.txt"), aes::fm::FileManager::file_exists("test.txt"))*/
 
-    aes::con::show_console(); //TODO: remove/testare
+    //aes::con::show_console(); //TODO: remove/testare
 
     //TODO: da mettere in un test.
     //std::cout << "TEST 0 " << std::endl;
@@ -120,7 +121,9 @@ int main()
 
     //TODO: c++20 std::to_array(c array);
 
-    unsigned char plain4[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+    //TODO: uncomment; funziona; da mettere nei tests.
+
+    /*unsigned char plain4[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
                              0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
     unsigned char key4[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                            0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
@@ -135,7 +138,7 @@ int main()
     std::cout << "right4: " << right4 << std::endl;
     std::cout << "out4: " << out4 << std::endl;
 
-    delete[] out4;
+    delete[] out4;*/
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -170,7 +173,8 @@ int main()
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    std::vector<unsigned char> encrypted6 = {0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b,
+    //TODO: uncomment; funziona; da mettere nei tests.
+    /*std::vector<unsigned char> encrypted6 = {0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b,
                                             0x04, 0x30, 0xd8, 0xcd, 0xb7, 0x80,
                                             0x70, 0xb4, 0xc5, 0x5a};
 
@@ -251,20 +255,12 @@ int main()
     std::cout << "" << std::endl;
 
     std::cout << "ciphertext8: " << ciphertext8 << std::endl;
-    /*std::cout << "ciphertext8: " << std::endl;
-    for(const auto& c : ciphertext8) {
-        std::cout << c;
-    }*/
 
     std::cout << "" << std::endl;
 
     std::cout << "deciphertext8: " << deciphertext8 << std::endl;
-    /*std::cout << "deciphertext8: " << std::endl;
-    for(const auto& d : deciphertext8) {
-        std::cout << d;
-    }*/
 
-    std::cout << "" << std::endl;
+    std::cout << "" << std::endl;*/
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -299,8 +295,9 @@ int main()
     // -----------------------------------------------------------------------------------------------------------------
 
     // CBC
+    //TODO: uncomment; questo funziona; è da mettere in un test;
 
-    std::vector<unsigned char> plain5 = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
+    /*std::vector<unsigned char> plain5 = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
                                         0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb,
                                         0xcc, 0xdd, 0xee, 0xff};
 
@@ -462,30 +459,30 @@ int main()
         std::cout << d << ", ";
     }
 
-    std::cout << "" << std::endl;
+    std::cout << "" << std::endl;*/
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    std::cout << "================= STRINGHE INPUT TEST =====================" << std::endl;
+    /*std::cout << "================= STRINGHE INPUT TEST =====================" << std::endl; //TODO: uncomment
 
     std::cout << "Insert plaintext: " << std::endl;
     std::string plain8_s;
-    std::cin >> plain8_s;
     std::cin.ignore();
+    std::getline(std::cin, plain8_s);
 
     AES_DEBUG("plain8_s: {}", plain8_s)
 
     std::cout << "Insert iv: " << std::endl;
     std::string iv4_s;
-    std::cin >> iv4_s;
     std::cin.ignore();
+    std::getline(std::cin, iv4_s);
 
     AES_DEBUG("iv4_s: {}", iv4_s)
 
     std::cout << "Insert key: " << std::endl;
     std::string key8_s;
-    std::cin >> key8_s;
     std::cin.ignore();
+    std::getline(std::cin, key8_s);
 
     AES_DEBUG("key8_s: {}", key8_s)
 
@@ -514,7 +511,13 @@ int main()
         std::cout << d << ", ";
     }
 
-    std::cout << "" << std::endl;
+    std::cout << "" << std::endl;*/
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    aes::gui::show();
+
+    //TODO: posso templetizzare tutti i get_index dei vari enums da poi mettere in un folder generic_templates o generics o templates
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();
