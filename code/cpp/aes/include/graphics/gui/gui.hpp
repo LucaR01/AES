@@ -16,6 +16,16 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+//Forward Declaration
+namespace aes::ops {
+
+    enum class Operations {
+        ENCRYPT = 1,
+        DECRYPT
+    };
+
+}
+
 namespace aes::gui {
 
 //TODO: const int& error, char[]?
@@ -105,7 +115,7 @@ void generic_combo(const CONTAINER& combo_items, const char* selected_item = nul
 {
     /*char* items; //TODO: uncomment
 
-    if(std::is_same<CONTAINER, std::vector<std::string>>()) {
+    if(std::is_same<CONTAINER, std::vector<std::string>>()) { //TODO: remove?
         items[combo_items.size()];
     } else {
         items = combo_items;
@@ -132,9 +142,51 @@ void generic_combo(const CONTAINER& combo_items, const char* selected_item = nul
     }
 }
 
-//void generic_combo(const char* items[], char* selected_item);
+/**
+ * @version: AES v1.0.0
+ * @brief: This function permits to create an ImGui::Combo by passing it a container with strings (std::string, char* [], etc). and the current selected item of the combo.
+ * Usage: aes::gui::generic_combo<std::array<std::string, 3>>(std::array<std::string, 3>{"Hello", "World!"}, "Hello"};
+ *
+ * @tparam CONTAINER
+ * @param combo_items
+ * @param selected_item
+ */
+template<typename CONTAINER, std::size_t SIZE = 0>
+void generic_combo(const CONTAINER& combo_items, std::string& selected_item) requires std::is_same_v<CONTAINER, std::vector<std::string>> || std::is_same_v<CONTAINER, std::array<std::string, SIZE>>
+{
+    /*char* items; //TODO: uncomment
 
-void aes_types_combo();
+    if(std::is_same<CONTAINER, std::vector<std::string>>()) { //TODO: remove
+        items[combo_items.size()];
+    } else {
+        items = combo_items;
+    }*/
+
+    //char* items[combo_items.size()];
+    //std::vector<std::string> items{}; //TODO: remove
+    //static const char* current_item = selected_item.c_str();
+
+    /*for(unsigned short i = 0; i < combo_items.size(); i++) { //TODO: remove
+        items[i] = combo_items.at(i); //TODO: se fosse vector<std::string> mi serve combo_items.at(i).data();
+    }*/
+
+    if (ImGui::BeginCombo("##combo", selected_item.c_str())) {
+        for (const auto& item : combo_items) {
+            bool is_selected = (selected_item == item);
+            if (ImGui::Selectable(item.c_str(), is_selected)) {
+                //current_item = item;
+                //selected_item.assign(current_item, current_item + 3); //TODO: remove
+                selected_item = item;
+            }
+            if (is_selected) {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+}
+
+void button_function(const std::string& button_label, const aes::ops::Operations& operation, const std::string& input, const std::string& key, const std::string& aes_type, const std::string& mode, const std::string& padding);
 
 void init();
 

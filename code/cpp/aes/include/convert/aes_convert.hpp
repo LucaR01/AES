@@ -11,6 +11,9 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <valarray>
+#include <ranges>
+#include <variant>
 
 namespace aes::cvt {
 
@@ -38,24 +41,77 @@ namespace aes::cvt {
  * @return : an std::vector of type @tparam T.
  */
 template<typename T, typename K, typename V>
-std::vector<T> from_map_to_vector(const std::map<K, V>& map, const bool& get_keys)
+std::vector<T> from_map_to_vector2(const std::map<K, V>& map, const bool& get_keys) //TODO: remove, non funziona con enum class, ma con enum sì.
 {
     std::vector<T> vector(map.size());
 
     if(get_keys) {
-        //std::vector<T> keys(map.size()); //TODO: remove
         const auto& key_selector = [&](const auto& pair){ return pair.first; };
         std::transform(map.cbegin(), map.cend(), vector.begin(), key_selector);
-        //return vector; //TODO: remove
     } else {
         const auto& value_selector = [&](const auto& pair){ return pair.second; };
         std::transform(map.cbegin(), map.cend(), vector.begin(), value_selector);
     }
 
-    //std::vector<T> values(map.size()); //TODO: remove
+    return vector;
+}
+
+//TODO: I would need a Either<std::vector<K>, std::vector<V>> or a variant maybe.
+template<typename T, typename K, typename V>
+std::vector<T> from_map_to_vector(const std::map<K, V>& map, const bool& get_keys)
+{
+    std::vector<T> vector;
+
+    for(const auto& m : map) {
+        get_keys ? vector.push_back(m.first) : vector.push_back(m.second); // prima era static_cast<const std::_Bit_const_iterator::value_type>(
+    }
 
     return vector;
 }
+
+template<typename T, typename K, typename V>
+std::vector<T> from_map_to_vector_views(const std::map<K, V>& map, const bool& get_keys)
+{
+    if(get_keys) {
+        auto keys = std::views::keys(map);
+        return std::vector(keys.begin(), keys.end());
+    }
+
+    auto values = std::views::values(map);
+
+    return std::vector{ values.begin(), values.end() };
+}
+
+template<typename K, typename V>
+std::optional<K> retrieve_key_from_map(const std::map<K, V>& map, const V& value)
+{
+    for(const auto& [k, v] : map) {
+        //v == value ? return k : std::cout << "nothing"; //TODO: remove
+        if(v == value) {
+            return std::optional<K>(k);
+        }
+    }
+
+    return {};
+}
+
+/*template<typename T, typename K, typename V> //TODO: to fix.
+std::optional<T> retrieve_key_or_value(const std::map<K, V>& map, const std::variant<K, V>& key_or_value)
+{
+    for(const auto& [k, v] : map) {
+        if(std::holds_alternative<K>) {
+            if(k == static_cast<K>(std::get<K>(key_or_value))) {
+                return std::optional<T>((T)v);
+            }
+        } else {
+            if(v == std::get<V>(key_or_value)) {
+                return std::optional<T>((T)k);
+            }
+        }
+    }
+
+    return {};
+}*/
 
 } // namespace aes::cvt
 
