@@ -11,7 +11,8 @@ file(GLOB SOURCES src/*.cpp src/logger/*.cpp src/math/*.cpp src/math/random/*.cp
         src/graphics/*.cpp src/graphics/console/*.cpp src/graphics/gui/*.cpp
         src/core/*.cpp src/core/aes_api.cpp
         src/core/operations/*.cpp src/core/padding/*.cpp src/core/modes/*.cpp
-        src/file_manager/*.cpp include/convert/aes_convert.hpp src/convert/*.cpp)
+        src/file_manager/*.cpp include/convert/aes_convert.hpp src/convert/*.cpp
+        include/version/version.hpp src/arguments_parser/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
@@ -63,6 +64,14 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
         DearImGUIGlfwOgl3Backend
         ImGui
         OpenGL::GL)
+
+# -------------------------------------------------------
+
+# DOCOPT SETUP
+
+add_subdirectory(external/docopt)
+target_include_directories(${PROJECT_NAME} PUBLIC external/docopt)
+target_link_libraries(${PROJECT_NAME} PRIVATE docopt)
 
 # -------------------------------------------------------
 

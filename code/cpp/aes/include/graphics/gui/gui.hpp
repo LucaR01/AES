@@ -10,21 +10,24 @@
 #include <array>
 #include <vector>
 #include <type_traits>
+#include <optional>
 
 #include "glfw/glfw3.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "core/operations/operations.hpp"
+
 //Forward Declaration
-namespace aes::ops {
+/*namespace aes::ops { //TODO: remove; it doesn't work.
 
     enum class Operations {
         ENCRYPT = 1,
         DECRYPT
     };
 
-}
+}*/
 
 namespace aes::gui {
 
@@ -111,7 +114,7 @@ void generic_combo(const Container<Types...>& combo_items, const char* selected_
  * @param selected_item
  */
 template<typename CONTAINER, std::size_t SIZE = 0> // prima , std::size_t SIZE
-void generic_combo(const CONTAINER& combo_items, const char* selected_item = nullptr) requires std::is_same_v<CONTAINER, std::vector<std::string>> || std::is_same_v<CONTAINER, std::array<std::string, SIZE>> || std::is_same_v<CONTAINER, std::array<char*, SIZE>>
+void generic_combo(const CONTAINER& combo_items, const char* selected_item = nullptr, const std::string_view& combo_label = "") requires std::is_same_v<CONTAINER, std::vector<std::string>> || std::is_same_v<CONTAINER, std::array<std::string, SIZE>> || std::is_same_v<CONTAINER, std::array<char*, SIZE>>
 {
     /*char* items; //TODO: uncomment
 
@@ -128,7 +131,7 @@ void generic_combo(const CONTAINER& combo_items, const char* selected_item = nul
         items[i] = combo_items.at(i); //TODO: se fosse vector<std::string> mi serve combo_items.at(i).data();
     }
 
-    if (ImGui::BeginCombo("##combo", current_item)) {
+    if (ImGui::BeginCombo(combo_label.data(), current_item)) {
         for (const auto& item : items) {
             bool is_selected = (current_item == item);
             if (ImGui::Selectable(item, is_selected)) {
@@ -152,7 +155,7 @@ void generic_combo(const CONTAINER& combo_items, const char* selected_item = nul
  * @param selected_item
  */
 template<typename CONTAINER, std::size_t SIZE = 0>
-void generic_combo(const CONTAINER& combo_items, std::string& selected_item) requires std::is_same_v<CONTAINER, std::vector<std::string>> || std::is_same_v<CONTAINER, std::array<std::string, SIZE>>
+void generic_combo(const CONTAINER& combo_items, std::string& selected_item, const std::string_view& combo_label) requires std::is_same_v<CONTAINER, std::vector<std::string>> || std::is_same_v<CONTAINER, std::array<std::string, SIZE>>
 {
     /*char* items; //TODO: uncomment
 
@@ -170,7 +173,8 @@ void generic_combo(const CONTAINER& combo_items, std::string& selected_item) req
         items[i] = combo_items.at(i); //TODO: se fosse vector<std::string> mi serve combo_items.at(i).data();
     }*/
 
-    if (ImGui::BeginCombo("##combo", selected_item.c_str())) {
+    // Il ## doppio cancelletto dice a ImGui di non mostrare il label.
+    if (ImGui::BeginCombo(combo_label.data(), selected_item.c_str())) {
         for (const auto& item : combo_items) {
             bool is_selected = (selected_item == item);
             if (ImGui::Selectable(item.c_str(), is_selected)) {
@@ -186,7 +190,7 @@ void generic_combo(const CONTAINER& combo_items, std::string& selected_item) req
     }
 }
 
-void button_function(const std::string& button_label, const aes::ops::Operations& operation, const std::string& input, const std::string& key, const std::string& aes_type, const std::string& mode, const std::string& padding);
+char* retrieve_output(const aes::ops::Operations& operation, const std::string& input, const std::string& key, const std::optional<std::vector<uint8_t>>& iv, const std::string& aes_type, const std::string& mode, const std::string& padding);
 
 void init();
 

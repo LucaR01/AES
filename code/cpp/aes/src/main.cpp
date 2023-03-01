@@ -16,10 +16,14 @@
 #include "file_manager/file_manager.hpp" //TODO: remove?
 //#include "core/modes/modes.hpp"
 //#include "core/padding/padding.hpp"
+#include "version/version.hpp"
+#include "arguments_parser/arguments_parser.hpp"
+
+#include "docopt.h"
 
 //TODO: dove uso constexpr, metterli nell'.hpp; tipo negli enums.
 
-int main()
+int main(const int argc, const char** argv)
 {
 
 #ifndef RELEASE_MODE
@@ -515,9 +519,60 @@ int main()
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    aes::gui::show();
+    //aes::gui::show();
 
     //TODO: posso templetizzare tutti i get_index dei vari enums da poi mettere in un folder generic_templates o generics o templates
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    //TODO: fuori dal main; magari in un altro file. aes::arg
+    /*static const char USAGE[] =
+            R"(AES.
+
+    Usage:
+        aes
+        aes [-c | --console | -g | --gui]
+        aes [--console | --gui] [--aes <AES>] [-p <padding>] [--mode <mode] [-m <message>] [-i <file>] [-o FILE] [--operation <operation> | --encryption | --decryption]
+
+    Arguments:
+        FILE        optional input file.
+        <mode>      mode to be used. [ECB | CBC | CFB]
+        <padding>   the padding to be used. [NO_PADDING | 0-Padding | 1-0-Padding | ...]
+        <operation> operation. [encryption | decryption]
+
+    Options:
+      -h --help                                 Show this screen.
+      --version                                 Show version.
+      -g --gui                                  Display gui.
+      -c --console                              Display console.
+      -o FILE --output=FILE                     Output File [default: output.txt].
+      -i <file>, --input <file>                 Input File.
+      -m <message>, --message <input>           Input message [plaintext or ciphertext].
+      --aes <AES>                                AES Types [default: AES 128] AES 128, AES 192, AES 256.
+      --mode <mode>                             Input Mode [default: ECB] ECB, CBC, CFB.
+      -p <padding> --padding <padding>          Input Padding. [default: NO_PADDING] NO_PADDING, 1-0-Padding, ...
+      --operation <operation>   Input Operation. [default: Encryption] Encryption, Decryption.
+      --encryption                              Encryption.
+      --decryption                              Decryption.
+
+)";
+
+    //TODO: static constexpr? static const?
+    std::map< std::string, docopt::value > args = docopt::docopt(USAGE,{argv + 1, argv + argc}, true, aes::vrs::aes.version);
+
+    for(const auto& arg : args) {
+        std::cout << arg.first <<  arg.second << std::endl;
+    }
+
+    if((args["-g"] && args["-g"].isBool() && args["-g"].asBool()) || (args["--gui"] && args["--gui"].isBool() && args["--gui"].asBool())) {
+        aes::gui::show();
+    }
+
+    if((args["-c"] && args["-c"].isBool() && args["-c"].asBool()) || (args["--console"] && args["--console"].isBool() && args["--console"].asBool())) {
+        aes::con::show_console();
+    }*/
+
+    aes::arg::parse_user_arguments(argc, argv);
 
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();

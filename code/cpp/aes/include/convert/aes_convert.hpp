@@ -74,12 +74,12 @@ std::vector<T> from_map_to_vector_views(const std::map<K, V>& map, const bool& g
 {
     if(get_keys) {
         auto keys = std::views::keys(map);
-        return std::vector(keys.begin(), keys.end());
+        return static_cast<std::vector<T>>(std::vector(keys.begin(), keys.end())); //TODO: remove static_cast
     }
 
     auto values = std::views::values(map);
 
-    return std::vector{ values.begin(), values.end() };
+    return static_cast<std::vector<T>>(std::vector{ values.begin(), values.end() }); //TODO: remove static_cast
 }
 
 template<typename K, typename V>

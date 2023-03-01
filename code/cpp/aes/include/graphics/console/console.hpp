@@ -24,7 +24,7 @@ namespace aes::con {
 
 //TODO: static constexpr?
 
-void show_console();
+void show_console(); //TODO: rename in show();
 
 void get_user_input();
 

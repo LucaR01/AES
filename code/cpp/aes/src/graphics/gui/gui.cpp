@@ -4,6 +4,9 @@
 
 #include <string_view>
 #include <cstdint>
+#include <type_traits>
+#include <algorithm>
+#include <iterator>
 
 #include "graphics/gui/gui.hpp"
 
@@ -17,6 +20,7 @@
 #include "core/padding/padding.hpp"
 #include "convert/aes_convert.hpp"
 #include "logger/logger.hpp"
+#include "core/aes_api.hpp"
 
 //TODO: Guida su ImGui: https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html
 
@@ -159,13 +163,14 @@ void window()
 
         static bool disabled = true;
         ImGui::Checkbox("Disable", &disabled);
-        if (disabled)
-        {
+        if (disabled) {
             //ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
             //ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
             ImGui::BeginDisabled(disabled);
             if (ImGui::Button("OK", ImVec2(120, 0)))  { disabled = false; }
             ImGui::EndDisabled();
+        } else {
+            if (ImGui::Button("OK", ImVec2(120, 0)))  { disabled = true; }
         }
 
         /*if (disabled)
@@ -178,22 +183,25 @@ void window()
         ImGui::ProgressBar(0.35, ImVec2(0, 0), overlay);
 
         ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-        if (ImGui::BeginTabBar("Encrypt_Decrypt_Tab", tab_bar_flags))
-        {
-            if (ImGui::BeginTabItem("Encrypt"))
-            {
+        if (ImGui::BeginTabBar("Encrypt_Decrypt_Tab", tab_bar_flags)) {
+            if (ImGui::BeginTabItem("Encrypt")) { //TODO: metterlo in una funzione generica per creare TabItem?
                 ImGui::Text("Encryption");
                 ImGui::Text("This is the Encryption tab!\n");
 
-                static char text[128] = ""; // se lo metto static il testo rimane nel text field.
+                static const std::array<std::string, 3>& aes_types = { "AES 128", "AES 192", "AES 256" }; //TODO: recuperarli dalla map.
+                static std::string aes_selected_item = aes_types.at(0);
+                generic_combo<std::array<std::string, 3>, 3>(aes_types, aes_selected_item, "##aes_combo");
+
+                static char text[128] = ""; // se lo metto static il testo rimane nel text field. //TODO: u8%s; u8"" (per utf-8)
                 ImGui::InputTextMultiline("Input", text, IM_ARRAYSIZE(text));
+                //ImGui::TextUnformatted();
 
                 //aes_types_combo(); //TODO: ho bisogno di recuperare il valore della combo.
 
                 //const std::array<char*, 3>& modes = { "ECB", "CBC", "CFB" }; //TODO: remove
                 //static const std::array<std::string, 3>& modes = { "ECB", "CBC", "CFB" };
 
-                //std::vector<std::string_view> vec = aes::cvt::from_map_to_vector<std::string_view>(aes::mod::MODES_NAMES, false); //TODO: uncomment when fixed
+                //std::vector<std::string_view> modes = aes::cvt::from_map_to_vector<std::string_view>(aes::mod::MODES_NAMES, false); //TODO: uncomment when fixed
 
                 std::vector<std::string> modes; //TODO: rename in modes
                 for(const auto& m : aes::mod::MODES_NAMES) {
@@ -203,23 +211,47 @@ void window()
                 //static char* selected_item = "ECB"; //TODO: remove
                 static std::string selected_item_mode = modes.at(0);
                 //generic_combo<std::array<std::string, 3>, 3>(modes, selected_item_mode); //TODO: uncomment/remove
-                generic_combo<std::vector<std::string>>(modes, selected_item_mode);
+                generic_combo<std::vector<std::string>>(modes, selected_item_mode, "##modes_combo");
 
-                static char password[64] = "";
-                ImGui::InputTextWithHint("password (w/ hint)", "Key", password, IM_ARRAYSIZE(password), ImGuiInputTextFlags_Password);
+                static char iv[128] = "";
+                ImGui::InputTextWithHint("iv:", "iv", iv, IM_ARRAYSIZE(iv));
 
-                if(ImGui::Button("Encrypt"))
-                {
-                    //char* save_text = text;
-                    std::cout << "button clicked " << selected_item_mode << std::endl; //TODO: uncomment
-                    std::cout << "input text: " << text << std::endl;
-                    ImGui::LogText("clicked");
+                static char password[64] = ""; //TODO: rename in key
+                ImGui::InputTextWithHint("encryption_key", "Key", password, IM_ARRAYSIZE(password), ImGuiInputTextFlags_Password);
+
+                std::vector<std::string> paddings;
+                for(const auto& p : aes::pad::PADDING_NAMES) {
+                    paddings.emplace_back(p.second);
                 }
+
+                static std::string selected_item_padding = paddings.at(0);
+                generic_combo<std::vector<std::string>>(paddings, selected_item_padding, "##padding_combo");
+
+                static char ciphertext[256] = "";
+
+                if(ImGui::Button("Encrypt")) {
+                    //char* save_text = text;
+                    //TODO: AES_DEBUG volendo
+                    std::cout << "Encrypt" << std::endl;
+                    std::cout << "aes: " << aes_selected_item << std::endl;
+                    std::cout << "mode: " << selected_item_mode << std::endl;
+                    std::cout << "padding: " << selected_item_padding << std::endl;
+                    std::cout << "input text: " << text << std::endl;
+                    std::cout << "iv: " << iv << std::endl;
+                    std::cout << "key: " << password << std::endl;
+                    ImGui::LogText("clicked");
+
+                    std::vector<uint8_t> encryption_iv(std::begin(iv), std::end(iv)); //TODO: remove
+
+                    std::strcpy(ciphertext, aes::gui::retrieve_output(aes::ops::Operations::ENCRYPT, text, password, encryption_iv, aes_selected_item, selected_item_mode, selected_item_padding));
+                    AES_DEBUG("output: {}", ciphertext)
+                }
+
+                ImGui::InputTextMultiline("ciphertext", ciphertext, IM_ARRAYSIZE(ciphertext), ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly);
 
                 ImGui::EndTabItem();
             }
-            if (ImGui::BeginTabItem("Decrypt"))
-            {
+            if (ImGui::BeginTabItem("Decrypt")) {
                 ImGui::Text("Decryption");
                 ImGui::Text("This is the decryption tab!\n");
 
@@ -228,19 +260,55 @@ void window()
 
                 static const std::array<std::string, 3>& aes_types = { "AES 128", "AES 192", "AES 256" };
                 static std::string aes_selected_item = aes_types.at(0);
-                generic_combo<std::array<std::string, 3>, 3>(aes_types, aes_selected_item);
+                generic_combo<std::array<std::string, 3>, 3>(aes_types, aes_selected_item, "##aes_combo");
 
 
                 static char password[64] = "";
-                ImGui::InputTextWithHint("password (w/ hint)", "Key", password, IM_ARRAYSIZE(password), ImGuiInputTextFlags_Password);
+                ImGui::InputTextWithHint("decryption_key", "Key", password, IM_ARRAYSIZE(password), ImGuiInputTextFlags_Password);
 
-                if(ImGui::Button("Decrypt"))
-                {
-                    char* save_text = text;
-                    std::cout << "button clicked " << aes_selected_item << std::endl;
-                    std::cout << "input text: " << save_text << std::endl;
-                    ImGui::LogText("clicked");
+                std::vector<std::string> modes; //TODO: rename in modes
+                for(const auto& m : aes::mod::MODES_NAMES) {
+                    modes.emplace_back(m.second);
                 }
+
+                static char iv[128] = "";
+                ImGui::InputTextWithHint("iv:", "iv", iv, IM_ARRAYSIZE(iv));
+
+                static std::string selected_item_mode = modes.at(0);
+                generic_combo<std::vector<std::string>>(modes, selected_item_mode, "##modes_combo");
+
+                std::vector<std::string> paddings; //= aes::cvt::from_map_to_vector_views<std::string>(aes::pad::PADDING_NAMES, false); //TODO: uncomment when fixed
+                for(const auto& p : aes::pad::PADDING_NAMES) {
+                    paddings.emplace_back(p.second);
+                }
+
+                static std::string selected_item_padding = paddings.at(0);
+                generic_combo<std::vector<std::string>>(paddings, selected_item_padding, "##padding_combo");
+
+                static char output[256] = "";
+
+                if(ImGui::Button("Decrypt")) {
+                    //TODO: usare LOGGER
+                    std::cout << "Decrypt" << std::endl; //TODO: AES_INFO
+                    std::cout << "aes: " << aes_selected_item << std::endl; //TODO: AES_DEBUG
+                    std::cout << "mode: " << selected_item_mode << std::endl;
+                    std::cout << "padding:  " << selected_item_padding << std::endl;
+                    std::cout << "key: " << password << std::endl;
+                    std::cout << "iv: " << iv << std::endl;
+                    std::cout << "input text: " << text << std::endl;
+                    ImGui::LogText("clicked");
+
+                    std::vector<uint8_t> decrcyption_iv(std::begin(iv), std::end(iv));
+
+                    //output = ;
+                    std::strcpy(output, aes::gui::retrieve_output(aes::ops::Operations::DECRYPT, text, password, decrcyption_iv, aes_selected_item, selected_item_mode, selected_item_padding));
+                    //std::memcpy(output, aes::gui::retrieve_output(aes::ops::Operations::DECRYPT, text, password, iv, aes_selected_item, selected_item_mode, selected_item_padding), sizeof(output));
+                    AES_DEBUG("output: {}", output)
+                    //output = aes::gui::retrieve_output("decryption_button_label", aes::ops::Operations::DECRYPT, text, password, aes_selected_item, selected_item_mode, selected_item_padding);
+                }
+
+                //ImGui::InputText("deciphered_plaintext", output, IM_ARRAYSIZE(output), ImGuiInputTextFlags_ReadOnly);
+                ImGui::InputTextMultiline("deciphered_plaintext", output, IM_ARRAYSIZE(output), ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly);
 
                 ImGui::EndTabItem();
             }
@@ -271,9 +339,13 @@ void window()
     glfwTerminate();
 }
 
-void button_function(const std::string& button_label, const aes::ops::Operations& operation, const std::string& input, const std::string& key, const std::string& aes_type, const std::string& mode_string, const std::string& padding_string)
+//TODO: iv
+char* retrieve_output(const aes::ops::Operations& operation, const std::string& input, const std::string& key, const std::optional<std::vector<uint8_t>>& iv, const std::string& aes_type, const std::string& mode_string, const std::string& padding_string)
 {
     //const aes::AES& aes = ALL_AES_TYPES_NAMES.find("AES 128"); //TODO: remove
+
+    std::string message = input; //TODO: std::remove_const<std::string>::type(input), but it's unnecessary.
+    std::string key_not_const = key;
 
     const aes::AES aes = aes::cvt::retrieve_key_from_map(aes::ALL_AES_TYPES_NAMES, std::string_view(aes_type)).value();
     AES_DEBUG("aes: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
@@ -284,13 +356,17 @@ void button_function(const std::string& button_label, const aes::ops::Operations
     const aes::pad::Paddings padding = aes::cvt::retrieve_key_from_map(aes::pad::PADDING_NAMES, std::string_view(padding_string)).value();
     AES_DEBUG("padding: {}", aes::pad::PADDING_NAMES.at(padding))
 
+    AES_DEBUG("iv: {}", std::string(iv.value().cbegin(), iv.value().cend()))
+
+    std::optional<std::vector<std::uint8_t>> iv2;
+
     /*for(const auto& [k, v] : aes::ALL_AES_TYPES_NAMES) { //TODO: remove
         if(v == aes_type) {
             aes = k;
         }
     }*/
 
-    if(ImGui::Button(button_label.c_str())) {
+    /*if(ImGui::Button(button_label.c_str())) {
         switch(operation) {
             case aes::ops::Operations::ENCRYPT:
                 //std::vector<uint8_t> encrypted_text = ; //TODO: uncomment
@@ -301,7 +377,7 @@ void button_function(const std::string& button_label, const aes::ops::Operations
                 //TODO: show in a read only text.
                 break;
         }
-    }
+    }*/
 
     /*switch(operation) { //TODO: remove
         case aes::ops::Operations::ENCRYPT:
@@ -312,6 +388,29 @@ void button_function(const std::string& button_label, const aes::ops::Operations
         case aes::ops::Operations::DECRYPT:
             break;
     }*/
+
+    switch(operation) {
+        case aes::ops::Operations::ENCRYPT:
+        {
+            const std::vector<uint8_t>& ciphertext = aes::api::encrypt(message, key_not_const, iv, padding, mode, aes); //TODO: mettere iv al posto di iv2
+            const unsigned char* ciphertext2 = &ciphertext[0];
+            //const unsigned char* ciphertext4 = &aes::api::encrypt(message, key_not_const, iv, padding, mode, aes)[0]; //TODO: remove
+            unsigned char ciphertext3[256];
+            std::copy(ciphertext.begin(), ciphertext.end(), ciphertext3);
+            //TODO: return char* or char[]?
+            return (char*) ciphertext2; //reinterpret_cast<char *>(&ciphertext3[0])
+            //break;
+        }
+        case aes::ops::Operations::DECRYPT:
+        {
+            const std::vector<uint8_t>& decrypted_plaintext = aes::api::decrypt(message, key_not_const, iv, padding, mode, aes); //TODO: mettere iv al posto di iv2
+            return (char*) &decrypted_plaintext[0];
+            //break;
+        }
+    }
+
+    //const char* temp = ""; //TODO: remove
+    return const_cast<char*>("");
 }
 
 void show()
