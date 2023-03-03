@@ -8,6 +8,7 @@
 #include "core/aes.hpp"
 #include "core/padding/padding.hpp"
 #include "core/modes/modes.hpp"
+#include "file_manager/file_manager.hpp"
 
 namespace aes::api {
 
@@ -105,5 +106,26 @@ std::vector<uint8_t> decrypt(std::vector<uint8_t>& encrypted_message, std::vecto
 
     return aes::pad::remove_padding(plaintext_with_padding, padding);
 }
+
+// FILE
+
+void encrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes)
+{
+    std::string file_data = aes::fm::FileManager::get_file_data3(input_file_path);
+    //std::string file_data = aes::fm::FileManager::get_file_data<std::string>(input_file_path); //TODO: uncomment when fixed
+    const std::vector<uint8_t>& ciphertext = aes::api::encrypt(file_data, key, iv, padding, mode, aes);
+    AES_DEBUG("ciphertext: {}", std::string(ciphertext.cbegin(), ciphertext.cend()))
+    aes::fm::FileManager::write_file_data(output_file_path, ciphertext);
+}
+
+void decrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes)
+{
+    std::string file_data = aes::fm::FileManager::get_file_data3(input_file_path);
+    //std::string file_data = aes::fm::FileManager::get_file_data2<std::string>(input_file_path); //TODO: uncomment when fixed
+    const std::vector<uint8_t>& deciphered_plaintext = aes::api::decrypt(file_data, key, iv, padding, mode, aes);
+    AES_DEBUG("ciphertext: {}", std::string(deciphered_plaintext.cbegin(), deciphered_plaintext.cend()))
+    aes::fm::FileManager::write_file_data(output_file_path, deciphered_plaintext);
+}
+
 
 } // namespace aes::api

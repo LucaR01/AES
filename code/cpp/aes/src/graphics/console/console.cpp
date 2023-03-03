@@ -153,6 +153,7 @@ void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
     switch(operation) {
         case ops::Operations::ENCRYPT:
         {
+            //TODO: volendo usare aes::api::encrypt_file();
             const std::vector<uint8_t>& ciphertext = aes::api::encrypt(file_data3, key, iv, padding, mode, aes);
             AES_DEBUG("ciphertext: {}", std::string(ciphertext.cbegin(), ciphertext.cend()))
             aes::fm::FileManager::write_file_data(output_file_path, ciphertext);
@@ -160,6 +161,7 @@ void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
         }
         case ops::Operations::DECRYPT:
         {
+            //TODO: volendo usare aes::api::decrypt_file();
             const std::vector<uint8_t>& deciphered_plaintext = aes::api::decrypt(file_data3, key, iv, padding, mode, aes);
             AES_DEBUG("ciphertext: {}", std::string(deciphered_plaintext.cbegin(), deciphered_plaintext.cend()))
             aes::fm::FileManager::write_file_data(output_file_path, deciphered_plaintext);

@@ -75,3 +75,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE docopt)
 
 # -------------------------------------------------------
 
+# ----------- IMGUIFILEBROWSER BEGIN --------------------------------------------
+
+target_include_directories(${PROJECT_NAME} PUBLIC external/imgui-filebrowser)
+
+# ----------- IMGUIFILEBROWSER END ----------------------------------------------
+

@@ -7,8 +7,6 @@
 #include <iostream>
 #include <map>
 
-#include "docopt.h"
-
 //#include "logger/logger.hpp" //TODO: remove
 #include "version/version.hpp"
 #include "graphics/gui/gui.hpp"
@@ -55,6 +53,41 @@ void parse_user_arguments(const int& argc, const char** argv)
         // Se non viene dato l'opzione -c o --console o -g o --gui allora mostrare la schermata di default.
         // O la console o la gui.
         aes::gui::show();
+    }*/
+}
+
+//TODO: manca l'iv.
+void get_user_arguments(const docopt::value& aes_type, const docopt::value& input_message, const docopt::value& input_path, const docopt::value& output_path,
+                        const docopt::value& mode_string, const docopt::value& padding_string, const std::variant<docopt::value, docopt::value>& operation_type)
+{
+    //const aes::AES& aes;
+    //aes_type && aes_type.isString() ? aes = get_key_from_map(aes_types_names, aes_type) : aes = aes::AES::AES_128;
+
+    std::string message;
+    input_message && input_message.isString() ? message = input_message.asString() : message = "";
+
+    std::string input_path_string;
+    input_path && input_path.isString() ? input_path_string = input_path.asString() : input_path_string = "";
+
+    std::string output_path_string;
+    output_path && output_path.isString() ? output_path_string = output_path.asString() : output_path_string = "";
+
+    //const aes::mod::Modes& mode;
+    //mode_string && mode_string.isString() ? mode = get_key_from_map(modes_names, mode_string) : mode = aes::mod::Modes::ECB;
+
+    //const aes::pad::Paddings& padding;
+    //padding_string && padding_string.isString() ? padding = get_key_from_map(paddings_names, padding_string) : padding = aes::pad::Paddings::NO_PADDING;
+
+    std::string operation;
+    bool is_encryption;
+    bool is_decryption;
+
+    /*if(std::get(operation_type)) { //TODO: fix.
+        if(operation_type.isString()) {
+
+        } else if(operation_type.isBool()) {
+
+        }
     }*/
 }
 

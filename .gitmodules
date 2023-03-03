@@ -10,3 +10,6 @@
 [submodule "code/cpp/aes/external/docopt"]
 	path = code/cpp/aes/external/docopt
 	url = https://github.com/docopt/docopt.cpp.git
+[submodule "code/cpp/aes/external/imgui-filebrowser"]
+	path = code/cpp/aes/external/imgui-filebrowser
+	url = https://github.com/AirGuanZ/imgui-filebrowser.git

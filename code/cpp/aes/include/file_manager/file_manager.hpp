@@ -70,7 +70,7 @@ public:
     static std::string get_file_data3(const std::string& file_path); //TODO: remove this or get_key() qui sotto.
     static std::string get_key(const std::string& file_path); //TODO: rinominare in get_file_data_single_stream o qualcosa del genere. //TODO: remove?
 
-    template<typename T, typename FP>
+    /*template<typename T, typename FP>
     static std::vector<T>& get_file_data(const FP& file_path) //TODO: remove
     {
         std::vector<T> buffer;
@@ -97,7 +97,7 @@ public:
         file.close();
 
         return buffer;
-    }
+    }*/
 
     template<typename T, typename FP>
     /*concept char_like = requires(T d) //TODO: doesn't work so remove
@@ -111,8 +111,8 @@ public:
         std::ifstream file; //TODO: std::ifstream file(file_path);
         file.open(file_path);
 
-        std::vector<T> buffer;
-        std::stringstream ss;
+        std::vector<T> buffer; //TODO: T buffer?
+        std::stringstream ss; //TODO: T ss?
 
         if(file.is_open()) {
             std::string line;
@@ -130,19 +130,50 @@ public:
             }
         }
 
-        /*if(std::is_same_v<T, std::string>) { //TODO: remove
-            for(const auto& line : buffer) {
-                ss << line;
-            }
-        }*/
-
         if(std::is_same_v<T, std::string>) {
             AES_DEBUG("data: {}", ss.str())
         } else {
             AES_DEBUG("data: {}", std::string(buffer.cbegin(), buffer.cend()))
         }
 
-        return std::is_same_v<T, std::string> ? ss.str() : buffer;
+        return std::is_same_v<T, std::string> ? (T)ss.str() : (T)buffer; //TODO: uncomment; prima c'era questa.
+    }
+
+    template<typename T, typename FP> //TODO: to fix.
+    // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
+    [[nodiscard]] static T get_file_data2(const FP file_path) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
+    {
+
+        std::ifstream file; //TODO: std::ifstream file(file_path);
+        file.open(file_path);
+
+        if(std::is_same_v<T, std::string>) {
+            std::stringstream ss; //TODO: T ss?
+            std::string line;
+
+            if(file.is_open()) {
+                while(std::getline(file, line)) {
+                    ss << line;
+                }
+            }
+
+            return (T) ss.str();
+
+        } else {
+            std::vector<std::string> buffer; //TODO: T buffer?
+            //const char* buffer;
+            std::string line;
+
+            if(file.is_open()) {
+                while(std::getline(file, line)) {
+                    buffer.push_back(line);
+                    AES_DEBUG("line of file: {}", line)
+                    AES_DEBUG("buffer.size(): {}", buffer.size())
+                }
+            }
+
+            return (T) buffer;
+        }
     }
 
     static void write_file_data(const std::string& file_path, const std::vector<std::string>& data); //TODO: remove?
