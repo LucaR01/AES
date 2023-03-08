@@ -24,7 +24,18 @@ namespace aes::cvt {
 
 [[nodiscard]] static inline std::vector<uint8_t> get_vector_from_string(const std::string& string)
 {
-    //return std::vector<uint8_t>(string.cbegin(), string.cend()); //TODO: remove
+    return {string.cbegin(), string.cend()};
+}
+
+template<typename S, typename T>
+[[nodiscard]] static inline S get_string_from_vector(const std::vector<T>& vector) requires std::is_same_v<S, std::string> || std::is_same_v<S, std::string_view>
+{
+    return {vector.cbegin(), vector.cend()};
+}
+
+template<typename T, typename S>
+[[nodiscard]] static inline std::vector<T> get_vector_from_string(const S string) requires std::is_same_v<S, std::string> || std::is_same_v<S, std::string_view>
+{
     return {string.cbegin(), string.cend()};
 }
 
@@ -82,6 +93,14 @@ std::vector<T> from_map_to_vector_views(const std::map<K, V>& map, const bool& g
     return static_cast<std::vector<T>>(std::vector{ values.begin(), values.end() }); //TODO: remove static_cast
 }
 
+/**
+ * @brief You pass a map and a value of the map and you get the corresponding key. It returns an optional, because the value could also be not present in the map.
+ * @tparam K
+ * @tparam V
+ * @param map
+ * @param value
+ * @return
+ */
 template<typename K, typename V>
 std::optional<K> retrieve_key_from_map(const std::map<K, V>& map, const V& value)
 {
@@ -94,6 +113,45 @@ std::optional<K> retrieve_key_from_map(const std::map<K, V>& map, const V& value
 
     return {};
 }
+
+/*template<typename K, typename V>
+K retrieve_key_from_map(const std::map<K, V>& map, const V& value) //TODO: remove
+{
+    for(const auto& [k, v] : map) {
+        //v == value ? return k : std::cout << "nothing"; //TODO: remove
+        if(v == value) {
+            return k;
+        }
+    }
+
+    return;
+}*/
+
+/*template<typename K, typename V>
+auto retrieve_key_from_map(const std::map<K, V>& map, const V& value) //TODO: remove
+{
+    for(const auto& [k, v] : map) {
+        //v == value ? return k : {}; //TODO: remove?
+        if(v == value) {
+            return k;
+        }
+    }
+
+    return; //TODO: return nullptr? return {} doesn't work;
+}
+
+template<typename K, typename V>
+auto retrieve_key_from_map(const std::map<K, V>& map, const auto& value) //TODO: remove
+{
+    for(const auto& [k, v] : map) {
+        //v == value ? return k : {}; //TODO: remove?
+        if(v == value) {
+            return k;
+        }
+    }
+
+    return; //TODO: return nullptr? return {} doesn't work;
+}*/
 
 /*template<typename T, typename K, typename V> //TODO: to fix.
 std::optional<T> retrieve_key_or_value(const std::map<K, V>& map, const std::variant<K, V>& key_or_value)
@@ -112,6 +170,24 @@ std::optional<T> retrieve_key_or_value(const std::map<K, V>& map, const std::var
 
     return {};
 }*/
+
+template<typename T, typename K, typename V> //TODO: check if it works
+auto retrieve_key_or_value(const std::map<K, V>& map, const std::variant<K, V>& key_or_value)
+{
+    for(const auto& [k, v] : map) {
+        if(std::holds_alternative<K>) {
+            if(k == static_cast<K>(std::get<K>(key_or_value))) {
+                return std::optional<T>((T)v).value();
+            }
+        } else {
+            if(v == std::get<V>(key_or_value)) {
+                return std::optional<T>((T)k).value();
+            }
+        }
+    }
+
+    return; //TODO: nullptr? credo che return; = return nullptr;
+}
 
 } // namespace aes::cvt
 

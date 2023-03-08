@@ -190,7 +190,8 @@ void generic_combo(const CONTAINER& combo_items, std::string& selected_item, con
     }
 }
 
-char* retrieve_output(const aes::ops::Operations& operation, const std::string& input, const std::string& key, const std::optional<std::vector<uint8_t>>& iv, const std::string& aes_type, const std::string& mode, const std::string& padding);
+char* retrieve_output(const aes::ops::Operations& operation, const aes::ops::EncryptionOperations& encryption_object, const std::string& input, const std::string& key, const std::optional<std::vector<uint8_t>>& iv, const std::string& aes_type, const std::string& mode, const std::string& padding,
+                      const std::string& input_file_path = "", const std::string& output_file_path = "");
 
 void init();
 

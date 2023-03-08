@@ -34,6 +34,8 @@
 // ImGui i text devono essere static così rimane la stringa.
 // ImGui in un label se c'è ## vuol dire che non sarà visibile.
 
+//TODO: REFACTOR ALL THE CODE!!
+
 namespace aes::gui {
 
 void init()
@@ -160,13 +162,12 @@ void window()
                 ImGui::Text("Encryption");
                 ImGui::Text("This is the Encryption tab!\n");
 
-                static int encrypt_operation = 0;
-                //TODO: Volendo usare l'enum Encryption Operations.
-                ImGui::RadioButton("Message", &encrypt_operation, 0); ImGui::SameLine();
-                ImGui::RadioButton("File", &encrypt_operation, 1);
+                static int encrypt_operation = aes::ops::get_operation_index(aes::ops::EncryptionOperations::MESSAGE);
+                ImGui::RadioButton("Message", &encrypt_operation, aes::ops::get_operation_index(aes::ops::EncryptionOperations::MESSAGE)); ImGui::SameLine();
+                ImGui::RadioButton("File", &encrypt_operation, aes::ops::get_operation_index(aes::ops::EncryptionOperations::FILE));
 
                 switch(encrypt_operation) {
-                    case 0:
+                    case aes::ops::get_operation_index(aes::ops::EncryptionOperations::MESSAGE):
                         static std::string encrypt_message_aes_selected_item = aes_types.at(0);
                         generic_combo<std::vector<std::string>>(aes_types, encrypt_message_aes_selected_item, "##aes_combo");
 
@@ -188,20 +189,19 @@ void window()
                         static char ciphertext[256] = "";
 
                         if(ImGui::Button("Encrypt")) {
-                            //TODO: AES_DEBUG volendo
-                            std::cout << "Encrypt" << std::endl;
-                            std::cout << "aes: " << encrypt_message_aes_selected_item << std::endl;
-                            std::cout << "mode: " << encrypt_message_selected_item_mode << std::endl;
-                            std::cout << "padding: " << encrypt_message_selected_item_padding << std::endl;
-                            std::cout << "input text: " << text << std::endl;
-                            std::cout << "iv: " << encrypt_message_iv << std::endl;
-                            std::cout << "key: " << encrypt_message_key << std::endl;
+                            AES_INFO("Encrypt")
+                            AES_DEBUG("aes: {}", encrypt_message_aes_selected_item)
+                            AES_DEBUG("mode: {}", encrypt_message_selected_item_mode)
+                            AES_DEBUG("padding: {}", encrypt_message_selected_item_padding)
+                            AES_DEBUG("input text: {}", text)
+                            AES_DEBUG("iv: {}", encrypt_message_iv)
+                            AES_DEBUG("key: {}", encrypt_message_key)
                             ImGui::LogText("clicked");
 
-                            std::vector<uint8_t> encryption_iv(std::begin(encrypt_message_iv), std::end(encrypt_message_iv)); //TODO: remove
+                            std::vector<uint8_t> encryption_iv(std::cbegin(encrypt_message_iv), std::cend(encrypt_message_iv)); //TODO: remove?
 
                             if(std::strlen(text) > 0 && std::strlen(encrypt_message_key) > 0) {
-                                std::strcpy(ciphertext, aes::gui::retrieve_output(aes::ops::Operations::ENCRYPT, text, encrypt_message_key, encryption_iv, encrypt_message_aes_selected_item, encrypt_message_selected_item_mode, encrypt_message_selected_item_padding));
+                                std::strcpy(ciphertext, aes::gui::retrieve_output(aes::ops::Operations::ENCRYPT, aes::ops::EncryptionOperations::MESSAGE, text, encrypt_message_key, encryption_iv, encrypt_message_aes_selected_item, encrypt_message_selected_item_mode, encrypt_message_selected_item_padding));
                                 AES_DEBUG("ciphertext: {}", ciphertext)
                             } /*else { //TODO: uncomment/remove
                         ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "Input size <= 0");
@@ -209,7 +209,7 @@ void window()
                         }
                         ImGui::InputTextMultiline("ciphertext", ciphertext, IM_ARRAYSIZE(ciphertext), ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly);
                         break;
-                    case 1:
+                    case aes::ops::get_operation_index(aes::ops::EncryptionOperations::FILE):
                         static std::string encrypt_file_aes_selected_item = aes_types.at(0);
                         generic_combo<std::vector<std::string>>(aes_types, encrypt_file_aes_selected_item, "##aes_combo");
 
@@ -229,16 +229,17 @@ void window()
                             encryption_input_file_dialog.Open();
                         }
 
+                        ImGui::SameLine();
+                        ImGui::InputText("input file ", encryption_input_file_path, IM_ARRAYSIZE(encryption_input_file_path), ImGuiInputTextFlags_ReadOnly);
+                        //ImGui::NewLine();
+
                         if(ImGui::Button("encryption_output_file_dialog")) {
                             encryption_output_file_dialog.Open();
                         }
 
                         ImGui::SameLine();
-                        ImGui::InputText("input file ", encryption_input_file_path, IM_ARRAYSIZE(encryption_input_file_path), ImGuiInputTextFlags_ReadOnly);
-                        //ImGui::NewLine();
-
-                        //ImGui::SameLine();
                         ImGui::InputText("output file ", encryption_output_file_path, IM_ARRAYSIZE(encryption_output_file_path), ImGuiInputTextFlags_ReadOnly);
+                        ImGui::NewLine();
 
                         if(ImGui::Button("Encrypt File")) {
                             AES_INFO("Encrypt File")
@@ -250,8 +251,11 @@ void window()
                             AES_DEBUG("encryption_input_file_path: {}", encryption_input_file_path)
                             AES_DEBUG("encryption_output_file_path: {}", encryption_output_file_path)
 
+                            std::vector<uint8_t> encryption_iv(std::cbegin(encrypt_file_iv), std::cend(encrypt_file_iv));
+
                             if(std::strlen(encryption_input_file_path) > 0 && std::strlen(encryption_output_file_path) > 0) {
-                                //TODO: chiamare funzione per cifrare il file.
+                                aes::gui::retrieve_output(aes::ops::Operations::ENCRYPT, aes::ops::EncryptionOperations::FILE, "", encrypt_file_key, encryption_iv, encrypt_file_aes_selected_item,
+                                                          encrypt_file_selected_item_mode, encrypt_file_selected_item_padding, encryption_input_file_path, encryption_output_file_path);
                             }
                         }
                         break;
@@ -265,12 +269,12 @@ void window()
                 ImGui::Text("Decryption");
                 ImGui::Text("This is the Decryption tab!\n");
 
-                static int decrypt_operation = 0;
-                ImGui::RadioButton("Message", &decrypt_operation, 0); ImGui::SameLine();
-                ImGui::RadioButton("File", &decrypt_operation, 1);
+                static int decrypt_operation = aes::ops::get_operation_index(aes::ops::EncryptionOperations::MESSAGE);
+                ImGui::RadioButton("Message", &decrypt_operation, aes::ops::get_operation_index(aes::ops::EncryptionOperations::MESSAGE)); ImGui::SameLine();
+                ImGui::RadioButton("File", &decrypt_operation, aes::ops::get_operation_index(aes::ops::EncryptionOperations::FILE));
 
                 switch(decrypt_operation) {
-                    case 0:
+                    case aes::ops::get_operation_index(aes::ops::EncryptionOperations::MESSAGE):
                         static char text[128] = ""; // se lo metto static il testo rimane nel text field.
                         ImGui::InputTextMultiline("Input", text, IM_ARRAYSIZE(text));
 
@@ -292,20 +296,19 @@ void window()
                         static char output[256] = "";
 
                         if(ImGui::Button("Decrypt")) {
-                            //TODO: usare LOGGER
-                            std::cout << "Decrypt" << std::endl; //TODO: AES_INFO
-                            std::cout << "aes: " << decrypt_message_aes_selected_item << std::endl; //TODO: AES_DEBUG
-                            std::cout << "mode: " << decrypt_message_selected_item_mode << std::endl;
-                            std::cout << "padding:  " << decrypt_message_selected_item_padding << std::endl;
-                            std::cout << "key: " << decrypt_message_key << std::endl;
-                            std::cout << "iv: " << decrypt_message_iv << std::endl;
-                            std::cout << "input text: " << text << std::endl;
+                            AES_INFO("Decrypt")
+                            AES_DEBUG("aes: {}", decrypt_message_aes_selected_item)
+                            AES_DEBUG("mode: {}", decrypt_message_selected_item_mode)
+                            AES_DEBUG("padding: {}", decrypt_message_selected_item_padding)
+                            AES_DEBUG("iv: {}", decrypt_message_iv)
+                            AES_DEBUG("key: {}", decrypt_message_key)
+                            AES_DEBUG("input text: {}", text)
                             ImGui::LogText("clicked");
 
                             std::vector<uint8_t> decrcyption_iv(std::begin(decrypt_message_iv), std::end(decrypt_message_iv));
 
                             if(std::strlen(text) > 0 && std::strlen(decrypt_message_key) > 0) {
-                                std::strcpy(output, aes::gui::retrieve_output(aes::ops::Operations::DECRYPT, text, decrypt_message_key, decrcyption_iv, decrypt_message_aes_selected_item, decrypt_message_selected_item_mode, decrypt_message_selected_item_padding));
+                                std::strcpy(output, aes::gui::retrieve_output(aes::ops::Operations::DECRYPT, aes::ops::EncryptionOperations::MESSAGE, text, decrypt_message_key, decrcyption_iv, decrypt_message_aes_selected_item, decrypt_message_selected_item_mode, decrypt_message_selected_item_padding));
                                 //std::memcpy(output, aes::gui::retrieve_output(aes::ops::Operations::DECRYPT, text, password, iv, aes_selected_item, selected_item_mode, selected_item_padding), sizeof(output)); //TODO: remove
                                 AES_DEBUG("output: {}", output)
                             } /*else { //TODO: remove/uncomment
@@ -342,7 +345,7 @@ void window()
                         //ImGui::InputText("deciphered_plaintext", output, IM_ARRAYSIZE(output), ImGuiInputTextFlags_ReadOnly);
                         ImGui::InputTextMultiline("deciphered_plaintext", output, IM_ARRAYSIZE(output), ImVec2(0, 0), ImGuiInputTextFlags_ReadOnly);
                         break;
-                    case 1:
+                    case aes::ops::get_operation_index(aes::ops::EncryptionOperations::FILE):
                         static std::string decrypt_file_aes_selected_item = aes_types.at(0);
                         generic_combo<std::vector<std::string>>(aes_types, decrypt_file_aes_selected_item, "##aes_combo");
 
@@ -363,23 +366,32 @@ void window()
                             decryption_input_file_dialog.Open();
                         }
 
+                        ImGui::SameLine();
+                        ImGui::InputText("decryption input file ", decryption_input_file_path, IM_ARRAYSIZE(decryption_input_file_path), ImGuiInputTextFlags_ReadOnly);
+                        //ImGui::NewLine();
+
                         if(ImGui::Button("decryption_output_file_dialog")) {
                             decryption_output_file_dialog.Open();
-                        } ImGui::SameLine();
+                        }
 
-                        ImGui::InputText("decryption input file ", decryption_input_file_path, IM_ARRAYSIZE(decryption_input_file_path), ImGuiInputTextFlags_ReadOnly);
+                        ImGui::SameLine();
+                        ImGui::InputText("decryption output file ", decryption_output_file_path, IM_ARRAYSIZE(decryption_output_file_path), ImGuiInputTextFlags_ReadOnly);
                         ImGui::NewLine();
 
-                        //ImGui::SameLine();
-                        ImGui::InputText("decryption output file ", decryption_output_file_path, IM_ARRAYSIZE(decryption_output_file_path), ImGuiInputTextFlags_ReadOnly);
-
                         if(ImGui::Button("Decrypt File")) {
+                            AES_DEBUG("aes: {}", decrypt_file_aes_selected_item)
+                            AES_DEBUG("mode: {}", decrypt_file_selected_item_mode)
+                            AES_DEBUG("padding: {}", decrypt_file_selected_item_padding)
+                            AES_DEBUG("iv: {}", decrypt_file_iv)
+                            AES_DEBUG("key: {}", decrypt_file_key)
                             AES_DEBUG("decryption_input_file_path: {}", decryption_input_file_path)
                             AES_DEBUG("decryption_output_file_path: {}", decryption_output_file_path)
 
+                            std::vector<uint8_t> decryption_iv(std::cbegin(decrypt_file_iv), std::cend(decrypt_file_iv));
+
                             if(std::strlen(decryption_input_file_path) > 0 && std::strlen(decryption_output_file_path) > 0) {
-                                //TODO: chiamare funzione per decifrare il file.
-                                //aes::api::decrypt_file();
+                                aes::gui::retrieve_output(aes::ops::Operations::DECRYPT, aes::ops::EncryptionOperations::FILE, "", decrypt_file_key, decryption_iv, decrypt_file_aes_selected_item,
+                                                          decrypt_file_selected_item_mode, decrypt_file_selected_item_padding, decryption_input_file_path, decryption_output_file_path);
                             }
                         }
                         break;
@@ -402,28 +414,28 @@ void window()
         if(encryption_input_file_dialog.HasSelected())
         {
             std::strcpy(encryption_input_file_path, encryption_input_file_dialog.GetSelected().string().data());
-            std::cout << "encryption_input_file_path: " << encryption_input_file_path << std::endl;
+            AES_DEBUG("encryption_input_file_path: {}", encryption_input_file_path)
             encryption_input_file_dialog.ClearSelected();
         }
 
         if(encryption_output_file_dialog.HasSelected())
         {
             std::strcpy(encryption_output_file_path, encryption_output_file_dialog.GetSelected().string().data());
-            std::cout << "encryption_output_file_path: " << encryption_output_file_path << std::endl;
+            AES_DEBUG("encryption_output_file_path: {}", encryption_output_file_path)
             encryption_output_file_dialog.ClearSelected();
         }
 
         if(decryption_input_file_dialog.HasSelected())
         {
             std::strcpy(decryption_input_file_path, decryption_input_file_dialog.GetSelected().string().data());
-            std::cout << "decryption_input_file_path: " << decryption_input_file_path << std::endl;
+            AES_DEBUG("decryption_input_file_path: {}", decryption_input_file_path)
             decryption_input_file_dialog.ClearSelected();
         }
 
         if(decryption_output_file_dialog.HasSelected())
         {
             std::strcpy(decryption_output_file_path, decryption_output_file_dialog.GetSelected().string().data());
-            std::cout << "decryption_output_file_path: " << decryption_output_file_path << std::endl;
+            AES_DEBUG("decryption_output_file_path: {}", decryption_output_file_path)
             decryption_output_file_dialog.ClearSelected();
         }
 
@@ -450,12 +462,12 @@ void window()
 }
 
 //TODO: iv
-char* retrieve_output(const aes::ops::Operations& operation, const std::string& input, const std::string& key, const std::optional<std::vector<uint8_t>>& iv, const std::string& aes_type, const std::string& mode_string, const std::string& padding_string)
+//TODO: std::variant<char*, void>; either return char* or nothing.
+char* retrieve_output(const aes::ops::Operations& operation, const aes::ops::EncryptionOperations& encryption_object, const std::string& input, const std::string& key, const std::optional<std::vector<uint8_t>>& iv, const std::string& aes_type, const std::string& mode_string, const std::string& padding_string,
+                      const std::string& input_file_path, const std::string& output_file_path)
 {
-    //const aes::AES& aes = ALL_AES_TYPES_NAMES.find("AES 128"); //TODO: remove
-
     std::string message = input; //TODO: std::remove_const<std::string>::type(input), but it's unnecessary.
-    std::string key_not_const = key;
+    std::string key_not_const = key; //TODO: rename better
 
     const aes::AES aes = aes::cvt::retrieve_key_from_map(aes::ALL_AES_TYPES_NAMES, std::string_view(aes_type)).value();
     AES_DEBUG("aes: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
@@ -468,58 +480,47 @@ char* retrieve_output(const aes::ops::Operations& operation, const std::string& 
 
     AES_DEBUG("iv: {}", std::string(iv.value().cbegin(), iv.value().cend()))
 
-    std::optional<std::vector<std::uint8_t>> iv2;
-
-    /*for(const auto& [k, v] : aes::ALL_AES_TYPES_NAMES) { //TODO: remove
-        if(v == aes_type) {
-            aes = k;
-        }
-    }*/
-
-    /*if(ImGui::Button(button_label.c_str())) {
-        switch(operation) {
-            case aes::ops::Operations::ENCRYPT:
-                //std::vector<uint8_t> encrypted_text = ; //TODO: uncomment
-                //TODO: show in a read only text.
-                break;
-            case aes::ops::Operations::DECRYPT:
-                //std::vector<uint8_t> decrypted_plaintext = ; //TODO: uncomment
-                //TODO: show in a read only text.
-                break;
-        }
-    }*/
-
-    /*switch(operation) { //TODO: remove
-        case aes::ops::Operations::ENCRYPT:
-            if(ImGui::Button(button_label.c_str())) {
-
-            }
-            break;
-        case aes::ops::Operations::DECRYPT:
-            break;
-    }*/
+    std::optional<std::vector<std::uint8_t>> iv2; //TODO: remove
 
     switch(operation) {
         case aes::ops::Operations::ENCRYPT:
         {
-            const std::vector<uint8_t>& ciphertext = aes::api::encrypt(message, key_not_const, iv, padding, mode, aes); //TODO: mettere iv al posto di iv2
-            const unsigned char* ciphertext2 = &ciphertext[0];
-            //const unsigned char* ciphertext4 = &aes::api::encrypt(message, key_not_const, iv, padding, mode, aes)[0]; //TODO: remove
-            unsigned char ciphertext3[256];
-            std::copy(ciphertext.begin(), ciphertext.end(), ciphertext3);
-            //TODO: return char* or char[]?
-            return (char*) ciphertext2; //reinterpret_cast<char *>(&ciphertext3[0])
-            //break;
+            switch(encryption_object) {
+                case aes::ops::EncryptionOperations::MESSAGE:
+                {
+                    const std::vector<uint8_t>& ciphertext = aes::api::encrypt(message, key_not_const, iv, padding, mode, aes); //TODO: mettere iv al posto di iv2
+                    const unsigned char* ciphertext2 = &ciphertext[0];
+                    //const unsigned char* ciphertext4 = &aes::api::encrypt(message, key_not_const, iv, padding, mode, aes)[0]; //TODO: remove
+                    unsigned char ciphertext3[256];
+                    std::copy(ciphertext.begin(), ciphertext.end(), ciphertext3);
+                    //TODO: return char* or char[]?
+                    return (char*) ciphertext2; //reinterpret_cast<char *>(&ciphertext3[0])
+                }
+                case aes::ops::EncryptionOperations::FILE:
+                {
+                    aes::api::encrypt_file(input_file_path, output_file_path, key_not_const, iv, padding, mode, aes);
+                    break;
+                }
+            }
         }
         case aes::ops::Operations::DECRYPT:
         {
-            const std::vector<uint8_t>& decrypted_plaintext = aes::api::decrypt(message, key_not_const, iv, padding, mode, aes); //TODO: mettere iv al posto di iv2
-            return (char*) &decrypted_plaintext[0];
-            //break;
+            switch(encryption_object) {
+                case aes::ops::EncryptionOperations::MESSAGE:
+                {
+                    const std::vector<uint8_t>& decrypted_plaintext = aes::api::decrypt(message, key_not_const, iv, padding, mode, aes); //TODO: mettere iv al posto di iv2
+                    return (char*) &decrypted_plaintext[0];
+                    break;
+                }
+                case aes::ops::EncryptionOperations::FILE:
+                {
+                    aes::api::decrypt_file(input_file_path, output_file_path, key_not_const, iv, padding, mode, aes);
+                    break;
+                }
+            }
         }
     }
 
-    //const char* temp = ""; //TODO: remove
     return const_cast<char*>("");
 }
 

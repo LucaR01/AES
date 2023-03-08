@@ -2,15 +2,18 @@
 // Created by Luca on 01/03/2023.
 //
 
-#include "arguments_parser/arguments_parser.hpp"
-
 #include <iostream>
 #include <map>
+#include <variant>
+
+#include "arguments_parser/arguments_parser.hpp"
 
 //#include "logger/logger.hpp" //TODO: remove
 #include "version/version.hpp"
 #include "graphics/gui/gui.hpp"
 #include "graphics/console/console.hpp"
+#include "convert/aes_convert.hpp"
+#include "logger/logger.hpp"
 
 namespace aes::arg {
 
@@ -32,36 +35,26 @@ void parse_user_arguments(const int& argc, const char** argv)
         // O la console o la gui.
         aes::con::show_console();
     }
-
-    /*if((args["-c"] && args["-c"].isBool() && args["-c"].asBool()) || (args["--console"] && args["--console"].isBool() && args["--console"].asBool())) {
-       aes::con::show_console();
-   } else {
-        // Questo sia in caso di -g sia se non c'è la -g, quindi come default.
-        aes::gui::show();
-    }*/
-
-    //TODO: forse sarebbe meglio mostrare la console come default. Perché la gui da problemi.
-
-    /*if((args["-c"] && args["-c"].isBool() && args["-c"].asBool()) || (args["--console"] && args["--console"].isBool() && args["--console"].asBool())) {
-        aes::con::show_console();
-    }*/
-
-    //TODO: se nè -c nè -g (e correlati) allora mostrare di default la gui oppure dovrebbe essere la console il default?
-
-    /*if(!((args["-c"] && args["-c"].isBool() && args["-c"].asBool()) || (args["--console"] && args["--console"].isBool() && args["--console"].asBool()))
-    && !((args["-g"] && args["-g"].isBool() && args["-g"].asBool()) || (args["--gui"] && args["--gui"].isBool() && args["--gui"].asBool()))) {
-        // Se non viene dato l'opzione -c o --console o -g o --gui allora mostrare la schermata di default.
-        // O la console o la gui.
-        aes::gui::show();
-    }*/
 }
 
 //TODO: manca l'iv.
 void get_user_arguments(const docopt::value& aes_type, const docopt::value& input_message, const docopt::value& input_path, const docopt::value& output_path,
                         const docopt::value& mode_string, const docopt::value& padding_string, const std::variant<docopt::value, docopt::value>& operation_type)
 {
-    //const aes::AES& aes;
-    //aes_type && aes_type.isString() ? aes = get_key_from_map(aes_types_names, aes_type) : aes = aes::AES::AES_128;
+    //TODO: prima di assegnarlo controllare se è presente questo valore inserito dall'utente.
+    //TODO: std::find o aes::ALL_AES_TYPES_NAMES.find(); poi se è presente assegnarlo.
+    //TODO: allo show_console passare tutto, mentre al show_gui() non serve, per esempio, passare encrypt o decrypt, perché vengono mostrate entrambe a prescindere.
+
+    aes::AES aes;
+    /*if(aes_type && aes_type.isString()) { //TODO: remove
+        for(const auto& [k, v] : aes::ALL_AES_TYPES_NAMES) { //TODO: usare aes::cvt
+            if(v == aes_type.asString()) {
+                aes = k;
+            }
+        }
+    }*/
+    aes_type && aes_type.isString() ? aes = aes::cvt::retrieve_key_from_map<aes::AES, std::string_view>(aes::ALL_AES_TYPES_NAMES, aes_type.asString()).value() : aes = aes::AES::AES_128; //TODO: uncomment and fix.
+    AES_DEBUG("aes: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
 
     std::string message;
     input_message && input_message.isString() ? message = input_message.asString() : message = "";
@@ -72,20 +65,24 @@ void get_user_arguments(const docopt::value& aes_type, const docopt::value& inpu
     std::string output_path_string;
     output_path && output_path.isString() ? output_path_string = output_path.asString() : output_path_string = "";
 
-    //const aes::mod::Modes& mode;
-    //mode_string && mode_string.isString() ? mode = get_key_from_map(modes_names, mode_string) : mode = aes::mod::Modes::ECB;
+    aes::mod::Modes mode;
+    mode_string && mode_string.isString() ? mode = aes::cvt::retrieve_key_from_map<aes::mod::Modes, std::string_view>(aes::mod::MODES_NAMES, std::string_view(mode_string.asString())).value() : mode = aes::mod::Modes::ECB; //TODO: uncomment and fix.
+    AES_DEBUG("mode: {}", aes::mod::MODES_NAMES.at(mode))
 
-    //const aes::pad::Paddings& padding;
-    //padding_string && padding_string.isString() ? padding = get_key_from_map(paddings_names, padding_string) : padding = aes::pad::Paddings::NO_PADDING;
+    aes::pad::Paddings padding;
+    padding_string && padding_string.isString() ? padding = aes::cvt::retrieve_key_from_map(aes::pad::PADDING_NAMES, std::string_view(padding_string.asString())).value() : padding = aes::pad::Paddings::NO_PADDING; //TODO: uncomment and fix.
+    AES_DEBUG("padding: {}", aes::pad::PADDING_NAMES.at(padding))
 
     std::string operation;
     bool is_encryption;
     bool is_decryption;
 
-    /*if(std::get(operation_type)) { //TODO: fix.
-        if(operation_type.isString()) {
+    //TODO: get "Encryption" or "Decryption" se è una stringa oppure ottenere encryption: true o false o decryption: true o false
 
-        } else if(operation_type.isBool()) {
+    /*if(std::get(operation_type)) { //TODO: fix.
+        if(operation_type && operation_type.isString()) {
+
+        } else if(operation_type && operation_type.isBool()) {
 
         }
     }*/

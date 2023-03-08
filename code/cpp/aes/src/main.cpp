@@ -521,7 +521,8 @@ int main(const int argc, const char** argv)
 
     //aes::gui::show();
 
-    //TODO: posso templetizzare tutti i get_index dei vari enums da poi mettere in un folder generic_templates o generics o templates
+    //TODO: posso templetizzare tutti i get_index dei vari enums da poi mettere in un folder generic_templates o generics o templates o generic enums.
+    //TODO: file con default values?
 
     // -----------------------------------------------------------------------------------------------------------------
 

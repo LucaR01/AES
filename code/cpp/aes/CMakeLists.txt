@@ -16,13 +16,15 @@ file(GLOB SOURCES src/*.cpp src/logger/*.cpp src/math/*.cpp src/math/random/*.cp
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+# ----------- SPDLOG BEGIN --------------------------------------------
+
 add_subdirectory(external/spdlog)
 
 target_include_directories(${PROJECT_NAME} PUBLIC external/spdlog/include)
 
 target_link_directories(${PROJECT_NAME} PRIVATE external/spdlog/src)
 
-# -------------------------------------------------------
+# ----------- SPDLOG END --------------------------------------------
 
 # IMGUI - GLFW - GLAD - OPENGL SETUP
 
@@ -80,4 +82,31 @@ target_link_libraries(${PROJECT_NAME} PRIVATE docopt)
 target_include_directories(${PROJECT_NAME} PUBLIC external/imgui-filebrowser)
 
 # ----------- IMGUIFILEBROWSER END ----------------------------------------------
+
+# ----------- GOOGLETEST BEGIN --------------------------------------------
+
+add_subdirectory(external/googletest)
+
+target_include_directories(${PROJECT_NAME} PUBLIC external/googletest/googletest/include)
+
+target_link_directories(${PROJECT_NAME} PRIVATE external/googletest/googletest/src)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE gtest) # PUBLIC
+
+# ----------- GOOGLETEST END ----------------------------------------------
+
+# ----------- TEST DIRECTORY BEGIN --------------------------------------------
+
+#include_directories(tests) #TODO: remove
+#link_directories(tests) #TODO: remove
+
+#enable_testing()
+
+add_subdirectory(tests) #../aes/tests
+
+#include_directories(tests)
+
+#target_link_libraries(${PROJECT_NAME} aes_tests) #TODO: remove
+
+# ----------- TEST DIRECTORY END ----------------------------------------------
 
