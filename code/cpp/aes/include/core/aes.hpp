@@ -46,6 +46,7 @@ static constexpr uint8_t NUM_OF_AES_TYPES = 3;
 
 static constexpr std::array<AES, NUM_OF_AES_TYPES> ALL_AES_TYPES = {AES::AES_128, AES::AES_192, AES::AES_256 };
 
+//TODO: rename in AES_TYPES_NAMES o AES_NAMES.
 static const std::map<AES, std::string_view>& ALL_AES_TYPES_NAMES = {
         {AES::AES_128, "AES 128"},
         {AES::AES_192, "AES 192"},

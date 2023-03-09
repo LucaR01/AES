@@ -18,6 +18,8 @@
 #include "imgui_impl_opengl3.h"
 
 #include "core/operations/operations.hpp"
+#include "core/aes.hpp"
+#include "defaults/defaults.hpp"
 
 //Forward Declaration
 /*namespace aes::ops { //TODO: remove; it doesn't work.
@@ -195,9 +197,9 @@ char* retrieve_output(const aes::ops::Operations& operation, const aes::ops::Enc
 
 void init();
 
-void window();
+void window(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = "", const std::string& input_file_path = "", const std::string_view& output_file_path = aes::def::DEFAULT_OUTPUT_FILE_PATH);
 
-void show();
+void show(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = "", const std::string& input_file_path = "", const std::string_view& output_file_path = aes::def::DEFAULT_OUTPUT_FILE_PATH);
 
 } // namespace aes::gui
 

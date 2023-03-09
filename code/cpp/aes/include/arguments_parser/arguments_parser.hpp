@@ -11,13 +11,17 @@
 
 namespace aes::arg {
 
+//TODO: fix message or file or keep it as it is.
+//TODO: aggiungere la possibilità di avere una key.
+//TODO: -m MESSAGE, --message=MESSAGE (mi serve un tot di parole non solo una)
+//TODO: -i FILE, --input=FILE
 static const char USAGE[] =
         R"(AES.
 
 Usage:
     aes
     aes [-c | --console | -g | --gui]
-    aes [--console | --gui] [--aes <AES>] [-p <padding>] [--mode <mode] [-m <message>] [-i <file>] [-o FILE] [--operation <operation> | --encryption | --decryption] [ --iv=IV ]
+    aes [--console | --gui] [--aes <AES>] [-p <padding>] [--mode <mode] [<message>] [-i <file>] [-o FILE] [--operation <operation> | --encryption | --decryption] [ --iv=IV ]
 
 Arguments:
     FILE        optional input file.
@@ -33,7 +37,7 @@ Options:
   -c --console                              Display console.
   -o FILE --output=FILE                     Output File [default: output.txt].
   -i <file>, --input <file>                 Input File.
-  -m <message>, --message <input>           Input message [plaintext or ciphertext].
+  -m <message>, --message <message>         Input message (plaintext or ciphertext).
   --aes <AES>                               AES Types [default: AES 128] AES 128, AES 192, AES 256.
   --mode <mode>                             Input Mode [default: ECB] ECB, CBC, CFB.
   -p <padding> --padding <padding>          Input Padding. [default: NO_PADDING] NO_PADDING, 1-0-Padding, ...
@@ -44,11 +48,13 @@ Options:
 
 )";
 
-//TODO: rename in these two functions better.
+//TODO: rename?
 void parse_user_arguments(const int& argc, const char** argv);
 
-void get_user_arguments(const docopt::value& aes_type, const docopt::value& input_message, const docopt::value& input_path, const docopt::value& output_path,
-                            const docopt::value& mode_string, const docopt::value& padding_string, const std::variant<docopt::value, docopt::value>& operation_type);
+//TODO: remove
+/*void get_user_arguments(const docopt::value& aes_type, const docopt::value& input_message, const docopt::value& input_path, const docopt::value& output_path,
+                            const docopt::value& mode_string, const docopt::value& padding_string, const docopt::value& operation_type,
+                            const docopt::value& is_encryption, const docopt::value& is_decryption);*/
 
 } // namespace aes::arg
 

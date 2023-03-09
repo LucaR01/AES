@@ -35,18 +35,18 @@ aes::ops::Operations request_operation()
 
     //TODO: volendo aggiungere la possibilità di avere più lingue.
     std::cout << "Seleziona l'operazione:" << '\n';
-    for(const auto& op : aes::ops::all_operations) {
-        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(op)) << ". " << aes::ops::operations_names.at(op) << '\n';
+    for(const auto& op : aes::ops::ALL_OPERATIONS) {
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(op)) << ". " << aes::ops::OPERATIONS_NAMES.at(op) << '\n';
     }
     std::cout << "[Input: 1|2] Scelta: ";
 
     std::cin >> operation_selected;
     AES_TRACE("operation_selected: {}", operation_selected)
     //TODO: cambiare la condizione nel while.
-    while((std::cin.fail()) || (operation_selected < aes::ops::get_operation_index(aes::ops::all_operations.front()) || operation_selected > aes::ops::all_operations.size())) {
+    while((std::cin.fail()) || (operation_selected < aes::ops::get_operation_index(aes::ops::ALL_OPERATIONS.front()) || operation_selected > aes::ops::ALL_OPERATIONS.size())) {
         //std::cout << "[Input: 1|2] Scelta: "; //TODO: uncomment se lascio solo questo al posto di quello sotto.
-        for(const auto& op : aes::ops::all_operations) { //TODO: forse è quasi meglio non ristamparli. (non serve, sono già sopra)
-            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(op)) << ". " << aes::ops::operations_names.at(op) << '\n';
+        for(const auto& op : aes::ops::ALL_OPERATIONS) { //TODO: forse è quasi meglio non ristamparli. (non serve, sono già sopra)
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(op)) << ". " << aes::ops::OPERATIONS_NAMES.at(op) << '\n';
         }
         std::cout << "[Input: 1|2] Scelta: ";
         std::cin >> operation_selected;
@@ -57,7 +57,7 @@ aes::ops::Operations request_operation()
     std::cin.clear(); //TODO: remove?
 
     aes::ops::Operations op = static_cast<aes::ops::Operations>(operation_selected);
-    std::cout << "Operazione selezionata: " << aes::ops::operations_names.at(op) << std::endl;
+    std::cout << "Operazione selezionata: " << aes::ops::OPERATIONS_NAMES.at(op) << std::endl;
 
     return op;
 }
@@ -69,16 +69,16 @@ void operation_encryption_decryption(const ops::Operations& operation)
     unsigned short encryption_decryption_operation;
     //TODO: prima era: Su cosa si desidera eseguire questa operazione?
     std::cout << (operation == ops::Operations::ENCRYPT ? "Cosa si desidera cifrare?" : "Cosa si desidera decifrare?") << '\n';
-    for(const auto& e : aes::ops::all_encryption_operations) {
-        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+    for(const auto& e : aes::ops::ALL_ENCRYPTION_OPERATIONS) {
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(e) << '\n';
     }
     std::cout << "Seleziona: ";
     std::cin >> encryption_decryption_operation;
     while((std::cin.fail()) || (encryption_decryption_operation < aes::ops::get_operation_index(aes::ops::Operations::ENCRYPT) || encryption_decryption_operation > aes::ops::get_operation_index(aes::ops::Operations::DECRYPT))) {
         std::cin.clear();
         std::cout << (operation == ops::Operations::ENCRYPT ? "Cosa si desidera cifrare?" : "Cosa si desidera decifrare?") << '\n';
-        for(const auto& e : aes::ops::all_encryption_operations) {
-            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        for(const auto& e : aes::ops::ALL_ENCRYPTION_OPERATIONS) {
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(e) << '\n';
         }
         std::cout << "Seleziona: ";
         std::cin >> encryption_decryption_operation;
@@ -89,7 +89,7 @@ void operation_encryption_decryption(const ops::Operations& operation)
     std::cin.clear();
 
     const aes::ops::EncryptionOperations& encryption_decryption_operation_selected = static_cast<aes::ops::EncryptionOperations>(encryption_decryption_operation);
-    std::cout << "Operazione selezionata: " << aes::ops::encryption_operations_names.at(encryption_decryption_operation_selected) << std::endl;
+    std::cout << "Operazione selezionata: " << aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(encryption_decryption_operation_selected) << std::endl;
 
     switch(encryption_decryption_operation_selected) {
         case aes::ops::EncryptionOperations::MESSAGE:
@@ -235,8 +235,8 @@ std::string request_key()
 {
     unsigned short user_input_operation;
     std::cout << "Inserire chiave da input o da file?" << '\n'; //TODO: riscrivere?
-    for(const auto& e : aes::ops::all_encryption_operations) {
-        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+    for(const auto& e : aes::ops::ALL_ENCRYPTION_OPERATIONS) {
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(e) << '\n';
     }
 
     std::cout << "Seleziona: ";
@@ -245,8 +245,8 @@ std::string request_key()
     while((std::cin.fail()) || user_input_operation < 1 || user_input_operation > 2) { //!(std::cin >> encryption_operation) || (std::cin.fail())
         std::cin.clear();
         std::cout << "Inserire chiave da input o da file?" << '\n';
-        for(const auto& e : aes::ops::all_encryption_operations) {
-            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::encryption_operations_names.at(e) << '\n';
+        for(const auto& e : aes::ops::ALL_ENCRYPTION_OPERATIONS) {
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(e) << '\n';
         }
         std::cout << "Seleziona: ";
         std::cin >> user_input_operation;

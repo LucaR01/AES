@@ -12,7 +12,7 @@ file(GLOB SOURCES src/*.cpp src/logger/*.cpp src/math/*.cpp src/math/random/*.cp
         src/core/*.cpp src/core/aes_api.cpp
         src/core/operations/*.cpp src/core/padding/*.cpp src/core/modes/*.cpp
         src/file_manager/*.cpp include/convert/aes_convert.hpp src/convert/*.cpp
-        include/version/version.hpp src/arguments_parser/*.cpp)
+        include/version/version.hpp src/arguments_parser/*.cpp include/defaults/defaults.hpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

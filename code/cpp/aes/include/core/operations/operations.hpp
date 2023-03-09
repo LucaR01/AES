@@ -23,9 +23,9 @@ enum class Operations { //TODO: rename in ENCRYPTION e DECRYPTION?
 
 static constexpr uint8_t NUM_OF_OPERATIONS = 2; //TODO: rimettere short?
 
-static constexpr std::array<Operations, NUM_OF_OPERATIONS> all_operations{Operations::ENCRYPT, Operations::DECRYPT};
+static constexpr std::array<Operations, NUM_OF_OPERATIONS> ALL_OPERATIONS{Operations::ENCRYPT, Operations::DECRYPT};
 
-static const std::map<Operations, std::string_view>& operations_names = {
+static const std::map<Operations, std::string_view>& OPERATIONS_NAMES = {
         {Operations::ENCRYPT, "Encrypt"},
         {Operations::DECRYPT, "Decrypt"}
 };
@@ -43,10 +43,10 @@ enum class EncryptionOperations {
 static constexpr uint8_t NUM_OF_ENCRYPTION_OPERATIONS = 2;
 
 //TODO: touppercase because it's a static constexpr
-static constexpr std::array<EncryptionOperations, NUM_OF_ENCRYPTION_OPERATIONS> all_encryption_operations{EncryptionOperations::MESSAGE, EncryptionOperations::FILE};
+static constexpr std::array<EncryptionOperations, NUM_OF_ENCRYPTION_OPERATIONS> ALL_ENCRYPTION_OPERATIONS{EncryptionOperations::MESSAGE, EncryptionOperations::FILE};
 
 //TODO: touppercase because it's a static constexpr
-static const std::map<EncryptionOperations, std::string_view> encryption_operations_names = {
+static const std::map<EncryptionOperations, std::string_view> ENCRYPTION_OPERATIONS_NAMES = {
         {EncryptionOperations::MESSAGE, "Message"},
         {EncryptionOperations::FILE, "File"}
 };

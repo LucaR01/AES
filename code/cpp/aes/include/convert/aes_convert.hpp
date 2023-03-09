@@ -81,7 +81,7 @@ std::vector<T> from_map_to_vector(const std::map<K, V>& map, const bool& get_key
 }
 
 template<typename T, typename K, typename V>
-std::vector<T> from_map_to_vector_views(const std::map<K, V>& map, const bool& get_keys)
+std::vector<T> from_map_to_vector_views(const std::map<K, V>& map, const bool& get_keys) //TODO: auto return type?
 {
     if(get_keys) {
         auto keys = std::views::keys(map);
