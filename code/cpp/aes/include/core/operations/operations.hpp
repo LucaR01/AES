@@ -21,7 +21,7 @@ enum class Operations { //TODO: rename in ENCRYPTION e DECRYPTION?
     DECRYPT
 };
 
-static constexpr uint8_t NUM_OF_OPERATIONS = 2; //TODO: rimettere short?
+static constexpr uint8_t NUM_OF_OPERATIONS = 2;
 
 static constexpr std::array<Operations, NUM_OF_OPERATIONS> ALL_OPERATIONS{Operations::ENCRYPT, Operations::DECRYPT};
 

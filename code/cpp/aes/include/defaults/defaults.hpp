@@ -20,6 +20,7 @@ static constexpr aes::pad::Paddings DEFAULT_PADDING = aes::pad::Paddings::NO_PAD
 static constexpr aes::ops::Operations DEFAULT_OPERATION = aes::ops::Operations::ENCRYPT;
 static constexpr aes::ops::EncryptionOperations DEFAULT_ENCRYPTION_OPERATION = aes::ops::EncryptionOperations::MESSAGE;
 static constexpr std::string_view DEFAULT_OUTPUT_FILE_PATH = "output.txt";
+static constexpr std::string_view DEFAULT_GRAPHICS_VIEW = "--console"; //TODO: remove?
 
 } // namespace aes::def
 

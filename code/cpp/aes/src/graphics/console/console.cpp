@@ -15,8 +15,33 @@ namespace aes::con {
 
 //TODO: usare uint8_t dove possibile.
 
-void show_console()
+void show_console(const aes::AES& aes_argument, const aes::mod::Modes& mode_argument, const aes::pad::Paddings& padding_argument, const std::string& message_argument, const std::string& key_argument,
+                  const std::string& iv_argument, const std::string& input_file_path_argument, const std::string& output_file_path_argument, const aes::ops::Operations& operation_argument)
 {
+    //TODO:
+    if(operation_argument == aes::def::DEFAULT_OPERATION) {
+        //TODO:
+    } else {
+        //TODO:
+    }
+
+    const aes::ops::Operations& operation = (operation_argument == aes::def::DEFAULT_OPERATION) ? request_operation() : operation_argument;
+    const aes::ops::EncryptionOperations& encryption_operation = request_file_or_message_operation();
+    std::string message = (message_argument.empty()) ? request_message() : message_argument;
+    const AES& aes = (aes_argument == aes::def::DEFAULT_AES) ? request_aes_type() : aes_argument;
+    const aes::mod::Modes& mode = (mode_argument == aes::def::DEFAULT_MODE) ? request_mode() : mode_argument;
+    const aes::pad::Paddings& padding = (padding_argument == aes::def::DEFAULT_PADDING) ? request_padding() : padding_argument;
+    std::string key = (key_argument.empty()) ? request_key() : key_argument;
+    const std::string& input_file_path = (input_file_path_argument.empty()) ? request_input_file() : input_file_path_argument;
+    const std::string& output_file_path = (output_file_path_argument == aes::def::DEFAULT_OUTPUT_FILE_PATH) ? request_output_file() : output_file_path_argument;
+    std::vector<uint8_t> iv;
+
+    if(mode_argument != aes::mod::Modes::ECB) {
+        iv = (iv_argument.empty()) ? request_iv(mode) : std::vector<uint8_t>(iv_argument.cbegin(), iv_argument.cend());
+    }
+
+    execute_message_or_file(encryption_operation, operation, message, key, aes, mode, padding, iv, input_file_path, output_file_path);
+
     //TODO: volendo potrei far ritornare Operations a get_user_input() e fare il resto qui.
     get_user_input();
 }
@@ -106,6 +131,25 @@ void operation_encryption_decryption(const ops::Operations& operation)
     }
 }
 
+//TODO: optional iv?
+void execute_message_or_file(const aes::ops::EncryptionOperations& encryption_operation, const aes::ops::Operations& operation, std::string& message, std::string& key, const aes::AES& aes, const aes::mod::Modes& mode, const aes::pad::Paddings& padding,
+                             const std::vector<uint8_t>& iv, const std::string& input_file_path, const std::string& output_file_path)
+{
+    switch(encryption_operation) {
+        case aes::ops::EncryptionOperations::MESSAGE:
+            AES_INFO("Inside MESSAGE case, encryption_operation: {}", aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(encryption_operation))
+            encrypt_decrypt_message(operation, message, key, aes, mode, padding, iv);
+            break;
+        case aes::ops::EncryptionOperations::FILE:
+            AES_INFO("Inside FILE case, encryption_operation: {}", aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(encryption_operation))
+            encrypt_decrypt_file(operation, aes::fm::FileManager::get_file_data3(input_file_path), output_file_path, key, aes, mode, padding, iv);
+            break;
+        default:
+            AES_CRITICAL("encryption_decryption_operation should not be in default case, encryption_operation: {}", aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(encryption_operation))
+            exit(EXIT_FAILURE);
+    }
+}
+
 void show_encrypt_decrypt_message(const ops::Operations& operation)
 {
     std::string message = request_message();
@@ -117,6 +161,26 @@ void show_encrypt_decrypt_message(const ops::Operations& operation)
 
     AES_DEBUG("aes type: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
 
+    switch(operation) {
+        case ops::Operations::ENCRYPT:
+        {
+            const std::vector<uint8_t>& ciphertext = aes::api::encrypt(message, key, iv, padding, mode, aes);
+            //TODO: usare aes::cvt::get_string_from_vector()
+            std::cout << "Messaggio cifrato: " << std::string(ciphertext.cbegin(), ciphertext.cend()) << std::endl;
+            break;
+        }
+        case ops::Operations::DECRYPT:
+        {
+            const std::vector<uint8_t>& deciphered_plaintext = aes::api::decrypt(message, key, iv, padding, mode, aes);
+            //TODO: usare aes::cvt::get_string_from_vector()
+            std::cout << "Messaggio decifrato: " << std::string(deciphered_plaintext.cbegin(), deciphered_plaintext.cend()) << std::endl;
+            break;
+        }
+    }
+}
+
+void encrypt_decrypt_message(const aes::ops::Operations& operation, std::string& message, std::string& key, const aes::AES& aes, const aes::mod::Modes& mode, const aes::pad::Paddings& padding, const std::vector<uint8_t>& iv)
+{
     switch(operation) {
         case ops::Operations::ENCRYPT:
         {
@@ -169,6 +233,31 @@ void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
         }
     }
 }
+
+void encrypt_decrypt_file(const aes::ops::Operations& operation, std::string input_file_data, const std::string& output_file_path, std::string& key, const aes::AES& aes, const aes::mod::Modes& mode, const aes::pad::Paddings& padding, const std::vector<uint8_t>& iv)
+{
+    switch(operation) {
+        case ops::Operations::ENCRYPT:
+        {
+            //TODO: volendo usare aes::api::encrypt_file();
+            /*const std::vector<uint8_t>& ciphertext = aes::api::encrypt(input_file_data, key, iv, padding, mode, aes); //TODO: remove
+            AES_DEBUG("ciphertext: {}", std::string(ciphertext.cbegin(), ciphertext.cend()))
+            aes::fm::FileManager::write_file_data(output_file_path, ciphertext);*/
+            aes::api::encrypt_file(input_file_data, output_file_path, key, iv, padding, mode, aes);
+            break;
+        }
+        case ops::Operations::DECRYPT:
+        {
+            //TODO: volendo usare aes::api::decrypt_file();
+            /*const std::vector<uint8_t>& deciphered_plaintext = aes::api::decrypt(input_file_data, key, iv, padding, mode, aes); //TODO: remove
+            AES_DEBUG("ciphertext: {}", std::string(deciphered_plaintext.cbegin(), deciphered_plaintext.cend()))
+            aes::fm::FileManager::write_file_data(output_file_path, deciphered_plaintext);*/
+            aes::api::decrypt_file(input_file_data, output_file_path, key, iv, padding, mode, aes);
+            break;
+        }
+    }
+}
+
 
 // REQUEST
 
@@ -350,6 +439,35 @@ aes::AES request_aes_type()
     std::cin.clear();
 
     return static_cast<aes::AES>(aes_type);
+}
+
+aes::ops::EncryptionOperations request_file_or_message_operation()
+{
+    unsigned short file_or_message_operation;
+    std::cout << "Su cosa si desidera eseguire questa operazione?" << '\n';
+    for(const auto& e : aes::ops::ALL_ENCRYPTION_OPERATIONS) {
+        std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(e) << '\n';
+    }
+    std::cout << "Seleziona: ";
+    std::cin >> file_or_message_operation;
+    while((std::cin.fail()) || (file_or_message_operation < aes::ops::get_operation_index(aes::ops::EncryptionOperations::MESSAGE) || file_or_message_operation > aes::ops::get_operation_index(aes::ops::EncryptionOperations::FILE))) {
+        std::cin.clear();
+        std::cout << "Su cosa si desidera eseguire questa operazione?" << '\n';
+        for(const auto& e : aes::ops::ALL_ENCRYPTION_OPERATIONS) {
+            std::cout << static_cast<unsigned short>(aes::ops::get_operation_index(e)) << ". " << aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(e) << '\n';
+        }
+        std::cout << "Seleziona: ";
+        std::cin >> file_or_message_operation;
+        std::cout << std::flush;
+        AES_DEBUG("file_or_message_operation: {}", file_or_message_operation)
+    }
+
+    std::cin.clear();
+
+    const aes::ops::EncryptionOperations& file_or_message_operation_selected = static_cast<aes::ops::EncryptionOperations>(file_or_message_operation);
+    std::cout << "Operazione selezionata: " << aes::ops::ENCRYPTION_OPERATIONS_NAMES.at(file_or_message_operation_selected) << std::endl;
+
+    return file_or_message_operation_selected;
 }
 
 } //namespace aes::con

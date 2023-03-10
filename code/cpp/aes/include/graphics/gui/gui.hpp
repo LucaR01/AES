@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <array>
 #include <vector>
 #include <type_traits>
@@ -32,6 +33,12 @@
 }*/
 
 namespace aes::gui {
+
+static constexpr unsigned short WINDOW_WIDTH = 1280;
+static constexpr unsigned short WINDOW_HEIGHT = 720;
+static constexpr std::string_view WINDOW_TITLE = "AES";
+
+static bool set_files_path = true;
 
 //TODO: const int& error, char[]?
 static void glfw_error_callback(int error, const char* description)
@@ -197,9 +204,9 @@ char* retrieve_output(const aes::ops::Operations& operation, const aes::ops::Enc
 
 void init();
 
-void window(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = "", const std::string& input_file_path = "", const std::string_view& output_file_path = aes::def::DEFAULT_OUTPUT_FILE_PATH);
+void window(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = "", const std::string& key = "", const std::string& iv = "", const std::string& input_file_path = "", const std::string& output_file_path = std::string(aes::def::DEFAULT_OUTPUT_FILE_PATH));
 
-void show(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = "", const std::string& input_file_path = "", const std::string_view& output_file_path = aes::def::DEFAULT_OUTPUT_FILE_PATH);
+void show(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = "", const std::string& key = "", const std::string& iv = "", const std::string& input_file_path = "", const std::string& output_file_path = std::string(aes::def::DEFAULT_OUTPUT_FILE_PATH));
 
 } // namespace aes::gui
 

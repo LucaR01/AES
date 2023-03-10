@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <map>
-#include <tuple>
 
 #include "arguments_parser/arguments_parser.hpp"
 #include "version/version.hpp"
@@ -23,29 +22,26 @@ void parse_user_arguments(const int& argc, const char** argv)
 #ifndef RELEASE_MODE
     for(const auto& arg : args) {
         std::cout << arg.first << " : " << arg.second << std::endl;
-        //AES_DEBUG("{} : ", arg.first) //TODO: to fix.
+        //AES_DEBUG("{} : {}", arg.first) //TODO: to fix.
     }
 #endif
 
-    //TODO: iv;
-    //TODO: controllare se gli argomenti sono corretti nelle variabili.
+    //TODO: mi servirebbe un std::pair<> o una std::map per capire se è stato passato dall'utente o se è un valore di default.
 
     aes::AES aes;
-    args["aes"] && args["aes"].isString() ? aes = aes::cvt::retrieve_key_from_map<aes::AES, std::string_view>(aes::ALL_AES_TYPES_NAMES, args["aes"].asString()).value() : aes = aes::def::DEFAULT_AES;
+    args["--aes"] && args["--aes"].isString() ? aes = aes::cvt::retrieve_key_from_map<aes::AES, std::string_view>(aes::ALL_AES_TYPES_NAMES, args["--aes"].asString()).value() : aes = aes::def::DEFAULT_AES;
     AES_DEBUG("aes: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
 
     std::string message;
-    //TODO: provare a togliere il check .isString();
-    //TODO: <message> e basta funziona; nello usage c'è da mettere [<message>] e basta senza il -m, però.
-    args["<message>"] && args["<message>"].isString() ? message = args["<message>"].asString() : message = "";
+    args["--message"] && args["--message"].isString() ? message = args["--message"].asString() : message = "";
     AES_DEBUG("message: {}", message)
 
     std::string input_path_string;
-    args["-i"] && args["-i"].isString() ? input_path_string = args["-i"].asString() : input_path_string = "";
+    args["--input"] && args["--input"].isString() ? input_path_string = args["--input"].asString() : input_path_string = "";
     AES_DEBUG("input_path_string: {}", input_path_string)
 
     std::string output_path_string;
-    args["-o"] && args["-o"].isString() ? output_path_string = args["-o"].asString() : output_path_string = aes::def::DEFAULT_OUTPUT_FILE_PATH;
+    args["--output"] && args["--output"].isString() ? output_path_string = args["--output"].asString() : output_path_string = aes::def::DEFAULT_OUTPUT_FILE_PATH;
     AES_DEBUG("output_path_string: {}", output_path_string)
 
     aes::mod::Modes mode;
@@ -53,8 +49,16 @@ void parse_user_arguments(const int& argc, const char** argv)
     AES_DEBUG("mode: {}", aes::mod::MODES_NAMES.at(mode))
 
     aes::pad::Paddings padding;
-    args["-p"] && args["-p"].isString() ? padding = aes::cvt::retrieve_key_from_map(aes::pad::PADDING_NAMES, std::string_view(args["-p"].asString())).value() : padding = aes::def::DEFAULT_PADDING;
+    args["--padding"] && args["--padding"].isString() ? padding = aes::cvt::retrieve_key_from_map(aes::pad::PADDING_NAMES, std::string_view(args["--padding"].asString())).value() : padding = aes::def::DEFAULT_PADDING;
     AES_DEBUG("padding: {}", aes::pad::PADDING_NAMES.at(padding))
+
+    std::string iv;
+    args["--iv"] && args["--iv"].isString() ? iv = args["--iv"].asString() : "";
+    AES_DEBUG("iv: {}", iv)
+
+    std::string key;
+    args["--key"] && args["--key"].isString() ? key = args["--key"].asString() : "";
+    AES_DEBUG("key: {}", key)
 
     aes::ops::Operations operation;
 
@@ -87,15 +91,16 @@ void parse_user_arguments(const int& argc, const char** argv)
 
 
     if((args["-g"] && args["-g"].isBool() && args["-g"].asBool()) || (args["--gui"] && args["--gui"].isBool() && args["--gui"].asBool())) {
-        aes::gui::show();
+        aes::gui::show(aes, mode, padding, message, key, iv, input_path_string, output_path_string);
     } else {
         // Se non viene dato l'opzione -c o --console o -g o --gui allora mostrare la schermata di default.
         // O la console o la gui.
-        aes::con::show_console();
+        aes::con::show_console(aes, mode, padding, message, key, iv, input_path_string, output_path_string, operation);
     }
 }
 
 //TODO: manca l'iv.
+//TODO: remove
 /*void get_user_arguments(const docopt::value& aes_type, const docopt::value& input_message, const docopt::value& input_path, const docopt::value& output_path,
                         const docopt::value& mode_string, const docopt::value& padding_string, const docopt::value& operation_type,
                         const docopt::value& is_encryption, const docopt::value& is_decryption)
