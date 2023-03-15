@@ -15,43 +15,55 @@ namespace aes::con {
 
 //TODO: usare uint8_t dove possibile.
 
-void show_console(const aes::AES& aes_argument, const aes::mod::Modes& mode_argument, const aes::pad::Paddings& padding_argument, const std::string& message_argument, const std::string& key_argument,
-                  const std::string& iv_argument, const std::string& input_file_path_argument, const std::string& output_file_path_argument, const aes::ops::Operations& operation_argument)
+void show_console(const std::pair<aes::AES, arg::Arguments>& aes_argument, const std::pair<aes::mod::Modes, arg::Arguments>& mode_argument, const std::pair<aes::pad::Paddings, arg::Arguments>& padding_argument, const std::pair<std::string, arg::Arguments>& message_argument,
+                  const std::pair<std::string, arg::Arguments>& key_argument, const std::pair<std::string, aes::arg::Arguments>& iv_argument, const std::pair<std::string, aes::arg::Arguments>& input_file_path_argument,
+                  const std::pair<std::string, arg::Arguments>& output_file_path_argument, const std::pair<aes::ops::Operations, arg::Arguments>& operation_argument)
 {
     //TODO:
-    if(operation_argument == aes::def::DEFAULT_OPERATION) {
+    /*if(operation_argument.first == aes::def::DEFAULT_OPERATION) { //TODO: remove
         //TODO:
     } else {
         //TODO:
-    }
+    }*/
 
-    const aes::ops::Operations& operation = (operation_argument == aes::def::DEFAULT_OPERATION) ? request_operation() : operation_argument;
+    const aes::ops::Operations& operation = operation_argument.second == aes::arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_operation() : operation_argument.first;
     const aes::ops::EncryptionOperations& encryption_operation = request_file_or_message_operation();
-    std::string message = (message_argument.empty()) ? request_message() : message_argument;
-    const AES& aes = (aes_argument == aes::def::DEFAULT_AES) ? request_aes_type() : aes_argument;
-    const aes::mod::Modes& mode = (mode_argument == aes::def::DEFAULT_MODE) ? request_mode() : mode_argument;
-    const aes::pad::Paddings& padding = (padding_argument == aes::def::DEFAULT_PADDING) ? request_padding() : padding_argument;
-    std::string key = (key_argument.empty()) ? request_key() : key_argument;
-    const std::string& input_file_path = (input_file_path_argument.empty()) ? request_input_file() : input_file_path_argument;
-    const std::string& output_file_path = (output_file_path_argument == aes::def::DEFAULT_OUTPUT_FILE_PATH) ? request_output_file() : output_file_path_argument;
+    std::string message = message_argument.second == arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_message() : message_argument.first;
+    const AES& aes = aes_argument.second == arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_aes_type() : aes_argument.first;
+    const aes::mod::Modes& mode = mode_argument.second == arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_mode() : mode_argument.first;
+    const aes::pad::Paddings& padding = padding_argument.second == arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_padding() : padding_argument.first;
+    std::string key = key_argument.second == aes::arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_key() : key_argument.first;
+    const std::string& input_file_path = input_file_path_argument.second == aes::arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_input_file() : input_file_path_argument.first;
+    const std::string& output_file_path = output_file_path_argument.second == aes::arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_output_file() : output_file_path_argument.first;
     std::vector<uint8_t> iv;
 
-    if(mode_argument != aes::mod::Modes::ECB) {
-        iv = (iv_argument.empty()) ? request_iv(mode) : std::vector<uint8_t>(iv_argument.cbegin(), iv_argument.cend());
+    if(mode != aes::mod::Modes::ECB) {
+        iv = iv_argument.second == aes::arg::Arguments::NOT_USER_PASSED_ARGUMENT ? request_iv(mode) : std::vector<uint8_t>(iv_argument.first.cbegin(), iv_argument.first.cend());
     }
 
-    execute_message_or_file(encryption_operation, operation, message, key, aes, mode, padding, iv, input_file_path, output_file_path);
+    AES_DEBUG("console | operation: {}", ops::OPERATIONS_NAMES.at(operation))
+    AES_DEBUG("console | encryption_operation: {}", ops::ENCRYPTION_OPERATIONS_NAMES.at(encryption_operation))
+    AES_DEBUG("console | message: {}", message)
+    AES_DEBUG("console | aes: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
+    AES_DEBUG("console | mode: {}", mod::MODES_NAMES.at(mode))
+    AES_DEBUG("console | padding: {}", pad::PADDING_NAMES.at(padding))
+    AES_DEBUG("console | key: {}", key)
+    AES_DEBUG("console | input_file_path: {}", input_file_path)
+    AES_DEBUG("console | output_file_path: {}", output_file_path)
+    AES_DEBUG("console | iv: {}", std::string(iv.cbegin(), iv.cend()))
+
+    encrypt_decrypt_message_or_file(encryption_operation, operation, message, key, aes, mode, padding, iv, input_file_path, output_file_path);
 
     //TODO: volendo potrei far ritornare Operations a get_user_input() e fare il resto qui.
-    get_user_input();
+    //get_user_input(); //TODO: comment?
 }
 
 //TODO: in get_user_input() posso volendo solo mettere le chiamate alle altre funzioni.
-void get_user_input()
+/*void get_user_input() //TODO: remove?
 {
     //TODO: a questo punto, quasi rimuovere la funzione get_user_input() e semplicemente spostare questo codice in show_console();
     operation_encryption_decryption(request_operation());
-}
+}*/
 
 //TODO: però questa la utilizzo una singola volta, la tengo lo stesso? Per il principio di Single Responsability Principle.
 aes::ops::Operations request_operation()
@@ -89,7 +101,7 @@ aes::ops::Operations request_operation()
 
 // ENCRYPTION & DECRYPTION
 
-void operation_encryption_decryption(const ops::Operations& operation)
+/*void operation_encryption_decryption(const ops::Operations& operation)
 {
     unsigned short encryption_decryption_operation;
     //TODO: prima era: Su cosa si desidera eseguire questa operazione?
@@ -129,10 +141,10 @@ void operation_encryption_decryption(const ops::Operations& operation)
             AES_CRITICAL("encryption_decryption_operation should not be in default case, encryption_decryption_operation: {}", encryption_decryption_operation)
             exit(EXIT_FAILURE);
     }
-}
+}*/
 
 //TODO: optional iv?
-void execute_message_or_file(const aes::ops::EncryptionOperations& encryption_operation, const aes::ops::Operations& operation, std::string& message, std::string& key, const aes::AES& aes, const aes::mod::Modes& mode, const aes::pad::Paddings& padding,
+void encrypt_decrypt_message_or_file(const aes::ops::EncryptionOperations& encryption_operation, const aes::ops::Operations& operation, std::string& message, std::string& key, const aes::AES& aes, const aes::mod::Modes& mode, const aes::pad::Paddings& padding,
                              const std::vector<uint8_t>& iv, const std::string& input_file_path, const std::string& output_file_path)
 {
     switch(encryption_operation) {
@@ -150,7 +162,7 @@ void execute_message_or_file(const aes::ops::EncryptionOperations& encryption_op
     }
 }
 
-void show_encrypt_decrypt_message(const ops::Operations& operation)
+/*void show_encrypt_decrypt_message(const ops::Operations& operation)
 {
     std::string message = request_message();
     const aes::mod::Modes& mode = request_mode();
@@ -177,7 +189,7 @@ void show_encrypt_decrypt_message(const ops::Operations& operation)
             break;
         }
     }
-}
+}*/
 
 void encrypt_decrypt_message(const aes::ops::Operations& operation, std::string& message, std::string& key, const aes::AES& aes, const aes::mod::Modes& mode, const aes::pad::Paddings& padding, const std::vector<uint8_t>& iv)
 {
@@ -199,7 +211,7 @@ void encrypt_decrypt_message(const aes::ops::Operations& operation, std::string&
     }
 }
 
-void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
+/*void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
 {
     const std::string& input_file_path = request_input_file();
     //const std::vector<char*>& file_data = aes::fm::FileManager::get_file_data(input_file_path); //TODO: remove
@@ -232,7 +244,7 @@ void show_encrypt_decrypt_file(const ops::Operations& operation) //TODO: remove?
             break;
         }
     }
-}
+}*/
 
 void encrypt_decrypt_file(const aes::ops::Operations& operation, std::string input_file_data, const std::string& output_file_path, std::string& key, const aes::AES& aes, const aes::mod::Modes& mode, const aes::pad::Paddings& padding, const std::vector<uint8_t>& iv)
 {

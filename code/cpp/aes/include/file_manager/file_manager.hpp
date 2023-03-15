@@ -203,7 +203,10 @@ public:
 
     [[nodiscard]] static inline bool has_data(const std::string_view& file_path);
 
-    [[nodiscard]] static inline uintmax_t get_file_size(const std::string_view& file_path);
+    [[nodiscard]] static inline uintmax_t get_file_size(const std::string_view& file_path)
+    {
+        return std::filesystem::file_size(file_path);
+    }
 
     [[nodiscard]] static bool file_exists(const std::string_view& file_path);
     static void delete_file(const std::string& file_path);

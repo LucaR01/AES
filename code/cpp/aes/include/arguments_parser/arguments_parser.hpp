@@ -11,15 +11,34 @@
 
 namespace aes::arg {
 
+//TODO: Either monad (std::variant) NOT_USER_PASSED_ARGUMENT or USER_PASSED_ARGUMENT
+enum class Arguments {
+    NOT_USER_PASSED_ARGUMENT = 0, //TODO: rename in DEFAULT_ARGUMENT?
+    USER_PASSED_ARGUMENT
+};
+
+static const std::map<Arguments, std::string_view>& ARGUMENTS_NAMES = {
+        {Arguments::NOT_USER_PASSED_ARGUMENT, "NOT_USER_PASSED_ARGUMENT"},
+        {Arguments::USER_PASSED_ARGUMENT, "USER_PASSED_ARGUMENT"}
+};
+
+static constexpr bool USER_PASSED_ARGUMENT = true; //TODO: remove
+static constexpr bool NOT_USER_PASSED_ARGUMENT = false; //TODO: remove
+//static constexpr std::string_view EMPTY_STRING = ""; //TODO: remove? //TODO: mettere in defaults.hpp
+
 //TODO: fix message or file or keep it as it is.
 //TODO: aggiungere la possibilità di avere una key.
 //TODO: -m MESSAGE, --message=MESSAGE (mi serve un tot di parole non solo una)
 //TODO: -i FILE, --input=FILE
 
+// Rimuovo i valori di [default], perché altrimenti per come è fatto il programma darebbe sempre USER_PASSED_ARGUMENT
+
 // Quindi come passare gli argomenti:
 // se è una singola lettera, tipo -i usare "" (o forse anche '' [non va!]); se il parametro è una stringa con degli spazi bianchi usare '' (non va) o "" o \ (neanche questo)
 // tipo -p "1-0-Padding" o anche -p="1-0-Padding".
 // se si usa quelli con -- c'è bisogna per forza dell'= tipo --aes="AES 256" o anche --mode=CBC (anche senza ""), non funziona con --aes "AES 256".
+
+// prima era [default: AES 128], [default: ECB], [default: NO_PADDING], [default: Encrypt]
 static const char USAGE[] =
         R"(AES.
 
@@ -47,10 +66,10 @@ Options:
   -o FILE --output=FILE                     Output File [default: output.txt].
   -i <file>, --input <file>                 Input File.
   -m <message>, --message <message>         Input message (plaintext or ciphertext).
-  --aes <AES>                               AES Types [default: AES 128] AES 128, AES 192, AES 256.
-  --mode <mode>                             Input Mode [default: ECB] ECB, CBC, CFB.
-  -p <padding> --padding <padding>          Input Padding. [default: NO_PADDING] NO_PADDING, 1-0-Padding, ...
-  --operation <operation>                   Input Operation. [default: Encrypt] Encrypt, Decrypt.
+  --aes <AES>                               AES Types AES 128, AES 192, AES 256.
+  --mode <mode>                             Input Mode ECB, CBC, CFB.
+  -p <padding> --padding <padding>          Input Padding. NO_PADDING, 1-0-Padding, ...
+  --operation <operation>                   Input Operation. Encrypt, Decrypt.
   --encryption                              Encryption.
   --decryption                              Decryption.
   --iv=IV                                   Input iv.
@@ -60,11 +79,6 @@ Options:
 
 //TODO: rename?
 void parse_user_arguments(const int& argc, const char** argv);
-
-//TODO: remove
-/*void get_user_arguments(const docopt::value& aes_type, const docopt::value& input_message, const docopt::value& input_path, const docopt::value& output_path,
-                            const docopt::value& mode_string, const docopt::value& padding_string, const docopt::value& operation_type,
-                            const docopt::value& is_encryption, const docopt::value& is_decryption);*/
 
 } // namespace aes::arg
 

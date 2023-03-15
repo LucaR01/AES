@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <map>
+#include <utility>
 
 #include "arguments_parser/arguments_parser.hpp"
 #include "version/version.hpp"
@@ -21,138 +22,77 @@ void parse_user_arguments(const int& argc, const char** argv)
 
 #ifndef RELEASE_MODE
     for(const auto& arg : args) {
-        std::cout << arg.first << " : " << arg.second << std::endl;
-        //AES_DEBUG("{} : {}", arg.first) //TODO: to fix.
+        //std::cout << arg.first << " : " << arg.second << std::endl; //TODO: uncomment
+        AES_DEBUG("{} : {}", arg.first, arg.second.isString() ? arg.second.asString() : arg.second.isBool() ? std::to_string(arg.second.asBool()) : "empty") //TODO: to fix.
     }
 #endif
 
-    //TODO: mi servirebbe un std::pair<> o una std::map per capire se è stato passato dall'utente o se è un valore di default.
+    //TODO: C'è il valore di default che lo fa sembrare un argomento passato dall'utente.
 
-    aes::AES aes;
-    args["--aes"] && args["--aes"].isString() ? aes = aes::cvt::retrieve_key_from_map<aes::AES, std::string_view>(aes::ALL_AES_TYPES_NAMES, args["--aes"].asString()).value() : aes = aes::def::DEFAULT_AES;
-    AES_DEBUG("aes: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
+    std::pair<aes::AES, Arguments> aes;
+    //aes::AES aes; //TODO: remove
+    args["--aes"] && args["--aes"].isString() ? aes = std::make_pair(aes::cvt::retrieve_key_from_map<aes::AES, std::string_view>(aes::ALL_AES_TYPES_NAMES, args["--aes"].asString()).value(), Arguments::USER_PASSED_ARGUMENT) : aes = std::make_pair(aes::def::DEFAULT_AES, Arguments::NOT_USER_PASSED_ARGUMENT);
+    AES_DEBUG("aes: {} : {}", aes::ALL_AES_TYPES_NAMES.at(aes.first), ARGUMENTS_NAMES.at(aes.second))
 
-    std::string message;
-    args["--message"] && args["--message"].isString() ? message = args["--message"].asString() : message = "";
-    AES_DEBUG("message: {}", message)
+    std::pair<std::string, Arguments> message;
+    //std::string message; //TODO: remove
+    args["--message"] && args["--message"].isString() ? message = std::make_pair(args["--message"].asString(), Arguments::USER_PASSED_ARGUMENT) : message = std::make_pair("", Arguments::NOT_USER_PASSED_ARGUMENT);
+    AES_DEBUG("message: {} : {}", message.first, ARGUMENTS_NAMES.at(message.second))
 
-    std::string input_path_string;
-    args["--input"] && args["--input"].isString() ? input_path_string = args["--input"].asString() : input_path_string = "";
-    AES_DEBUG("input_path_string: {}", input_path_string)
+    std::pair<std::string, Arguments> input_file_path;
+    //std::string input_path_string; //TODO: remove
+    args["--input"] && args["--input"].isString() ? input_file_path = std::make_pair(args["--input"].asString(), Arguments::USER_PASSED_ARGUMENT) : input_file_path = std::make_pair("", Arguments::NOT_USER_PASSED_ARGUMENT);
+    AES_DEBUG("input_path_string: {} : {}", input_file_path.first, ARGUMENTS_NAMES.at(input_file_path.second))
 
-    std::string output_path_string;
-    args["--output"] && args["--output"].isString() ? output_path_string = args["--output"].asString() : output_path_string = aes::def::DEFAULT_OUTPUT_FILE_PATH;
-    AES_DEBUG("output_path_string: {}", output_path_string)
+    std::pair<std::string, Arguments> output_file_path;
+    //std::string output_path_string; //TODO: remove
+    args["--output"] && args["--output"].isString() ? output_file_path = std::make_pair(args["--output"].asString(), Arguments::USER_PASSED_ARGUMENT) : output_file_path = std::make_pair(aes::def::DEFAULT_OUTPUT_FILE_PATH, Arguments::NOT_USER_PASSED_ARGUMENT);
+    AES_DEBUG("output_path_string: {} : {}", output_file_path.first, ARGUMENTS_NAMES.at(output_file_path.second))
 
-    aes::mod::Modes mode;
-    args["--mode"] && args["--mode"].isString() ? mode = aes::cvt::retrieve_key_from_map<aes::mod::Modes, std::string_view>(aes::mod::MODES_NAMES, std::string_view(args["--mode"].asString())).value() : mode = aes::def::DEFAULT_MODE;
-    AES_DEBUG("mode: {}", aes::mod::MODES_NAMES.at(mode))
+    std::pair<aes::mod::Modes, Arguments> mode;
+    //aes::mod::Modes mode; //TODO: remove
+    args["--mode"] && args["--mode"].isString() ? mode = std::make_pair(aes::cvt::retrieve_key_from_map<aes::mod::Modes, std::string_view>(aes::mod::MODES_NAMES, std::string_view(args["--mode"].asString())).value(), Arguments::USER_PASSED_ARGUMENT) : mode = std::make_pair(aes::def::DEFAULT_MODE, Arguments::NOT_USER_PASSED_ARGUMENT);
+    AES_DEBUG("mode: {} : {}", aes::mod::MODES_NAMES.at(mode.first), ARGUMENTS_NAMES.at(mode.second))
 
-    aes::pad::Paddings padding;
-    args["--padding"] && args["--padding"].isString() ? padding = aes::cvt::retrieve_key_from_map(aes::pad::PADDING_NAMES, std::string_view(args["--padding"].asString())).value() : padding = aes::def::DEFAULT_PADDING;
-    AES_DEBUG("padding: {}", aes::pad::PADDING_NAMES.at(padding))
+    std::pair<aes::pad::Paddings, Arguments> padding;
+    //aes::pad::Paddings padding; //TODO: remove
+    args["--padding"] && args["--padding"].isString() ? padding = std::make_pair(aes::cvt::retrieve_key_from_map(aes::pad::PADDING_NAMES, std::string_view(args["--padding"].asString())).value(), Arguments::USER_PASSED_ARGUMENT) : padding = std::make_pair(aes::def::DEFAULT_PADDING, Arguments::NOT_USER_PASSED_ARGUMENT);
+    AES_DEBUG("padding: {} : {}", aes::pad::PADDING_NAMES.at(padding.first), ARGUMENTS_NAMES.at(padding.second))
 
-    std::string iv;
-    args["--iv"] && args["--iv"].isString() ? iv = args["--iv"].asString() : "";
-    AES_DEBUG("iv: {}", iv)
+    std::pair<std::string, Arguments> iv;
+    //std::string iv; //TODO: remove
+    args["--iv"] && args["--iv"].isString() ? iv = std::make_pair(args["--iv"].asString(), Arguments::USER_PASSED_ARGUMENT) : std::make_pair("", Arguments::NOT_USER_PASSED_ARGUMENT);
+    AES_DEBUG("iv: {} : {}", iv.first, ARGUMENTS_NAMES.at(iv.second))
 
-    std::string key;
-    args["--key"] && args["--key"].isString() ? key = args["--key"].asString() : "";
-    AES_DEBUG("key: {}", key)
+    std::pair<std::string, Arguments> key;
+    //std::string key; //TODO: remove
+    args["--key"] && args["--key"].isString() ? key = std::make_pair(args["--key"].asString(), Arguments::USER_PASSED_ARGUMENT) : std::make_pair("", Arguments::NOT_USER_PASSED_ARGUMENT);
+    AES_DEBUG("key: {} : {}", key.first, ARGUMENTS_NAMES.at(key.second))
 
-    aes::ops::Operations operation;
+    std::pair<aes::ops::Operations, Arguments> operation;
+    //aes::ops::Operations operation; //TODO: remove
 
-    //TODO: refactor this part.
-    //TODO: remove
-    /*if(args["--encryption"] && !args["--encryption"].asBool() && args["--decryption"] && !args["--decryption"].asBool()) {
-        operation = aes::def::DEFAULT_OPERATION;
-    } else if(args["--encryption"].asBool()) {
-        operation = aes::ops::Operations::ENCRYPT;
-    } else if(args["--decryption"].asBool()) {
-        operation = aes::ops::Operations::DECRYPT;
-    } else if(args["--operation"] && args["--operation"].isString()) {
-        operation = aes::cvt::retrieve_key_from_map(aes::ops::OPERATIONS_NAMES, std::string_view(args["--operation"].asString())).value_or(aes::def::DEFAULT_OPERATION);
-    } else {
-        operation = aes::def::DEFAULT_OPERATION;
-    }*/
-
-    //TODO: refactor
+    //TODO: refactor?
     if(args["--encryption"].asBool()) { // prima args["--encryption"] &&
-        operation = aes::ops::Operations::ENCRYPT;
+        operation = std::make_pair(aes::ops::Operations::ENCRYPT, Arguments::USER_PASSED_ARGUMENT);
     } else if(args["--decryption"].asBool()) {
-        operation = aes::ops::Operations::DECRYPT;
+        operation = std::make_pair(aes::ops::Operations::DECRYPT, Arguments::USER_PASSED_ARGUMENT);
     } else if(args["--operation"] && args["--operation"].isString()) {
-        operation = aes::cvt::retrieve_key_from_map(aes::ops::OPERATIONS_NAMES, std::string_view(args["--operation"].asString())).value_or(aes::def::DEFAULT_OPERATION);
+        operation = std::make_pair(aes::cvt::retrieve_key_from_map(aes::ops::OPERATIONS_NAMES, std::string_view(args["--operation"].asString())).value_or(aes::def::DEFAULT_OPERATION), Arguments::USER_PASSED_ARGUMENT); //TODO: update because of value_or(); dovrebbe essere false (Arguments::NOT_USER_PASSED_ARGUMENT) se il parametro è sbagliato.
     } else {
-        operation = aes::def::DEFAULT_OPERATION;
+        operation = std::make_pair(aes::def::DEFAULT_OPERATION, Arguments::NOT_USER_PASSED_ARGUMENT);
     }
 
-    AES_DEBUG("operation: {}", aes::ops::OPERATIONS_NAMES.at(operation))
+    AES_DEBUG("operation: {} : {}", aes::ops::OPERATIONS_NAMES.at(operation.first), ARGUMENTS_NAMES.at(operation.second))
 
 
     if((args["-g"] && args["-g"].isBool() && args["-g"].asBool()) || (args["--gui"] && args["--gui"].isBool() && args["--gui"].asBool())) {
-        aes::gui::show(aes, mode, padding, message, key, iv, input_path_string, output_path_string);
+        aes::gui::show(aes.first, mode.first, padding.first, message.first, key.first, iv.first, input_file_path.first, output_file_path.first);
     } else {
         // Se non viene dato l'opzione -c o --console o -g o --gui allora mostrare la schermata di default.
         // O la console o la gui.
-        aes::con::show_console(aes, mode, padding, message, key, iv, input_path_string, output_path_string, operation);
+        aes::con::show_console(aes, mode, padding, message, key, iv, input_file_path, output_file_path, operation);
     }
 }
-
-//TODO: manca l'iv.
-//TODO: remove
-/*void get_user_arguments(const docopt::value& aes_type, const docopt::value& input_message, const docopt::value& input_path, const docopt::value& output_path,
-                        const docopt::value& mode_string, const docopt::value& padding_string, const docopt::value& operation_type,
-                        const docopt::value& is_encryption, const docopt::value& is_decryption)
-{
-    //TODO: prima di assegnarlo controllare se è presente questo valore inserito dall'utente. (non serve, già fatto).
-    //TODO: std::find o aes::ALL_AES_TYPES_NAMES.find(); poi se è presente assegnarlo.
-    //TODO: allo show_console passare tutto, mentre al show_gui() non serve, per esempio, passare encrypt o decrypt, perché vengono mostrate entrambe a prescindere.
-
-    aes::AES aes;
-    aes_type && aes_type.isString() ? aes = aes::cvt::retrieve_key_from_map<aes::AES, std::string_view>(aes::ALL_AES_TYPES_NAMES, aes_type.asString()).value() : aes = aes::def::DEFAULT_AES;
-    AES_DEBUG("aes: {}", aes::ALL_AES_TYPES_NAMES.at(aes))
-
-    std::string message;
-    input_message && input_message.isString() ? message = input_message.asString() : message = "";
-    AES_DEBUG("message: {}", message)
-
-    std::string input_path_string;
-    input_path && input_path.isString() ? input_path_string = input_path.asString() : input_path_string = "";
-    AES_DEBUG("input_path_string: {}", input_path_string)
-
-    std::string output_path_string;
-    output_path && output_path.isString() ? output_path_string = output_path.asString() : output_path_string = aes::def::DEFAULT_OUTPUT_FILE_PATH;
-    AES_DEBUG("output_path_string: {}", output_path_string)
-
-    aes::mod::Modes mode;
-    mode_string && mode_string.isString() ? mode = aes::cvt::retrieve_key_from_map<aes::mod::Modes, std::string_view>(aes::mod::MODES_NAMES, std::string_view(mode_string.asString())).value() : mode = aes::def::DEFAULT_MODE;
-    AES_DEBUG("mode: {}", aes::mod::MODES_NAMES.at(mode))
-
-    aes::pad::Paddings padding;
-    padding_string && padding_string.isString() ? padding = aes::cvt::retrieve_key_from_map(aes::pad::PADDING_NAMES, std::string_view(padding_string.asString())).value() : padding = aes::def::DEFAULT_PADDING;
-    AES_DEBUG("padding: {}", aes::pad::PADDING_NAMES.at(padding))
-
-    aes::ops::EncryptionOperations operation;
-    //bool is_encryption;
-    //bool is_decryption;
-
-    //TODO: get "Encryption" or "Decryption" se è una stringa oppure ottenere encryption: true o false o decryption: true o false
-
-    if(operation_type) {
-        if(operation_type.isString()) {
-            operation = aes::cvt::retrieve_key_from_map(aes::ops::ENCRYPTION_OPERATIONS_NAMES, std::string_view(operation_type.asString())).value_or(aes::def::DEFAULT_ENCRYPTION_OPERATION);
-        } else if(operation_type.isBool()) {
-            //is_encryption = operation_type.asBool();
-        }
-    }
-
-    if(is_encryption && is_encryption.isBool() || is_decryption && is_decryption.isBool()) {
-        //is_encryption.asBool() ? user_arguments.add(is_encryption.asBool()) : is_decryption.asBool() ? user_arguments.add(is_decryption.asBool()) : user_arguments.add(operation);
-
-    }
-
-    std::tuple user_arguments(aes, message, input_path_string, output_path_string, mode, padding, operation);
-}*/
 
 } // namespace aes::arg

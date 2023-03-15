@@ -21,6 +21,7 @@ static constexpr aes::ops::Operations DEFAULT_OPERATION = aes::ops::Operations::
 static constexpr aes::ops::EncryptionOperations DEFAULT_ENCRYPTION_OPERATION = aes::ops::EncryptionOperations::MESSAGE;
 static constexpr std::string_view DEFAULT_OUTPUT_FILE_PATH = "output.txt";
 static constexpr std::string_view DEFAULT_GRAPHICS_VIEW = "--console"; //TODO: remove?
+static constexpr std::string_view EMPTY_STRING; // = "";
 
 } // namespace aes::def
 

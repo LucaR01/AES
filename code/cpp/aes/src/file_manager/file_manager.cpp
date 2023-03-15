@@ -13,10 +13,10 @@ namespace aes::fm {
 
 // fstream no flag enabled, ifstream automatically std::ios::in enabled, ofstream automatically std::ios::out enabled.
 
-[[nodiscard]] inline uintmax_t FileManager::get_file_size(const std::string_view& file_path)
+/*[[nodiscard]] inline uintmax_t FileManager::get_file_size(const std::string_view& file_path)
 {
     return std::filesystem::file_size(file_path);
-}
+}*/
 
 std::vector<char*> FileManager::get_file_data(const std::string& file_path)
 {

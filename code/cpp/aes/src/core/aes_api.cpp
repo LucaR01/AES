@@ -48,7 +48,7 @@ std::vector<uint8_t> encrypt(std::vector<uint8_t>& message, std::vector<uint8_t>
         case mod::Modes::CBC:
             return aes::mod::encrypt_CBC(message_with_padding, key, iv.value(), aes);
         case mod::Modes::CFB:
-            return aes::mod::encrypt_CFB(message_with_padding, key, iv.value(), aes);
+            return aes::mod::encrypt_CFB(message_with_padding, key, iv.value(), aes); // value_or(std::vector<uint8_t>{}) non funziona? credo
         default:
             AES_CRITICAL("Error! Should not be here!")
             std::exit(EXIT_FAILURE);
