@@ -9,6 +9,7 @@
 #include "core/padding/padding.hpp"
 #include "core/modes/modes.hpp"
 #include "file_manager/file_manager.hpp"
+#include "convert/aes_convert.hpp"
 
 namespace aes::api {
 
@@ -111,21 +112,24 @@ std::vector<uint8_t> decrypt(std::vector<uint8_t>& encrypted_message, std::vecto
 
 void encrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes)
 {
-    std::string file_data = aes::fm::FileManager::get_file_data3(input_file_path);
+    std::string file_data = aes::fm::FileManager::get_file_data4(input_file_path);
+    AES_DEBUG("file_data: {}", file_data)
     //std::string file_data = aes::fm::FileManager::get_file_data<std::string>(input_file_path); //TODO: uncomment when fixed
-    const std::vector<uint8_t>& ciphertext = aes::api::encrypt(file_data, key, iv, padding, mode, aes);
+
+    std::vector<uint8_t> ciphertext = aes::api::encrypt(file_data, key, iv, padding, mode, aes);
     AES_DEBUG("ciphertext: {}", std::string(ciphertext.cbegin(), ciphertext.cend()))
-    aes::fm::FileManager::write_file_data(output_file_path, ciphertext);
+    aes::fm::FileManager::write_file_data(output_file_path, ciphertext); //TODO: std::string(ciphertext.cbegin(), ciphertext.cend())
 }
 
 void decrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes)
 {
-    std::string file_data = aes::fm::FileManager::get_file_data3(input_file_path);
+    std::string file_data = aes::fm::FileManager::get_file_data4(input_file_path);
     //std::string file_data = aes::fm::FileManager::get_file_data2<std::string>(input_file_path); //TODO: uncomment when fixed
-    const std::vector<uint8_t>& deciphered_plaintext = aes::api::decrypt(file_data, key, iv, padding, mode, aes);
-    AES_DEBUG("ciphertext: {}", std::string(deciphered_plaintext.cbegin(), deciphered_plaintext.cend()))
-    aes::fm::FileManager::write_file_data(output_file_path, deciphered_plaintext);
-}
+    AES_DEBUG("file_data: {}", file_data)
 
+    std::vector<uint8_t> deciphered_plaintext = aes::api::decrypt(file_data, key, iv, padding, mode, aes);
+    AES_DEBUG("deciphered_plaintext: {}", std::string(deciphered_plaintext.cbegin(), deciphered_plaintext.cend()))
+    aes::fm::FileManager::write_file_data(output_file_path, deciphered_plaintext); //TODO: std::string(deciphered_plaintext.cbegin(), deciphered_plaintext.cend())
+}
 
 } // namespace aes::api

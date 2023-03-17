@@ -16,6 +16,8 @@
 
 #include "logger/logger.hpp"
 
+//TODO: forse cercare per il '\n' nel file?
+
 namespace aes::fm {
 
 /*enum class FM : std::_Ios_Openmode { //TODO: non funziona perché non è un int; remove
@@ -68,6 +70,7 @@ public:
     static std::vector<char*> get_file_data(const std::string& file_path); //TODO: remove?
     static std::vector<std::string> get_file_data2(const std::string& file_path);
     static std::string get_file_data3(const std::string& file_path); //TODO: remove this or get_key() qui sotto.
+    static std::string get_file_data4(const std::string& file_path); //TODO: remove this or get_key() qui sotto.
     static std::string get_key(const std::string& file_path); //TODO: rinominare in get_file_data_single_stream o qualcosa del genere. //TODO: remove?
 
     /*template<typename T, typename FP>
@@ -182,10 +185,11 @@ public:
 
     template<typename T, typename FP> //TODO: typename FP for file_path, typename T for data
     // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
-    static void write_file_data(const FP file_path, const T& data) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
+    //TODO: prima era const T& data
+    static void write_file_data(const FP file_path, const T data, const FileModes& file_mode = FileModes::APPEND) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
     {
         std::ofstream file;
-        file.open(file_path, get_file_mode(FileModes::APPEND));
+        file.open(file_path, get_file_mode(file_mode));
 
         if(file.is_open()) {
             for(const auto& line : data) {

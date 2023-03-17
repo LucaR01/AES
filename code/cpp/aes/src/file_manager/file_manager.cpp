@@ -6,17 +6,13 @@
 
 #include <iostream>
 #include <sstream>
+#include <limits>
 
 #include "logger/logger.hpp"
 
 namespace aes::fm {
 
 // fstream no flag enabled, ifstream automatically std::ios::in enabled, ofstream automatically std::ios::out enabled.
-
-/*[[nodiscard]] inline uintmax_t FileManager::get_file_size(const std::string_view& file_path)
-{
-    return std::filesystem::file_size(file_path);
-}*/
 
 std::vector<char*> FileManager::get_file_data(const std::string& file_path)
 {
@@ -77,18 +73,40 @@ std::string FileManager::get_file_data3(const std::string& file_path) // Same co
 
     if(file.is_open()) {
         std::string line;
-        while(std::getline(file, line)) {
+        while(std::getline(file, line, '\0')) { //TODO: (file, line, '\0')?
+            file.ignore(); //TODO: comment/remove?
             buffer.push_back(line);
             AES_DEBUG("line of file: {}", line)
             AES_DEBUG("buffer.size(): {}", buffer.size())
         }
     }
 
-    for(const auto& line : buffer) {
-        ss << line;
+    for(const auto& b : buffer) {
+        ss << b;
     }
 
     AES_DEBUG("data: {}", ss.str())
+
+    return ss.str();
+}
+
+std::string FileManager::get_file_data4(const std::string& file_path)
+{
+    std::stringstream ss;
+
+    std::ifstream file; //TODO: std::ifstream file(file_path);
+    file.open(file_path);
+
+    if(file.is_open()) {
+        std::string line;
+        while(std::getline(file, line)) { //TODO: (file, line, '\0')?
+            file.ignore(); //TODO: comment/remove? prima era file.ignore(); e basta std::numeric_limits<int>::max(), '\n'
+            ss << line;
+            AES_DEBUG("line of file: {}", line)
+        }
+    }
+
+    AES_DEBUG("ss.str(): {}", ss.str())
 
     return ss.str();
 }

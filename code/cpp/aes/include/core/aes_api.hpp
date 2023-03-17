@@ -48,8 +48,6 @@ void encrypt_file(const std::string& input_file_path, const std::string& output_
 
 void decrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
 
-
-
 } // namespace aes::api
 
 #endif //AES_AES_API_HPP
