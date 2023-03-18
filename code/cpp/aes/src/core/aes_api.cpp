@@ -113,6 +113,8 @@ std::vector<uint8_t> decrypt(std::vector<uint8_t>& encrypted_message, std::vecto
 void encrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes)
 {
     std::string file_data = aes::fm::FileManager::get_file_data4(input_file_path);
+    //std::vector<uint8_t> file_data_vector = aes::cvt::get_vector_from_string(file_data);
+    //std::vector<uint8_t> key_vector = aes::cvt::get_vector_from_string(key);
     AES_DEBUG("file_data: {}", file_data)
     //std::string file_data = aes::fm::FileManager::get_file_data<std::string>(input_file_path); //TODO: uncomment when fixed
 
@@ -124,6 +126,8 @@ void encrypt_file(const std::string& input_file_path, const std::string& output_
 void decrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes)
 {
     std::string file_data = aes::fm::FileManager::get_file_data4(input_file_path);
+    //std::vector<uint8_t> file_data_vector = aes::cvt::get_vector_from_string(file_data);
+    //std::vector<uint8_t> key_vector = aes::cvt::get_vector_from_string(key);
     //std::string file_data = aes::fm::FileManager::get_file_data2<std::string>(input_file_path); //TODO: uncomment when fixed
     AES_DEBUG("file_data: {}", file_data)
 

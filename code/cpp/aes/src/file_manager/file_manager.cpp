@@ -82,7 +82,7 @@ std::string FileManager::get_file_data3(const std::string& file_path) // Same co
     }
 
     for(const auto& b : buffer) {
-        ss << b;
+        ss << std::noskipws << b;
     }
 
     AES_DEBUG("data: {}", ss.str())
@@ -99,9 +99,10 @@ std::string FileManager::get_file_data4(const std::string& file_path)
 
     if(file.is_open()) {
         std::string line;
-        while(std::getline(file, line)) { //TODO: (file, line, '\0')?
-            file.ignore(); //TODO: comment/remove? prima era file.ignore(); e basta std::numeric_limits<int>::max(), '\n'
-            ss << line;
+        while(std::getline(file, line, '\0')) { //TODO: (file, line, '\0')? (file, line, ' ')?
+            //file.ignore(std::numeric_limits<unsigned char>::max(), '\n'); //TODO: comment/remove? prima era file.ignore(); e basta std::numeric_limits<int>::max(), '\n'
+            file.ignore();
+            ss << std::noskipws << line; // no skip white spaces.
             AES_DEBUG("line of file: {}", line)
         }
     }
@@ -109,6 +110,27 @@ std::string FileManager::get_file_data4(const std::string& file_path)
     AES_DEBUG("ss.str(): {}", ss.str())
 
     return ss.str();
+}
+
+std::string FileManager::get_file_data5(const std::string& file_path) //TODO: sbagliato, remove
+{
+    std::string output;
+
+    std::ifstream file(file_path);
+    //file.open();
+
+    if(file.is_open()) {
+        std::string temp;
+        while(std::getline(file, temp, ' ')) { //TODO: (file, line, '\0')?
+            //file.ignore(std::numeric_limits<unsigned char>::max(), '\n'); //TODO: comment/remove? prima era file.ignore(); e basta std::numeric_limits<int>::max(), '\n'
+            output += temp;
+            AES_DEBUG("line of file: {}", temp)
+        }
+    }
+
+    AES_DEBUG("ss.str(): {}", output)
+
+    return output;
 }
 
 std::string FileManager::get_key(const std::string& file_path)

@@ -71,6 +71,7 @@ public:
     static std::vector<std::string> get_file_data2(const std::string& file_path);
     static std::string get_file_data3(const std::string& file_path); //TODO: remove this or get_key() qui sotto.
     static std::string get_file_data4(const std::string& file_path); //TODO: remove this or get_key() qui sotto.
+    static std::string get_file_data5(const std::string& file_path); //TODO: remove
     static std::string get_key(const std::string& file_path); //TODO: rinominare in get_file_data_single_stream o qualcosa del genere. //TODO: remove?
 
     /*template<typename T, typename FP>
