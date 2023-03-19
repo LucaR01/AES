@@ -16,3 +16,6 @@
 [submodule "code/cpp/aes/external/googletest"]
 	path = code/cpp/aes/external/googletest
 	url = https://github.com/google/googletest.git
+[submodule "code/cpp/aes/external/doxygen"]
+	path = code/cpp/aes/external/doxygen
+	url = https://github.com/doxygen/doxygen.git
