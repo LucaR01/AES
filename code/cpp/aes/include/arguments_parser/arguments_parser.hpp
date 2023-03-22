@@ -22,10 +22,6 @@ static const std::map<Arguments, std::string_view>& ARGUMENTS_NAMES = {
         {Arguments::USER_PASSED_ARGUMENT, "USER_PASSED_ARGUMENT"}
 };
 
-static constexpr bool USER_PASSED_ARGUMENT = true; //TODO: remove
-static constexpr bool NOT_USER_PASSED_ARGUMENT = false; //TODO: remove
-//static constexpr std::string_view EMPTY_STRING = ""; //TODO: remove? //TODO: mettere in defaults.hpp
-
 //TODO: fix message or file or keep it as it is.
 //TODO: aggiungere la possibilità di avere una key.
 //TODO: -m MESSAGE, --message=MESSAGE (mi serve un tot di parole non solo una)
@@ -78,6 +74,11 @@ Options:
 )";
 
 //TODO: rename?
+/**
+ * @brief: This function reads the user's arguments and either calls @fn show_console() or @fn show_gui() with these parameters.
+ * @param argc : the number of arguments passed.
+ * @param argv : the arguments.
+ */
 void parse_user_arguments(const int& argc, const char** argv);
 
 } // namespace aes::arg

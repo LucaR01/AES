@@ -196,7 +196,7 @@ void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uin
 void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes)
 {
     std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
-    const unsigned short number_of_rounds = aes::get_number_of_rounds(aes);
+    const unsigned short& number_of_rounds = aes::get_number_of_rounds(aes);
 
     for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
         for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {
@@ -227,7 +227,7 @@ void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& outp
 void encrypt_block(const uint8_t input[], uint8_t output[], const uint8_t* keys, const AES& aes)
 {
     std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> state{};
-    const unsigned short number_of_rounds = aes::get_number_of_rounds(aes);
+    const unsigned short& number_of_rounds = aes::get_number_of_rounds(aes);
 
     for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
         for(uint8_t j = 0; j < aes::BLOCK_WORDS; j++) {

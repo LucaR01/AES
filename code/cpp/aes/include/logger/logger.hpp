@@ -20,7 +20,13 @@ public:
     Logger() = default;
     ~Logger() = default;
 
+    /**
+     * @brief: This function inits the logger. (of course) ;)
+     */
     static void init();
+    /**
+     * @brief: This function shuts down the logger. (of course) ;)
+     */
     static void shutdown();
 };
 

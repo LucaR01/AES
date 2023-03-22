@@ -27,7 +27,9 @@ namespace aes::fm {
 
 // ATE = at end of file.
 
-//TODO: enum class?
+/**
+ * @enum FileModes
+ */
 enum class FileModes {
     READ,
     WRITE,
@@ -46,6 +48,10 @@ static const std::map<FileModes, std::_Ios_Openmode>& FILE_MODES_MAP = {
 };
 
 //prima std::ios::openmode
+/**
+ * @param file_mode: the file_mode in which we want to open the file.
+ * @return : a std::_Ios_Openmode
+ */
 static std::_Ios_Openmode get_file_mode(const FileModes& file_mode)
 {
     return FILE_MODES_MAP.at(file_mode);
@@ -64,7 +70,15 @@ public:
         return instance;
     }
 
-    [[nodiscard]] static std::string get_filename(const std::string_view& file_path); //TODO: inline dava errore!
+    /**
+     * @brief This function returns the name of the file.
+     * @param file_path: the file we want to get the name from.
+     * @return the name of the file as a std::string.
+     */
+    [[nodiscard]] static inline std::string get_filename(const std::string_view& file_path) //TODO: inline dava errore!
+    {
+        return std::filesystem::path(file_path).filename().string();
+    }
 
     //TODO: std::string_view non andava come return type.
     static std::vector<char*> get_file_data(const std::string& file_path); //TODO: remove?
@@ -143,6 +157,13 @@ public:
         return std::is_same_v<T, std::string> ? (T)ss.str() : (T)buffer; //TODO: uncomment; prima c'era questa.
     }
 
+    /**
+     *
+     * @tparam T: the return type.
+     * @tparam FP: the type of the file path
+     * @param file_path: the file we want to get the data from.
+     * @return the data of type T.
+     */
     template<typename T, typename FP> //TODO: to fix.
     // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
     [[nodiscard]] static T get_file_data2(const FP file_path) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
@@ -184,6 +205,14 @@ public:
     static void write_file_data(const std::string& file_path, const std::vector<uint8_t>& data); //TODO: remove?
     static void write_file_data(const std::string& file_path, const std::string& data); //TODO: remove?
 
+    /**
+     * @brief This function writes data in the file specified by file_path.
+     * @tparam T: the type of the data to write in the file.
+     * @tparam FP: the type of the file_path which could be either a std::string, char* or char[].
+     * @param file_path: the path of the file in which we want to write the data.
+     * @param data: the data that we want to write to the file.
+     * @param file_mode: the mode in which we want to open the file.
+     */
     template<typename T, typename FP> //TODO: typename FP for file_path, typename T for data
     // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
     //TODO: prima era const T& data
@@ -206,15 +235,44 @@ public:
         AES_INFO("file size: {}", get_file_size(file_path))
     }
 
-    [[nodiscard]] static inline bool has_data(const std::string_view& file_path);
-
+    /**
+     * @brief This function returns the size of a file specified by the param file_path.
+     * @param file_path: the path of the file we want to get the file size.
+     * @return file size as uintmax_t which is a unsigned long long int.
+     */
     [[nodiscard]] static inline uintmax_t get_file_size(const std::string_view& file_path)
     {
         return std::filesystem::file_size(file_path);
     }
 
-    [[nodiscard]] static bool file_exists(const std::string_view& file_path);
-    static void delete_file(const std::string& file_path);
+    /**
+     * @brief This function returns true if the file size is greater than 0, false otherwise.
+     * @param file_path: the file we want to check if has data.
+     * @return true if file size > 0, false otherwise.
+     */
+    [[nodiscard]] static inline bool has_data(const std::string_view& file_path)
+    {
+        return get_file_size(file_path) > 0;
+    }
+
+    /**
+     * @brief This function checks whether a file exists or not.
+     * @param file_path: the file we want to check.
+     * @return true if it exists, false otherwise.
+     */
+    [[nodiscard]] static inline bool file_exists(const std::string_view& file_path)
+    {
+        return std::filesystem::is_regular_file(file_path);
+    }
+
+    /**
+     * @brief This function deletes the file passed as argument.
+     * @param file_path: the file we want to delete.
+     */
+    static inline void delete_file(const std::string& file_path)
+    {
+        std::filesystem::remove(file_path);
+    }
 
 private:
     FileManager() = default;

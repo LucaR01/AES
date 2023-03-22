@@ -15,11 +15,23 @@ static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00
 
 //TODO: se voglio metterle constexpr le devo definire nel .hpp non nel .cpp
 
+/**
+ * @brief This function returns the galois addition or subtraction between two numbers. It xors the two numbers.
+ * @param x: a uint8_t aka unsigned char.
+ * @param y: a uint8_t aka unsigned char.
+ * @return an xor between x and y.
+ */
 [[nodiscard("Pure function")]] static constexpr inline uint8_t galois_addition_subtraction(const uint8_t& x, const uint8_t& y) noexcept
 {
     return x ^ y;
 }
 
+/**
+ * @brief This function returns the multiplication in the galois field of x and y.
+ * @param x: a uint8_t aka unsigned char.
+ * @param y: a uint8_t aka unsigned char.
+ * @return the galois multiplication between x and y.
+ */
 [[nodiscard]] static constexpr uint8_t galois_multiplication(uint8_t x, uint8_t y) noexcept
 {
     uint8_t result = 0;
@@ -42,6 +54,11 @@ static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00
 }
 
 //TODO: inline?
+/**
+ *
+ * @param x: a uint8_t aka unsigned char.
+ * @return a multiplication of the number x.
+ */
 [[nodiscard]] static constexpr inline uint8_t xtime(const uint8_t& x) noexcept
 {
     return (x << 0x01) ^ (((x >> 0x07) & 0x01) * gal::IRREDUCIBLE_POLYNOMIAL);

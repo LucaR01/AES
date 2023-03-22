@@ -220,24 +220,19 @@ void FileManager::write_file_data(const std::string& file_path, const std::strin
     AES_INFO("file size: {}", get_file_size(file_path))
 }
 
-[[nodiscard]] inline bool FileManager::has_data(const std::string_view& file_path)
-{
-    return get_file_size(file_path) > 0;
-}
-
-[[nodiscard]] bool FileManager::file_exists(const std::string_view& file_path)
-{
-    return std::filesystem::is_regular_file(file_path);
-}
-
-[[nodiscard]] std::string FileManager::get_filename(const std::string_view& file_path)
+/*[[nodiscard]] std::string FileManager::get_filename(const std::string_view& file_path)
 {
     return std::filesystem::path(file_path).filename().string();
+}*/
+
+/*[[nodiscard]] bool FileManager::file_exists(const std::string_view& file_path)
+{
+    return std::filesystem::is_regular_file(file_path);
 }
 
 void FileManager::delete_file(const std::string& file_path)
 {
     std::filesystem::remove(file_path);
-}
+}*/
 
 } // namespace aes::fm

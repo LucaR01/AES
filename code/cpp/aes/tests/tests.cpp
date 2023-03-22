@@ -59,9 +59,9 @@ TEST(AES_TESTS, TEST_CFB)
     static const std::string plaintext = "hello everybody "; // 16 characters (white spaces included)! //TODO: string_view
     static const std::string key = "secret_key";
     static const std::string iv = "1 2 3";
-    static const std::vector<uint8_t> plaintext_vector = aes::cvt::get_vector_from_string(plaintext);
-    static const std::vector<uint8_t> key_vector = aes::cvt::get_vector_from_string(key);
-    static const std::vector<uint8_t> iv_vector = aes::cvt::get_vector_from_string(iv);
+    static const std::vector<uint8_t> plaintext_vector = aes::cvt::get_vector_from_string<uint8_t, std::string>(plaintext);
+    static const std::vector<uint8_t> key_vector = aes::cvt::get_vector_from_string<uint8_t, std::string>(key);
+    static const std::vector<uint8_t> iv_vector = aes::cvt::get_vector_from_string<uint8_t, std::string>(iv);
 
     //TODO: uncomment
     /*std::vector<uint8_t> encrypted_CBC = aes::mod::encrypt_CFB(plaintext_vector, key_vector, iv_vector, aes::AES::AES_256);
@@ -75,7 +75,7 @@ TEST(AES_API_TESTS, TEST_API_MESSAGE)
     static std::string plaintext = "hello everybody "; // 16 characters (white spaces included)! //TODO: string_view
     static std::string key = "secret_key"; //TODO: string_view
     static const std::string iv = "1 2 3"; //TODO: string_view
-    static const std::optional<std::vector<uint8_t>> iv_vector = aes::cvt::get_vector_from_string(iv);
+    static const std::optional<std::vector<uint8_t>> iv_vector = aes::cvt::get_vector_from_string<uint8_t, std::string>(iv);
 
     //TODO: uncomment
     /*std::vector<uint8_t> ciphertext = aes::api::encrypt(plaintext, key, iv_vector, aes::pad::Paddings::ONE_ZERO_PADDING, aes::mod::Modes::CFB, aes::AES::AES_256);

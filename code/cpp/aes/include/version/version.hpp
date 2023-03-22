@@ -11,6 +11,9 @@
 //TODO: oppure aes::ver?
 namespace aes::vrs {
 
+/**
+ * This struct stores the software's version.
+ */
 struct AES {
     static constexpr unsigned short MAJOR = 1;
     static constexpr unsigned short MINOR = 0;

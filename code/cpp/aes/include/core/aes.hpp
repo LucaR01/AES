@@ -55,6 +55,11 @@ static const std::map<AES, std::string_view>& ALL_AES_TYPES_NAMES = {
 
 //TODO: rename in get_aes_value?
 //TODO: posso templetizzare tutti i get_index dei vari enums da poi mettere in un folder generic_templates o generics o templates
+/**
+ * @brief This function returns the index of an AES enum instance.
+ * @param aes: an element of the AES enum
+ * @return the number of the index. It must be unsigned short because the last index is 256 (while the max of unsigned char is 256 - 1)
+ */
 [[nodiscard]] static constexpr unsigned short get_aes_index(const AES& aes)
 {
     return static_cast<std::underlying_type_t<AES>>(aes);
@@ -62,6 +67,11 @@ static const std::map<AES, std::string_view>& ALL_AES_TYPES_NAMES = {
 
 static const std::set<unsigned short> AES_VALUES = { get_aes_index(AES::AES_128), get_aes_index(AES::AES_192), get_aes_index(AES::AES_256) };
 
+/**
+ * @brief This function returns the corresponding element of the enum AES based on a number.
+ * @param type: a number corresponding to the AES type
+ * @return the corresponding AES type as an enum
+ */
 [[nodiscard]] static constexpr AES get_aes_type_from_number(const unsigned short& type) //TODO: remove?
 {
     switch(type) {
@@ -74,6 +84,11 @@ static const std::set<unsigned short> AES_VALUES = { get_aes_index(AES::AES_128)
     }
 }
 
+/**
+ *  @brief This function returns the number of rounds based on the type of AES.
+ * @param aes: an element of the AES enum.
+ * @return the number of rounds.
+ */
 [[nodiscard]] static constexpr uint8_t get_number_of_rounds(const AES& aes)
 {
     switch(aes) {
@@ -87,6 +102,11 @@ static const std::set<unsigned short> AES_VALUES = { get_aes_index(AES::AES_128)
     }
 }
 
+/**
+ *
+ * @param aes: an element of the AES enum.
+ * @return the number of keys correspoding to the specific AES type.
+ */
 [[nodiscard]] static constexpr uint8_t get_number_of_keys(const AES& aes)
 {
     switch(aes) {
@@ -156,6 +176,11 @@ static constexpr std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WO
 };
 
 // ENCRYPTION
+/**
+ * @brief This function adds the round keys to the state matrix.
+ * @param state: the state matrix.
+ * @param keys: the round keys.
+ */
 void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t* keys);
 
 void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t& key); //TODO:
@@ -164,12 +189,30 @@ void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_
 
 //void add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const auto& keys); //TODO: uncomment
 
+/**
+ * @brief It transforms the state matrix, in place, with the S-BOX.
+ * @param state: the state matrix.
+ */
 void sub_bytes(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
+/**
+ * @brief This function shift a row of # positions.
+ * @param state: the state matrix
+ * @param row: the row to shift
+ * @param positions: the number of positions to shift.
+ */
 void shift_row(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const unsigned short& row, const unsigned short& positions);
 
+/**
+ * @brief it shifts the state, the second row of 1 position, the third row of 2 positions and the fourth of 3 positions.
+ * @param state: the state matrix.
+ */
 void shift_rows(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
+/**
+ * @brief It mixes the columns to improve confusion and diffusion.
+ * @param state: the state matrix.
+ */
 void mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
 void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const std::vector<uint8_t>& keys, const AES& aes); //TODO: uncomment
@@ -181,22 +224,53 @@ void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uin
 
 void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const uint8_t* keys, const AES& aes);
 
+/**
+ * @brief It encrypts a block of data.
+ * @param input: the input.
+ * @param output: the output.
+ * @param keys: the round keys.
+ * @param aes: the type of AES: 128, 192 or 256.
+ */
 void encrypt_block(const uint8_t input[], uint8_t output[], const uint8_t* keys, const AES& aes);
 
 // DECRYPTION
+/**
+ * @brief It's the opposite of the add_round_key which is just the add_round_key itself.
+ * @param state: the state matrix.
+ * @param keys: the round keys.
+ */
 void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t* keys);
 
 void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const uint8_t& keys);
 
 void inverse_add_round_key(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state, const std::vector<uint8_t>& keys);
 
+/**
+ * @brief It reverses the operation of the sub_bytes, by transforming the state, in place, with the INVERSE_S_BOX
+ * @param state
+ */
 void inverse_sub_bytes(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
+/**
+ * @brief It reverses the shift of the rows respect the shift_rows. Second row: 3 positions; Third row: 2 positions; Fourth row: 1 position.
+ * @param state: the state matrix.
+ */
 void inverse_shift_rows(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
+/**
+ * @brief It reverses the mix of the columns.
+ * @param state: the state matrix.
+ */
 void inverse_mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
 //TODO: avevo fatto std::vector output e andava prima
+/**
+ * @brief It decrypts a block of data.
+ * @param input: the input of the message.
+ * @param output: the output of the decryption.
+ * @param keys: the round keys.
+ * @param aes: the AES enum type: 128, 192 or 256.
+ */
 void decrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uint8_t* keys, const AES& aes);
 
 //void decrypt_block(const std::vector<uint8_t>& input, auto output, const auto& keys, const AES& aes); //TODO: uncomment
@@ -211,18 +285,44 @@ void decrypt_block(const uint8_t input[], uint8_t output[], uint8_t* keys, const
 
 void key_expansion(const std::vector<uint8_t>& key, std::vector<uint8_t>& word, const AES& aes); //TODO: uncomment?
 
+/**
+ * @brief It's used to expand a single key into a number of round keys.
+ * @param key: the single provided key.
+ * @param word: the word.
+ * @param aes: the type of AES enum: 128, 192 or 256.
+ */
 void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const AES& aes); //TODO: uncomment
 
 //void key_expansion(const std::vector<uint8_t>& key, auto word, const AES& aes); //TODO: uncomment
 
 void key_expansion(const uint8_t key[], unsigned char word[], const AES& aes);
 
+/**
+ * @brief It rotates the round keys
+ * @param keys: the round keys.
+ */
 void rot_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys);
 
+/**
+ * @brief It transforms the keys with the S-BOX.
+ * @param keys: the round keys.
+ */
 void sub_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys);
 
+/**
+ * @brief
+ * @param keys: the round keys.
+ * @param number_of_keys: based on the type of AES: 128, 192 or 256.
+ */
 void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const uint8_t& number_of_keys);
 
+/**
+ * @brief This function xor x by y by block_length times.
+ * @param x:
+ * @param y:
+ * @param z:
+ * @param block_length: the length of a single block of data.
+ */
 void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, const unsigned int& block_length); //TODO: riscrivere?
 
 } // namespace aes

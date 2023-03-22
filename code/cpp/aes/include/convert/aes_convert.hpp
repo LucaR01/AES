@@ -17,22 +17,41 @@
 
 namespace aes::cvt {
 
-[[nodiscard]] static inline std::string get_string_from_vector(const std::vector<uint8_t>& vector)
+[[nodiscard]] static inline std::string get_string_from_vector(const std::vector<uint8_t>& vector) //TODO: remove?
 {
     return {vector.cbegin(), vector.cend()};
 }
 
-[[nodiscard]] static inline std::vector<uint8_t> get_vector_from_string(const std::string& string)
+/**
+ *
+ * @param string : It's the string that has to be converted into a std::vector<uint8_t>
+ * @return a std::vector<uint8_t> with the contents of the @param string.
+ */
+[[nodiscard]] static inline std::vector<uint8_t> get_vector_from_string(const std::string& string) //TODO: remove?
 {
     return {string.cbegin(), string.cend()};
 }
 
+/**
+ * @brief: This function returns a string of @tparam S which has to be either a std::string or a std::string_view with the contents of the std::vector<T>.
+ * @tparam S : the type of return of the string.
+ * @tparam T : the type of the std::vector @param vector.
+ * @param vector : The vector which has to be converted into a string.
+ * @return: a string with the contents of the std::vector<T>.
+ */
 template<typename S, typename T>
 [[nodiscard]] static inline S get_string_from_vector(const std::vector<T>& vector) requires std::is_same_v<S, std::string> || std::is_same_v<S, std::string_view>
 {
     return {vector.cbegin(), vector.cend()};
 }
 
+/**
+ * @brief: This function returns a std::vector<T> with the contents of the @param string of type @tparam S.
+ * @tparam T : It's the return type of std::vector<T>.
+ * @tparam S : It's the type of the @param string which has to be either a std::string or a std::string_view.
+ * @param string : It's the string that has to be converted into a std::vector<T>.
+ * @return a std::vector<T> with the contents of the @param string.
+ */
 template<typename T, typename S>
 [[nodiscard]] static inline std::vector<T> get_vector_from_string(const S string) requires std::is_same_v<S, std::string> || std::is_same_v<S, std::string_view>
 {
@@ -95,11 +114,11 @@ std::vector<T> from_map_to_vector_views(const std::map<K, V>& map, const bool& g
 
 /**
  * @brief You pass a map and a value of the map and you get the corresponding key. It returns an optional, because the value could also be not present in the map.
- * @tparam K
- * @tparam V
- * @param map
- * @param value
- * @return
+ * @tparam K : the type of the keys of the std::map
+ * @tparam V : the type of the values of the std::map
+ * @param map : the map from which we want to retrieve the key.
+ * @param value : the value that we're looking for.
+ * @return an optional<K> because the value could also be not present in the std::map that we provide.
  */
 template<typename K, typename V>
 std::optional<K> retrieve_key_from_map(const std::map<K, V>& map, const V& value)

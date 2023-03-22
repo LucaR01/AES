@@ -51,6 +51,11 @@ static const std::map<EncryptionOperations, std::string_view> ENCRYPTION_OPERATI
         {EncryptionOperations::FILE, "File"}
 };
 
+/**
+ * @brief: This function allows to retrieve the index of an element of an enum.
+ * @param op : You pass either an element of the @enum Operations or of the @enum EncryptionOperations.
+ * @return : the index of the element in the respective enum.
+ */
 [[nodiscard]] static constexpr uint8_t get_operation_index(const std::variant<Operations, EncryptionOperations>& op)
 {
     if(std::holds_alternative<Operations>(op)) {
@@ -61,6 +66,5 @@ static const std::map<EncryptionOperations, std::string_view> ENCRYPTION_OPERATI
 }
 
 } //namespace aes::ops
-
 
 #endif //AES_OPERATIONS_H
