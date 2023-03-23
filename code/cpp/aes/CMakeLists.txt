@@ -113,12 +113,15 @@ add_subdirectory(tests) #../aes/tests
 
 # ----------- DOXYGEN BEGIN ----------------------------------------------
 
+# first we can indicate the documentation build as an option and set it to ON by default
+#[[option(BUILD_DOC "Build documentation" ON)
+
 # check if Doxygen is installed
-#[[find_package(Doxygen)
+find_package(Doxygen)
 if (DOXYGEN_FOUND)
     # set input and output files
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/config-file)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/config-file.doxygen)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
     # request to configure the file
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
@@ -132,7 +135,43 @@ if (DOXYGEN_FOUND)
             VERBATIM )
 else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation")
-endif (DOXYGEN_FOUND)]]
+endif (DOXYGEN_FOUND)
+
+if (CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
+    # build the docs
+    BUILD_DOC()
+endif()]]
+
+find_package(Doxygen)
+
+if (DOXYGEN_FOUND)
+    set( DOXYGEN_OUTPUT_DIRECTORY doxygen )
+    set( DOXYGEN_COLLABORATION_GRAPH YES )
+    set( DOXYGEN_EXTRACT_ALL YES )
+    set( DOXYGEN_CLASS_DIAGRAMS YES )
+    set( DOXYGEN_HIDE_UNDOC_RELATIONS NO )
+    set( DOXYGEN_HAVE_DOT YES )
+    set( DOXYGEN_CLASS_GRAPH YES )
+    set( DOXYGEN_CALL_GRAPH YES )
+    set( DOXYGEN_CALLER_GRAPH YES )
+    set( DOXYGEN_COLLABORATION_GRAPH YES )
+    set( DOXYGEN_BUILTIN_STL_SUPPORT YES )
+    set( DOXYGEN_EXTRACT_PRIVATE YES )
+    set( DOXYGEN_EXTRACT_PACKAGE YES )
+    set( DOXYGEN_EXTRACT_STATIC YES )
+    set( DOXYGEN_EXTRACT_LOCALMETHODS YES )
+    set( DOXYGEN_UML_LOOK YES )
+    set( DOXYGEN_UML_LIMIT_NUM_FIELDS 50 )
+    set( DOXYGEN_TEMPLATE_RELATIONS YES )
+    set( DOXYGEN_DOT_GRAPH_MAX_NODES 100 )
+    set( DOXYGEN_MAX_DOT_GRAPH_DEPTH 0 )
+    set( DOXYGEN_DOT_TRANSPARENT YES )
+
+    doxygen_add_docs( doxygen ${RPP_PROJECT_SOURCE_DIR} )
+else()
+    message("Doxygen need to be installed to generate the doxygen documentation")
+endif()
 
 # ----------- DOXYGEN END ----------------------------------------------
+
 

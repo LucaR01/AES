@@ -109,26 +109,51 @@ std::string FileManager::get_file_data4(const std::string& file_path)
 
     AES_DEBUG("ss.str(): {}", ss.str())
 
+    //ss << '\0'; //TODO: remove?
+
     return ss.str();
 }
 
-std::string FileManager::get_file_data5(const std::string& file_path) //TODO: sbagliato, remove
+std::string FileManager::get_file_data5(const std::string& file_path)
 {
-    std::string output;
+    std::basic_stringstream<uint8_t> ss;
 
     std::ifstream file(file_path);
-    //file.open();
 
     if(file.is_open()) {
-        std::string temp;
-        while(std::getline(file, temp, ' ')) { //TODO: (file, line, '\0')?
+        std::string line;
+        while(std::getline(file, line, '\0')) { //TODO: (file, line, '\0')?
             //file.ignore(std::numeric_limits<unsigned char>::max(), '\n'); //TODO: comment/remove? prima era file.ignore(); e basta std::numeric_limits<int>::max(), '\n'
-            output += temp;
-            AES_DEBUG("line of file: {}", temp)
+            ss << std::noskipws << line.c_str();
+            AES_DEBUG("line of file: {}", std::string(line))
         }
     }
 
-    AES_DEBUG("ss.str(): {}", output)
+    AES_DEBUG("ss.str(): {}", std::string(ss.str().c_str(), ss.str().c_str() + ss.str().length())) //TODO: ss.str().length() o ss.str().size() + 1?
+
+    return {ss.str().c_str(), ss.str().c_str() + ss.str().length()}; //TODO: ss.str().length() + 1?
+}
+
+std::vector<uint8_t> FileManager::get_file_data6(const std::string &file_path)
+{
+    std::ifstream file(file_path);
+    file >> std::noskipws;
+
+    std::vector<uint8_t> output((std::istream_iterator<uint8_t>(file)),
+                            (std::istream_iterator<uint8_t>()));
+
+    /*if(file.is_open()) { //TODO: remove
+        std::string line;
+        while(std::getline(file, line, '\0')) { //TODO: (file, line, '\0')?
+            file.ignore();
+            buffer.push_back(line);
+            AES_DEBUG("line of file: {}", line)
+        }
+    }
+
+    for(const auto& b : buffer) { //TODO: remove
+        //output.push_back(b.data(), b.data() + b.length() + 1);
+    }*/
 
     return output;
 }
