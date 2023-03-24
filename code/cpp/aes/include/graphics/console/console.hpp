@@ -22,11 +22,7 @@
 namespace aes::con {
 
 //TODO: usare <format> quando possibile.
-
 //TODO: Singleton Class Console, con private tutto tranne show_console();
-//TODO: volendo potrei combinare show_encrypt_message() e show_decrypt_message() passando un enum Operations a una funzione
-//TODO: show_encrypt_decrypt_message();
-
 //TODO: static constexpr?
 
 /**
@@ -65,7 +61,7 @@ void show_console(const std::pair<aes::AES, arg::Arguments>& aes_argument = std:
  * @param output_file_path : the file where we want to store the encrypted text or deciphered plaintext.
  */
 void encrypt_decrypt_message_or_file(const aes::ops::EncryptionOperations& encryption_operation, const aes::ops::Operations& operation, std::string& message, std::string& key, const aes::AES& aes, const aes::mod::Modes& mode, const aes::pad::Paddings& padding,
-                             const std::vector<uint8_t>& iv, const std::string& input_file_path, const std::string& output_file_path); //TODO: rename in encrypt_decrypt_message_or_file();
+                             const std::vector<uint8_t>& iv, const std::string& input_file_path, const std::string& output_file_path);
 
 //TODO: optional iv?
 /**
@@ -99,7 +95,7 @@ void encrypt_decrypt_file(const aes::ops::Operations& operation, std::string inp
  * @brief This function asks the user which operation does he/she want to run: Encryption or Decryption.
  * @return an @enum Operations
  */
-aes::ops::Operations request_operation(); //TODO: o magari rinominarla get_operation();
+aes::ops::Operations request_operation();
 
 /**
  * @brief This function requests the user whether he/she wants to encrypt/decrypt a file or a message.
@@ -129,7 +125,7 @@ std::string request_output_file();
  * @brief This function requests the user the padding that has to be used.
  * @return @enum Paddings.
  */
-aes::pad::Paddings request_padding(); //TODO: rename in get_padding() o altro?
+aes::pad::Paddings request_padding();
 
 /**
  * @brief This function requests the user the key to use for encryption/decryption.
@@ -148,13 +144,13 @@ aes::mod::Modes request_mode();
  * @param mode : the mode to be used, because if it's ECB then the IV is not required.
  * @return a std::vector<uint8_t> with the initialization vector.
  */
-std::vector<uint8_t> request_iv(const aes::mod::Modes& mode); //TODO: rename in selected_mode
+std::vector<uint8_t> request_iv(const aes::mod::Modes& mode);
 
 /**
  * @brief This function requests the user the AES type that has to be used.
  * @return @enum AES.
  */
-aes::AES request_aes_type(); //TODO: rename in request_aes_size() oppure request_aes?
+aes::AES request_aes_type();
 
 } // namespace aes::con
 

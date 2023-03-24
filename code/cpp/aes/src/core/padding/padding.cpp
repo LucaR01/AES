@@ -43,7 +43,7 @@ namespace aes::pad {
             // Ma se il blocco è già 16, allora non aggiungiamo gli 0.
             case Paddings::ZERO_PADDING:
                 AES_INFO("0-Padding SELECTED")
-                message.insert(message.size(), missing_length, '0'); //TODO: prima era message.back() ma non andava
+                message.insert(message.size(), missing_length, '0');
                 break;
             // Aggiungiamo un 1 all'inizio del padding e poi tanti zeri quanto missing_length - 1 (quel -1 perché inseriamo quel 1 iniziale)
             case Paddings::ONE_ZERO_PADDING:
@@ -66,7 +66,6 @@ namespace aes::pad {
             // Aggiungiamo come padding il numero totale di bytes
             case Paddings::PKCS7:
                 AES_INFO("PKCS7 SELECTED")
-                //message.insert(message.size(), missing_length, missing_length); //TODO: remove
                 for(unsigned int i = 0; i < missing_length; i++) {
                     message.append(std::to_string(missing_length));
                 }
@@ -139,9 +138,6 @@ std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& 
             case Paddings::PKCS7:
                 AES_INFO("PKCS7 SELECTED")
                 message.insert(message.cend(), missing_length, missing_length);
-                /*for(unsigned int i = 0; i < missing_length; i++) { //TODO: remove?
-                    message.push_back(missing_length);
-                }*/
                 break;
             default:
             case Paddings::NO_PADDING:

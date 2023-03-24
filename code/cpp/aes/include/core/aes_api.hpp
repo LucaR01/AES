@@ -11,6 +11,8 @@
 #include <string_view>
 #include <optional>
 
+#include "file_manager/file_manager.hpp"
+
 // Forward Declaration to avoid Circular Dependency of Header files.
 // In realtà non c'era bisogno, ma velocizza il compile time.
 namespace aes::pad {
@@ -63,7 +65,7 @@ std::vector<uint8_t> decrypt(std::string& encrypted_message, std::string& key, c
 std::vector<uint8_t> decrypt(std::vector<uint8_t>& encrypted_message, std::vector<uint8_t>& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
 
 // FILE
-//TODO: const fm::FileModes& file_mode = FileModes::APPEND?
+
 /**
  * @brief: This function encrypts the contents of a file and store them encrypted in another file or in the same input file.
  * @param input_file_path : The file with the plaintext to be encrypted.
@@ -74,7 +76,7 @@ std::vector<uint8_t> decrypt(std::vector<uint8_t>& encrypted_message, std::vecto
  * @param mode : The @enum Modes to be used for encryption.
  * @param aes : The @enum AES to select the type of AES to be used: 128, 192 or 256.
  */
-void encrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
+void encrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes, const fm::FileModes& file_mode = fm::FileModes::APPEND);
 
 /**
  * @brief: This function decrypts the contents of a file and store them decrypted in another file or in the same input file.
@@ -86,7 +88,7 @@ void encrypt_file(const std::string& input_file_path, const std::string& output_
  * @param mode : The @enum Modes to be used for decryption.
  * @param aes : The @enum AES to select the type of AES to be used: 128, 192 or 256.
  */
-void decrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes);
+void decrypt_file(const std::string& input_file_path, const std::string& output_file_path, std::string& key, const std::optional<std::vector<uint8_t>>& iv, const aes::pad::Paddings& padding, const aes::mod::Modes& mode, const aes::AES& aes, const fm::FileModes& file_mode = fm::FileModes::APPEND);
 
 } // namespace aes::api
 

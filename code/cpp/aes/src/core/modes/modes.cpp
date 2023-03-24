@@ -162,7 +162,7 @@ uint8_t* decrypt_ECB(const uint8_t input[], const unsigned int& input_length, co
     return output;
 }
 
-std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes) //TODO: uncomment both
+std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes)
 {
     uint8_t* output = aes::mod::encrypt_ECB(input.data(), input.size(), key.data(), aes);
     std::vector<uint8_t> vec(output, output + input.size() * sizeof(unsigned char));
@@ -183,8 +183,7 @@ std::vector<uint8_t> decrypt_ECB(const std::vector<uint8_t>& input, const std::v
 void verify_length(const unsigned int& size)
 {
     if(size % aes::BLOCK_SIZE != 0) {
-        //TODO: se non lo mostra nella console, fare un std::cout o std::cerr
-        throw std::length_error("Il messaggio di grandezza: " + std::to_string(size) + " deve essere divisibile per " + std::to_string(aes::BLOCK_SIZE)); //TODO: si potrebbe aggiungere il messaggio (input)
+        throw std::length_error("Il messaggio di grandezza: " + std::to_string(size) + " deve essere divisibile per " + std::to_string(aes::BLOCK_SIZE));
     }
 }
 

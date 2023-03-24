@@ -44,11 +44,6 @@ static const std::map<Modes, std::string_view>& MODES_NAMES = {
         {Modes::CFB, "CFB"}
 };
 
-//TODO: remove
-//int encrypt_ECB(const std::vector<uint8_t>& key, const AES& aes, std::vector<std::array<std::array<uint8_t, gal::BLOCK_WORDS>, gal::BLOCK_WORDS>>& keys);
-
-// ---------------------------------------------------------------------------------------------------------------------
-
 /**
  * @brief: This function encrypts the input using the ECB (Electronic CodeBook) mode.
  * @param input : It's an array of uint8_t aka unsigned char. It's the plaintext that has to be encrypted.
@@ -72,8 +67,6 @@ uint8_t* decrypt_ECB(const uint8_t input[], const unsigned int& input_length, co
 std::vector<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes); //TODO: uncomment both.
 
 std::vector<uint8_t> decrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes);
-
-//std::unique_ptr<uint8_t> encrypt_ECB(const std::vector<uint8_t>& input, const std::vector<uint8_t>& key, const aes::AES& aes); //TODO:
 
 /**
  *

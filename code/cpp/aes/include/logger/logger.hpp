@@ -5,7 +5,7 @@
 #ifndef AES_LOGGER_H
 #define AES_LOGGER_H
 
-#include <source_location> //TODO: usare source_location::current(); .file(); .file_name(); .function_name();
+#include <source_location>
 
 #include "spdlog/spdlog.h"
 #include "os/os.hpp"

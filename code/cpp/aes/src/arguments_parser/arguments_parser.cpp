@@ -27,52 +27,40 @@ void parse_user_arguments(const int& argc, const char** argv)
     }
 #endif
 
-    //TODO: C'è il valore di default che lo fa sembrare un argomento passato dall'utente.
-
     std::pair<aes::AES, Arguments> aes;
-    //aes::AES aes; //TODO: remove
     args["--aes"] && args["--aes"].isString() ? aes = std::make_pair(aes::cvt::retrieve_key_from_map<aes::AES, std::string_view>(aes::ALL_AES_TYPES_NAMES, args["--aes"].asString()).value(), Arguments::USER_PASSED_ARGUMENT) : aes = std::make_pair(aes::def::DEFAULT_AES, Arguments::NOT_USER_PASSED_ARGUMENT);
     AES_DEBUG("aes: {} : {}", aes::ALL_AES_TYPES_NAMES.at(aes.first), ARGUMENTS_NAMES.at(aes.second))
 
     std::pair<std::string, Arguments> message;
-    //std::string message; //TODO: remove
     args["--message"] && args["--message"].isString() ? message = std::make_pair(args["--message"].asString(), Arguments::USER_PASSED_ARGUMENT) : message = std::make_pair("", Arguments::NOT_USER_PASSED_ARGUMENT);
     AES_DEBUG("message: {} : {}", message.first, ARGUMENTS_NAMES.at(message.second))
 
     std::pair<std::string, Arguments> input_file_path;
-    //std::string input_path_string; //TODO: remove
     args["--input"] && args["--input"].isString() ? input_file_path = std::make_pair(args["--input"].asString(), Arguments::USER_PASSED_ARGUMENT) : input_file_path = std::make_pair("", Arguments::NOT_USER_PASSED_ARGUMENT);
     AES_DEBUG("input_path_string: {} : {}", input_file_path.first, ARGUMENTS_NAMES.at(input_file_path.second))
 
     std::pair<std::string, Arguments> output_file_path;
-    //std::string output_path_string; //TODO: remove
     args["--output"] && args["--output"].isString() ? output_file_path = std::make_pair(args["--output"].asString(), Arguments::USER_PASSED_ARGUMENT) : output_file_path = std::make_pair(aes::def::DEFAULT_OUTPUT_FILE_PATH, Arguments::NOT_USER_PASSED_ARGUMENT);
     AES_DEBUG("output_path_string: {} : {}", output_file_path.first, ARGUMENTS_NAMES.at(output_file_path.second))
 
     std::pair<aes::mod::Modes, Arguments> mode;
-    //aes::mod::Modes mode; //TODO: remove
     args["--mode"] && args["--mode"].isString() ? mode = std::make_pair(aes::cvt::retrieve_key_from_map<aes::mod::Modes, std::string_view>(aes::mod::MODES_NAMES, std::string_view(args["--mode"].asString())).value(), Arguments::USER_PASSED_ARGUMENT) : mode = std::make_pair(aes::def::DEFAULT_MODE, Arguments::NOT_USER_PASSED_ARGUMENT);
     AES_DEBUG("mode: {} : {}", aes::mod::MODES_NAMES.at(mode.first), ARGUMENTS_NAMES.at(mode.second))
 
     std::pair<aes::pad::Paddings, Arguments> padding;
-    //aes::pad::Paddings padding; //TODO: remove
     args["--padding"] && args["--padding"].isString() ? padding = std::make_pair(aes::cvt::retrieve_key_from_map(aes::pad::PADDING_NAMES, std::string_view(args["--padding"].asString())).value(), Arguments::USER_PASSED_ARGUMENT) : padding = std::make_pair(aes::def::DEFAULT_PADDING, Arguments::NOT_USER_PASSED_ARGUMENT);
     AES_DEBUG("padding: {} : {}", aes::pad::PADDING_NAMES.at(padding.first), ARGUMENTS_NAMES.at(padding.second))
 
     std::pair<std::string, Arguments> iv;
-    //std::string iv; //TODO: remove
     args["--iv"] && args["--iv"].isString() ? iv = std::make_pair(args["--iv"].asString(), Arguments::USER_PASSED_ARGUMENT) : std::make_pair("", Arguments::NOT_USER_PASSED_ARGUMENT);
     AES_DEBUG("iv: {} : {}", iv.first, ARGUMENTS_NAMES.at(iv.second))
 
     std::pair<std::string, Arguments> key;
-    //std::string key; //TODO: remove
     args["--key"] && args["--key"].isString() ? key = std::make_pair(args["--key"].asString(), Arguments::USER_PASSED_ARGUMENT) : std::make_pair("", Arguments::NOT_USER_PASSED_ARGUMENT);
     AES_DEBUG("key: {} : {}", key.first, ARGUMENTS_NAMES.at(key.second))
 
     std::pair<aes::ops::Operations, Arguments> operation;
-    //aes::ops::Operations operation; //TODO: remove
 
-    //TODO: refactor?
     if(args["--encryption"].asBool()) { // prima args["--encryption"] &&
         operation = std::make_pair(aes::ops::Operations::ENCRYPT, Arguments::USER_PASSED_ARGUMENT);
     } else if(args["--decryption"].asBool()) {

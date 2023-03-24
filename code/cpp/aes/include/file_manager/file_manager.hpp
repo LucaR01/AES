@@ -16,16 +16,7 @@
 
 #include "logger/logger.hpp"
 
-//TODO: forse cercare per il '\n' nel file?
-
 namespace aes::fm {
-
-/*enum class FM : std::_Ios_Openmode { //TODO: non funziona perché non è un int; remove
-    READ = std::ios::in,
-    WRITE = std::ios::out
-};*/
-
-// ATE = at end of file.
 
 /**
  * @enum FileModes
@@ -57,7 +48,6 @@ static std::_Ios_Openmode get_file_mode(const FileModes& file_mode)
     return FILE_MODES_MAP.at(file_mode);
 }
 
-//TODO: rename in FileHandler? then rename namespace in aes::fh?
 class FileManager {
 
 public:
@@ -165,7 +155,7 @@ public:
      * @param file_path: the file we want to get the data from.
      * @return the data of type T.
      */
-    template<typename T, typename FP> //TODO: to fix.
+    template<typename T, typename FP> //FIXME
     // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
     [[nodiscard]] static T get_file_data2(const FP file_path) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
     {
@@ -214,9 +204,8 @@ public:
      * @param data: the data that we want to write to the file.
      * @param file_mode: the mode in which we want to open the file.
      */
-    template<typename T, typename FP> //TODO: typename FP for file_path, typename T for data
+    template<typename T, typename FP>
     // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
-    //TODO: prima era const T& data
     static void write_file_data(const FP file_path, const T data, const FileModes& file_mode = FileModes::APPEND) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
     {
         std::ofstream file;

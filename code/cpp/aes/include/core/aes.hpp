@@ -22,11 +22,11 @@ namespace aes {
 static constexpr uint8_t BLOCK_WORDS = 4; //TODO: rename in AES_BLOCK_WORDS?
 static constexpr uint8_t BLOCK_SIZE = 16; //TODO: rename in AES_BLOCK_SIZE?
 
-static constexpr uint8_t ROUNDS_AES_128 = 10; //TODO: Creare un enum? Oppure metterlo nell'enum Aes?
-static constexpr uint8_t ROUNDS_AES_192 = 12; //TODO: spostarli in aes.hpp?
-static constexpr uint8_t ROUNDS_AES_256 = 14; //TOOD: rename in AES_256_ROUNDS
+static constexpr uint8_t ROUNDS_AES_128 = 10;
+static constexpr uint8_t ROUNDS_AES_192 = 12;
+static constexpr uint8_t ROUNDS_AES_256 = 14;
 
-static constexpr uint8_t AES_128_NUMBER_OF_KEYS = 4; //TODO: fare un enum?
+static constexpr uint8_t AES_128_NUMBER_OF_KEYS = 4;
 static constexpr uint8_t AES_192_NUMBER_OF_KEYS = 6;
 static constexpr uint8_t AES_256_NUMBER_OF_KEYS = 8;
 
@@ -53,7 +53,6 @@ static const std::map<AES, std::string_view>& ALL_AES_TYPES_NAMES = {
         {AES::AES_256, "AES 256"}
 };
 
-//TODO: rename in get_aes_value?
 //TODO: posso templetizzare tutti i get_index dei vari enums da poi mettere in un folder generic_templates o generics o templates
 /**
  * @brief This function returns the index of an AES enum instance.
@@ -158,8 +157,6 @@ static constexpr std::array<uint8_t, get_aes_index(aes::AES::AES_256)> INVERSE_S
         0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d
 };
 
-//TODO: usare Matrix class?
-//TODO: nome circulant_mds_matrix
 static constexpr std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS> CIRCULANT_MDS = {
             {{0x02, 0x03, 0x01, 0x01},
             {0x01, 0x02, 0x03, 0x01},
@@ -215,7 +212,7 @@ void shift_rows(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WOR
  */
 void mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
-void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const std::vector<uint8_t>& keys, const AES& aes); //TODO: uncomment
+void encrypt_block(const std::vector<uint8_t>& input, std::vector<uint8_t>& output, const std::vector<uint8_t>& keys, const AES& aes);
 
 //TODO: avevo fatto std::vector output e andava prima
 void encrypt_block(const std::vector<uint8_t>& input, uint8_t* output, const uint8_t* keys, const AES& aes); //TODO: const uint8_t& keys ma poi non va nella key expansion
@@ -263,7 +260,6 @@ void inverse_shift_rows(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::B
  */
 void inverse_mix_columns(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state);
 
-//TODO: avevo fatto std::vector output e andava prima
 /**
  * @brief It decrypts a block of data.
  * @param input: the input of the message.
@@ -298,19 +294,19 @@ void key_expansion(const std::vector<uint8_t>& key, uint8_t* word, const AES& ae
 void key_expansion(const uint8_t key[], unsigned char word[], const AES& aes);
 
 /**
- * @brief It rotates the round keys
+ * @brief It rotates the round keys.
  * @param keys: the round keys.
  */
 void rot_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys);
 
 /**
- * @brief It transforms the keys with the S-BOX.
+ * @brief It substitutes a 32 bit word using the S-BOX.
  * @param keys: the round keys.
  */
 void sub_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys);
 
 /**
- * @brief
+ * @brief The round constants are generated.
  * @param keys: the round keys.
  * @param number_of_keys: based on the type of AES: 128, 192 or 256.
  */
@@ -318,9 +314,9 @@ void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const uint8_t&
 
 /**
  * @brief This function xor x by y by block_length times.
- * @param x:
- * @param y:
- * @param z:
+ * @param x: key.
+ * @param y: key.
+ * @param z: resulting key of the xor between x and y.
  * @param block_length: the length of a single block of data.
  */
 void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, const unsigned int& block_length); //TODO: riscrivere?

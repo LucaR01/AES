@@ -22,13 +22,6 @@
 #include "core/aes.hpp"
 #include "defaults/defaults.hpp"
 
-//Forward Declaration
-/*namespace aes::ops { //TODO: remove.
-
-    enum class Operations;
-
-}*/
-
 namespace aes::gui {
 
 static constexpr unsigned short WINDOW_WIDTH = 1280;
@@ -37,7 +30,6 @@ static constexpr std::string_view WINDOW_TITLE = "AES";
 
 static bool set_files_path = true;
 
-//TODO: const int& error, char[]?
 /**
  * @brief This function prints the glfw error.
  * @param error: the error code.
@@ -233,7 +225,7 @@ void init();
  * @param input_file_path : the file from which we want to retrieve the plaintext or encrypted text.
  * @param output_file_path : the file where we want to store the encrypted text or deciphered plaintext.
  */
-void window(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = "", const std::string& key = "", const std::string& iv = "", const std::string& input_file_path = "", const std::string& output_file_path = std::string(aes::def::DEFAULT_OUTPUT_FILE_PATH));
+void window(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = std::string(def::EMPTY_STRING), const std::string& key = std::string(def::EMPTY_STRING), const std::string& iv = std::string(def::EMPTY_STRING), const std::string& input_file_path = std::string(def::EMPTY_STRING), const std::string& output_file_path = std::string(aes::def::DEFAULT_OUTPUT_FILE_PATH));
 
 /**
  * @brief This function setup the window with the @fn init() and calls @fn window();
@@ -246,7 +238,7 @@ void window(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& 
  * @param input_file_path : the file from which we want to retrieve the plaintext or encrypted text.
  * @param output_file_path : the file where we want to store the encrypted text or deciphered plaintext.
  */
-void show(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = "", const std::string& key = "", const std::string& iv = "", const std::string& input_file_path = "", const std::string& output_file_path = std::string(aes::def::DEFAULT_OUTPUT_FILE_PATH));
+void show(const aes::AES& aes = aes::def::DEFAULT_AES, const aes::mod::Modes& mode = aes::def::DEFAULT_MODE, const aes::pad::Paddings& padding = aes::def::DEFAULT_PADDING, const std::string& message = std::string(def::EMPTY_STRING), const std::string& key = std::string(def::EMPTY_STRING), const std::string& iv = std::string(def::EMPTY_STRING), const std::string& input_file_path = std::string(def::EMPTY_STRING), const std::string& output_file_path = std::string(aes::def::DEFAULT_OUTPUT_FILE_PATH));
 
 } // namespace aes::gui
 

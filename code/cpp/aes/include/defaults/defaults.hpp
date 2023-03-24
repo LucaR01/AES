@@ -15,7 +15,7 @@
 namespace aes::def {
 
 static constexpr aes::AES DEFAULT_AES = aes::AES::AES_128; //TODO: 256?
-static constexpr aes::mod::Modes DEFAULT_MODE = aes::mod::Modes::ECB; //TODO: CFB?
+static constexpr aes::mod::Modes DEFAULT_MODE = aes::mod::Modes::ECB; //TODO: CBC/CFB?
 static constexpr aes::pad::Paddings DEFAULT_PADDING = aes::pad::Paddings::NO_PADDING; //TODO: ISO_10126_PADDING?
 static constexpr aes::ops::Operations DEFAULT_OPERATION = aes::ops::Operations::ENCRYPT;
 static constexpr aes::ops::EncryptionOperations DEFAULT_ENCRYPTION_OPERATION = aes::ops::EncryptionOperations::MESSAGE;

@@ -27,10 +27,10 @@ TEST(AES_TESTS, Test_ECB)
     std::vector<uint8_t> key_vector = aes::cvt::get_vector_from_string<std::uint8_t, std::string_view>(key);
 
     //TODO: uncomment
-    /*std::vector<uint8_t> ciphertext = aes::mod::encrypt_ECB(plaintext_vector, key_vector, aes);
+    std::vector<uint8_t> ciphertext = aes::mod::encrypt_ECB(plaintext_vector, key_vector, aes);
     std::vector<uint8_t> deciphered_plaintext = aes::mod::decrypt_ECB(ciphertext, key_vector, aes);
 
-    EXPECT_EQ(plaintext, std::string(deciphered_plaintext.begin(), deciphered_plaintext.end())) << "plaintext: " << plaintext << " deciphered_plaintext: " << aes::cvt::get_string_from_vector(deciphered_plaintext);*/
+    EXPECT_EQ(plaintext, std::string(deciphered_plaintext.begin(), deciphered_plaintext.end())) << "plaintext: " << plaintext << " deciphered_plaintext: " << aes::cvt::get_string_from_vector(deciphered_plaintext);
 }
 
 TEST(AES_TESTS, TEST_CBC)
@@ -116,3 +116,8 @@ TEST(AES_API_TESTS, TEST_API_FILE)
     aes::fm::FileManager::delete_file(deciphered_plaintext_file);*/
 
 }
+
+/*int main()
+{
+    return 0;
+}*/

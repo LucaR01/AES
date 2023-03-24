@@ -17,20 +17,20 @@
 
 namespace aes::cvt {
 
-[[nodiscard]] static inline std::string get_string_from_vector(const std::vector<uint8_t>& vector) //TODO: remove?
+/*[[nodiscard]] static inline std::string get_string_from_vector(const std::vector<uint8_t>& vector) //TODO: remove?
 {
     return {vector.cbegin(), vector.cend()};
-}
+}*/
 
 /**
  *
  * @param string : It's the string that has to be converted into a std::vector<uint8_t>
  * @return a std::vector<uint8_t> with the contents of the @param string.
  */
-[[nodiscard]] static inline std::vector<uint8_t> get_vector_from_string(const std::string& string) //TODO: remove?
+/*[[nodiscard]] static inline std::vector<uint8_t> get_vector_from_string(const std::string& string) //TODO: remove?
 {
     return {string.cbegin(), string.cend()};
-}
+}*/
 
 /**
  * @brief: This function returns a string of @tparam S which has to be either a std::string or a std::string_view with the contents of the std::vector<T>.

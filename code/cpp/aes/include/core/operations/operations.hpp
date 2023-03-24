@@ -13,9 +13,6 @@
 
 namespace aes::ops {
 
-//TODO: enum class
-
-//TODO: rename in EncryptionOperations?
 enum class Operations { //TODO: rename in ENCRYPTION e DECRYPTION?
     ENCRYPT = 1,
     DECRYPT
@@ -30,9 +27,6 @@ static const std::map<Operations, std::string_view>& OPERATIONS_NAMES = {
         {Operations::DECRYPT, "Decrypt"}
 };
 
-//TODO: mettere anche il resto in questo namespace?
-// È in un namespace, perché mi dava errore di ridefinizione di FILE.
-
 //TODO: rinominare in qualcos'altro? EncryptionObjects?
 //TODO: rinominare in InputOperations?
 enum class EncryptionOperations {
@@ -42,11 +36,10 @@ enum class EncryptionOperations {
 
 static constexpr uint8_t NUM_OF_ENCRYPTION_OPERATIONS = 2;
 
-//TODO: touppercase because it's a static constexpr
 static constexpr std::array<EncryptionOperations, NUM_OF_ENCRYPTION_OPERATIONS> ALL_ENCRYPTION_OPERATIONS{EncryptionOperations::MESSAGE, EncryptionOperations::FILE};
 
 //TODO: touppercase because it's a static constexpr
-static const std::map<EncryptionOperations, std::string_view> ENCRYPTION_OPERATIONS_NAMES = {
+static const std::map<EncryptionOperations, std::string_view>& ENCRYPTION_OPERATIONS_NAMES = {
         {EncryptionOperations::MESSAGE, "Message"},
         {EncryptionOperations::FILE, "File"}
 };

@@ -13,7 +13,7 @@ namespace aes::arg {
 
 //TODO: Either monad (std::variant) NOT_USER_PASSED_ARGUMENT or USER_PASSED_ARGUMENT
 enum class Arguments {
-    NOT_USER_PASSED_ARGUMENT = 0, //TODO: rename in DEFAULT_ARGUMENT?
+    NOT_USER_PASSED_ARGUMENT = 0,
     USER_PASSED_ARGUMENT
 };
 
@@ -21,11 +21,6 @@ static const std::map<Arguments, std::string_view>& ARGUMENTS_NAMES = {
         {Arguments::NOT_USER_PASSED_ARGUMENT, "NOT_USER_PASSED_ARGUMENT"},
         {Arguments::USER_PASSED_ARGUMENT, "USER_PASSED_ARGUMENT"}
 };
-
-//TODO: fix message or file or keep it as it is.
-//TODO: aggiungere la possibilità di avere una key.
-//TODO: -m MESSAGE, --message=MESSAGE (mi serve un tot di parole non solo una)
-//TODO: -i FILE, --input=FILE
 
 // Rimuovo i valori di [default], perché altrimenti per come è fatto il programma darebbe sempre USER_PASSED_ARGUMENT
 
@@ -73,7 +68,6 @@ Options:
 
 )";
 
-//TODO: rename?
 /**
  * @brief: This function reads the user's arguments and either calls @fn show_console() or @fn show_gui() with these parameters.
  * @param argc : the number of arguments passed.

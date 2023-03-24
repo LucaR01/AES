@@ -28,7 +28,6 @@ enum class Paddings {
 
 static constexpr uint8_t TYPES_OF_PADDINGS = 6;
 
-//TODO: rename in ALL_PADDING_TYPES?
 static constexpr std::array<Paddings, TYPES_OF_PADDINGS> ALL_PADDINGS{Paddings::NO_PADDING, Paddings::ZERO_PADDING, Paddings::ONE_ZERO_PADDING,
                                                              Paddings::ANSI_X9_23_PADDING, Paddings::ISO_10126_PADDING, Paddings::PKCS7};
 
@@ -69,7 +68,6 @@ static const std::map<Paddings, std::string_view>& PADDING_NAMES = {
  */
 std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& padding);
 
-//TODO: rename in remove_padding_from_message()?
 /**
  * @brief: This function removes a specific padding from the @param padding of type @enum Paddings from a @p decrypted_message.
  * @param decrypted_message : the decrypted message which we need to remove the padding at the end.

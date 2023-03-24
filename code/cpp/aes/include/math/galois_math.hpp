@@ -13,8 +13,6 @@ namespace aes::gal {
 //TODO: usare std::bitset?
 static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00011011 = x^4 + x^3 + x + 1.
 
-//TODO: se voglio metterle constexpr le devo definire nel .hpp non nel .cpp
-
 /**
  * @brief This function returns the galois addition or subtraction between two numbers. It xors the two numbers.
  * @param x: a uint8_t aka unsigned char.
@@ -53,7 +51,6 @@ static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00
     return result;
 }
 
-//TODO: inline?
 /**
  *
  * @param x: a uint8_t aka unsigned char.
