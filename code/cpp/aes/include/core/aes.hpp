@@ -14,6 +14,7 @@
 #include <optional>
 #include <map>
 #include <set>
+#include <type_traits>
 
 #include "math/galois_math.hpp"
 
