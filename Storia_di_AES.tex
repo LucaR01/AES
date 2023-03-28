@@ -137,7 +137,7 @@
 	\label{fig:encryption_types}
 \end{figure}
 
-\textsf{\small AES è di tipo simmetrico, quindi useremo la stessa chiave sia per criptare il nostro messaggio sia per decriptarlo. }
+\textsf{\small AES è di tipo simmetrico, quindi useremo la stessa chiave sia per cifrare il nostro messaggio sia per decifrarlo. }
 
 \begin{figure}[H]
 	\centering
@@ -145,5 +145,36 @@
 	\caption{Cifratura a chiave simmetrica}
 	\label{fig:symmetric_encryption}
 \end{figure}
+
+% ------------------------ SECTION: STREAM VS BLOCK CIPHER ----------------------------
+
+\section{Stream vs Block Ciphers}
+
+\textsf{\small \textbf{Cifrario a flusso}: } %TODO: Il testo in chiaro viene separato in [singoli] bits che vengono poi singolarmente cifrati.
+
+\textsf{\small \textbf{Cifrario a blocchi}: } %TODO: Un cifrario a blocchi prende un messaggio in chiaro e lo suddivide in blocchi di bytes.
+
+%TODO: AES è un cifrario a blocchi che prende un blocco di grandezza fissa di 16 bytes (o 4 words).
+
+%TODO: aggiungere immagine?
+
+% ------------------------ SECTION: PRINCIPIO DI KERCHOFFS ----------------------------
+
+\section{Principio di Kerchoffs}
+
+\textsf{\small } %TODO: L'olandese Auguste Kerckhoffs scrisse [redisse/stilò/composse/elaborò] nel 1883 due articoli riguardanti la crittografia. Nel primo trattò [enunciò] sei principi, di cui il più famoso (il numero 2) sostiene che la sicurezza di un sistema crittografico non deve risiedere nella segretezza del suo algoritmo, ma soltanto dal mantenere la chiave segreta.
+
+\textsf{\small } %TODO: I sei principi di Kerckhoffs:
+
+%TODO: citare fonte.
+
+\begin{enumerate}
+	\item \textsf{\small } %TODO: Il sistema deve essere praticamente, se non matematicamente, indecifrabile.
+	\item \textsf{\small } %TODO: Non dovrebbe richiedere segretezza e non dovrebbe essere un problema se cade nelle mani nemiche. [del nemico]
+	\item \textsf{\small } %TODO: Deve essere possibile comunicare e ricordare la chiave, senza utilizzare note scritte e i corrispondenti devono essere in grado di modificarla a volere/a piacimento.
+	\item \textsf{\small } %TODO: Deve essere applicabile a comunicazioni attraverso il telegrafo.
+	\item \textsf{\small } %TODO: Deve essere portabile, e non dovrebbe richiedere diverse persone per poterlo utilizzare.
+	\item \textsf{\small } %TODO: Il sistema dovrebbe essere facile da usare e non dovrebbe essere stressante o richiedere ai propri ...usufruitori/utenti... di seguire una lunga lista di procedure.
+\end{enumerate}
 
 % -------------------------------- FINE CAPITOLO --------------------------------------

@@ -15,6 +15,8 @@
 
 %TODO: Magari approfondire le modalità che andrò a implementare.
 
+%TODO: 0-Padding, 1-0-Padding, ISO, ...
+
 % =======================================================================================
 
 % ---------------------------- SECTION: INTRODUZIONE ------------------------------------
@@ -138,6 +140,19 @@
 \textsf{\small Grazie a questa tecnica, è possibile aggiungere, all'inizio, al centro o in fondo al messaggio, del nonsense per oscurare parti del messaggio che altrimenti sarebbero prevedibili, come: \emph{Caro...}, \emph{Gentile...}, \emph{Cordiali Saluti..}, ecc.}
 
 \textsf{\small I principali meccanismi di padding sono: }
+
+\begin{comment} %TODO: uncomment, magari mostrare degli esempi per ognuno di questi?
+\begin{itemize}
+	\item \textsf{\small \textbf{No padding}: }
+	\item \textsf{\small \textbf{0-Padding}: Vengono aggiunti dei bytes con degli zeri alla fine dell'ultimo blocco, finché non abbiamo il corretto numero di bytes (in AES è 16 bytes); se già abbiamo il numero necessario di bytes, allora non viene aggiunto nulla}
+	\item \textsf{\small \textbf{1-0-Padding}: Viene aggiunto un byte a 1 e il restante viene riempito da bytes di 0 finché non abbiamo il numero necessario di bytes; se il numero di bytes necessario è già presente, allora aggiungiamo un altro blocco.}
+	\item \textsf{\small \textbf{ANSI X9.23 Padding}: Aggiungiamo bytes di 0 alla fine dell'ultimo blocco, finché non abbiamo 16 - 1 bytes. Nell'ultimo blocco inseriamo il numero totale di bytes a 0 che abbiamo aggiunto; se l'ultimo blocco è già pieno (corrisponde a 16 bytes), allora aggiungiamo blocco addizionale.}
+	\item \textsf{\small \textbf{ISO 10126 Padding}: Vengono aggiunti dei bytes casuali in fondo all'ultimo blocco, finché non abbiamo 16 - 1 bytes e nell'ultimo byte inseriamo il numero totale di bytes casuali che abbiamo immesso; Se l'ultimo blocco è già 16 bytes, allora aggiungiamo un altro blocco.}
+	\item \textsf{\small \textbf{PKCS#7}: Aggiungiamo il numero totale di bytes che restano per riempire il blocco in ogni byte rimanente, finché non abbiamo 16 bytes.}
+	\item \textsf{\small }
+	\item \textsf{\small }
+\end{itemize}
+\end{comment}
 
 \begin{comment} %TODO: uncomment e approfondire.
 \begin{itemize}
