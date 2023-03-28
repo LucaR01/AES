@@ -192,9 +192,9 @@ public:
         }
     }
 
-    static void write_file_data(const std::string& file_path, const std::vector<std::string>& data); //TODO: remove?
+    /*static void write_file_data(const std::string& file_path, const std::vector<std::string>& data); //TODO: remove?
     static void write_file_data(const std::string& file_path, const std::vector<uint8_t>& data); //TODO: remove?
-    static void write_file_data(const std::string& file_path, const std::string& data); //TODO: remove?
+    static void write_file_data(const std::string& file_path, const std::string& data); //TODO: remove?*/
 
     /**
      * @brief This function writes data in the file specified by file_path.
@@ -213,7 +213,7 @@ public:
 
         if(file.is_open()) {
             for(const auto& line : data) {
-                file << line;
+                file <<  line; //TODO: std::noskipws <<?
                 AES_DEBUG("line: {}", line)
             }
         } else {

@@ -186,7 +186,7 @@ std::string FileManager::get_key(const std::string& file_path)
     return ss.str();
 }
 
-void FileManager::write_file_data(const std::string& file_path, const std::vector<std::string>& data)
+/*void FileManager::write_file_data(const std::string& file_path, const std::vector<std::string>& data)
 {
     std::ofstream file;
     file.open(file_path, get_file_mode(FileModes::APPEND));
@@ -243,7 +243,7 @@ void FileManager::write_file_data(const std::string& file_path, const std::strin
     file.close();
 
     AES_INFO("file size: {}", get_file_size(file_path))
-}
+}*/
 
 /*[[nodiscard]] std::string FileManager::get_filename(const std::string_view& file_path)
 {

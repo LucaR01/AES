@@ -14,6 +14,10 @@
 #include <valarray>
 #include <ranges>
 #include <variant>
+#include <iomanip>
+#include <algorithm>
+
+#include "logger/logger.hpp"
 
 namespace aes::cvt {
 
@@ -206,6 +210,51 @@ auto retrieve_key_or_value(const std::map<K, V>& map, const std::variant<K, V>& 
     }
 
     return; //TODO: nullptr? credo che return; = return nullptr;
+}
+
+template<typename STRING_TYPE>
+STRING_TYPE string_to_hex(const STRING_TYPE& string)
+{
+    std::ostringstream result;
+
+    result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase;
+    std::copy(string.cbegin(), string.cend(), std::ostream_iterator<unsigned int>(result, ""));
+    AES_DEBUG("{} | {}", string, result.str())
+    return result.str();
+}
+
+template<class STRING_TYPE>
+STRING_TYPE hex_to_string(const STRING_TYPE& string) {
+    STRING_TYPE output;
+
+    if ((string.length() % 2) != 0) {
+        throw std::runtime_error("Invalid Length");
+    }
+
+    std::size_t cnt = string.length() / 2;
+    std::uint32_t s = 0;
+
+    for (size_t i = 0; cnt > i; ++i) {
+        std::stringstream ss;
+        ss << std::hex << string.substr(i * 2, 2);
+        ss >> s;
+
+        output.push_back(static_cast<unsigned char>(s));
+    }
+
+    return output;
+}
+
+template<class INPUT_STRING, class OUTPUT_STRING>
+void hex_to_string2(const INPUT_STRING& hex_string, OUTPUT_STRING& output_string)
+{
+    output_string.resize((hex_string.size() + 1) / 2);
+
+    for (size_t i = 0, j = 0; i < output_string.size(); i++, j++)
+    {
+        output_string.at(i) = (hex_string.at(j) & '@' ? hex_string.at(j) + 9 : hex_string.at(j)) << 4, j++;
+        output_string.at(i) |= (hex_string.at(j) & '@' ? hex_string.at(j) + 9 : hex_string.at(j)) & 0xF;
+    }
 }
 
 } // namespace aes::cvt
