@@ -75,8 +75,9 @@ public:
     static std::vector<std::string> get_file_data2(const std::string& file_path);
     static std::string get_file_data3(const std::string& file_path); //TODO: remove this or get_key() qui sotto.
     static std::string get_file_data4(const std::string& file_path); //TODO: remove this or get_key() qui sotto.
-    static std::string get_file_data5(const std::string& file_path);
+    static std::u8string get_file_data5(const std::string& file_path);
     static std::vector<uint8_t> get_file_data6(const std::string& file_path);
+    static std::vector<uint8_t> get_file_data7(const std::string& file_path);
     static std::string get_key(const std::string& file_path); //TODO: rinominare in get_file_data_single_stream o qualcosa del genere. //TODO: remove?
 
     /*template<typename T, typename FP>
@@ -188,6 +189,8 @@ public:
                 }
             }
 
+            file.close();
+
             return (T) buffer;
         }
     }
@@ -206,7 +209,7 @@ public:
      */
     template<typename T, typename FP>
     // Tolgo il & (reference) dal const FP& file_path perché altrimenti char[] non andrebbe.
-    static void write_file_data(const FP file_path, const T data, const FileModes& file_mode = FileModes::APPEND) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]>
+    static void write_file_data(const FP file_path, const T data, const FileModes& file_mode = FileModes::APPEND) requires std::is_same_v<FP, std::string> || std::is_same_v<FP, char*> || std::is_same_v<FP, char[]> || std::is_same_v<FP, std::u8string>
     {
         std::ofstream file;
         file.open(file_path, get_file_mode(file_mode));

@@ -93,6 +93,7 @@ std::string FileManager::get_file_data3(const std::string& file_path) // Same co
 std::string FileManager::get_file_data4(const std::string& file_path)
 {
     std::stringstream ss;
+    //std::basic_stringstream<unsigned char> ss2; //TODO: remove
 
     std::ifstream file; //TODO: std::ifstream file(file_path);
     file.open(file_path);
@@ -107,6 +108,8 @@ std::string FileManager::get_file_data4(const std::string& file_path)
         }
     }
 
+    file.close();
+
     AES_DEBUG("ss.str(): {}", ss.str())
 
     //ss << '\0'; //TODO: remove?
@@ -114,7 +117,7 @@ std::string FileManager::get_file_data4(const std::string& file_path)
     return ss.str();
 }
 
-std::string FileManager::get_file_data5(const std::string& file_path)
+std::u8string FileManager::get_file_data5(const std::string& file_path)
 {
     std::basic_stringstream<uint8_t> ss;
 
@@ -142,6 +145,8 @@ std::vector<uint8_t> FileManager::get_file_data6(const std::string &file_path)
     std::vector<uint8_t> output((std::istream_iterator<uint8_t>(file)),
                             (std::istream_iterator<uint8_t>()));
 
+    file.close();
+
     /*if(file.is_open()) { //TODO: remove
         std::string line;
         while(std::getline(file, line, '\0')) { //TODO: (file, line, '\0')?
@@ -156,6 +161,31 @@ std::vector<uint8_t> FileManager::get_file_data6(const std::string &file_path)
     }*/
 
     return output;
+}
+
+std::vector<uint8_t> FileManager::get_file_data7(const std::string& file_path)
+{
+    std::vector<uint8_t> file_data;
+    std::vector<std::string> buffer;
+    std::ifstream file(file_path);
+
+    if(file.is_open()) {
+        std::string line;
+        while(std::getline(file, line)) {
+            buffer.push_back(line);
+            AES_DEBUG("line of file: {}", line)
+            AES_DEBUG("buffer.size(): {}", buffer.size())
+        }
+    }
+
+    for(const auto& b : buffer) {
+        //file_data.push_back(*b.data()); //TODO: it works, but remove?
+        file_data.push_back(*b.c_str());
+    }
+
+    file.close();
+
+    return file_data;
 }
 
 std::string FileManager::get_key(const std::string& file_path)
