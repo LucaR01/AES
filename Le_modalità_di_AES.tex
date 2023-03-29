@@ -210,6 +210,21 @@
 	\label{fig:ecb}
 \end{figure}
 
+\textsf{\small } %TODO: Come si deduce dall'immagine, ogni blocco viene cifrato indipendentemente. Viene inserito il messaggio in chiaro e la chiave all'interno del cifrario per ottenere il testo cifrato. Blocchi di testo in chiaro uguali vengono cifrato allo stesso modo.
+
+%TODO: Per questo, osservando il testo cifrato è possibile riconoscere, se presenti nel testo in chiaro, parti cifrate allo stesso modo. 
+
+%TODO: Per decifrare, eseguiamo l'operazione inversa, immettendo un blocco cifrato assieme alla chiave, per ottenere il testo decifrato.
+
+\textsf{\small } %TODO: Ricapitolando i problemi di ECB:
+
+\begin{itemize}
+	\item \textsf{\small ECB è deprecato e non dovrebbe essere utilizzato.}
+	\item \textsf{\small Gli stessi blocchi di messaggio vengono cifrati con gli stessi blocchi cifrati.}
+\end{itemize}
+
+%TODO: Aggiungere immagine/schema della decifrazione?
+
 \subsubsection{CBC | Cipher Block Chain}
 
 %TODO: La modalità CBC cerca di ovviare ai problemi dell'ECB aggiungendo della casualità a ogni operazione di cifratura usufruendo di un initialization vector (IV) per il primo blocco e dopodichè applicando uno XOR a ogni blocco di testo in chiaro con il blocco cifrato precedente/precedentemente.
@@ -222,6 +237,20 @@
 	\caption{CBC}
 	\label{fig:cbc}
 \end{figure}
+
+%TODO: Ricapitolando le fasi che si evincono dallo shema, qui sopra:
+
+\begin{itemize}
+	\item \textsf{\small Collega ("Incatena" da \emph{Chaining}) tutti i blocchi.}
+	\item \textsf{\small L'IV (\emph{\textbf{I}nitialization \textbf{V}ector}) è usato per modificare il testo in chiaro.}
+	\item \textsf{\small Viene eseguito lo XOR tra il blocco cifrato precedente e il blocco col testo in chiaro corrente.}
+	\item \textsf{\small Risolve il problema dei blocchi di testo in chiaro uguali vengano cifrati allo stesso modo. (problema presente in ECB)}
+	\item \textsf{\small Modificando un bit di un blocco di testo in chiaro, modifica di conseguenza tutti gli altri blocchi cifrati a seguire.}
+\end{itemize}
+
+%TODO: Aggiungere immagine/schema della decifrazione?
+
+%TODO: Sono possibili degli attacchi su ECB, se l'attaccante modifica ogni secondo blocco in chiaro se è a conoscenza dell'intero testo in chiaro.
 
 %TODO: Questa modalità è sicura come uno schema probabilistico e la confidenzialità non viene raggiunta se l'IV è un nonce semplice. %TODO: forse approfondire cos'è un nonce semplice
 
@@ -238,6 +267,16 @@
 	\label{fig:cfb}
 \end{figure}
 
+%TODO: Ricapitolando lo schema presente qui sopra:
+
+\begin{itemize}
+	\item \textsf{\small Lega tutti i blocchi (proprio come CBC).}
+	\item \textsf{\small Genera dei bytes casuali, un flusso usando il cifrario che viene poi successivamente XOR col blocco di testo in chiaro.}
+	\item \textsf{\small Trasforma il cifrario a blocchi in uno stream cipher (cifrario a flusso).}
+\end{itemize}
+
+%TODO: Aggiungere immagine/schema della decifrazione?
+
 \subsubsection{OFB | Output Feedback}
 
 \begin{figure}[H]
@@ -251,6 +290,16 @@
 %TODO: Ogni operazione dipende da quelle precedenti.
 
 \textsf{\small }
+
+\textsf{\small }%TODO: Ricapitolando le operazioni dell'OFB, proprio come il CFB:
+
+\begin{itemize}
+	\item \textsf{\small Lega tutti i blocchi (proprio come CBC e CFB).}
+	\item \textsf{\small Genera dei bytes casuali, un flusso usando il cifrario che viene poi successivamente XOR col blocco di testo in chiaro.}
+	\item \textsf{\small Trasforma il cifrario a blocchi in uno stream cipher (cifrario a flusso).}
+\end{itemize}
+
+\textsf{\small L'unica differenza con CFB è che al posto di utilizzare il testo cifrato nei blocchi successivi, utilizza l'output dei bytes casuali generati dal cifrario attraverso la chiave e l'IV per il blocco successivo.}
 
 \subsubsection{CTR | Counter Mode}
 
@@ -335,61 +384,99 @@
 
 \subsubsection{ALG1-6}
 
-%TODO: 
+%TODO: È una collezione di MACs basati su CBC-MAC, di cui alcuni sicuri come il VIL PRF, FIL PRF altri non ne abbiamo certezza.
 
 \textsf{\small }
 
 \subsubsection{CMAC | Cipher-based Message Authentication Code}
 
-%TODO: 
+%TODO: CMAC è una modalità basata su CBC-MAC. Questa crea un messaggio di autenticazione (MAC) utilizzando un cifrario a blocchi e una chiave segreta. 
 
 \textsf{\small }
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/CMAC_-_Cipher-based_Message_Authentication_Code}
+	\caption{CMAC}
+	\label{fig:cmac}
+\end{figure}
+
 \subsubsection{HMAC | Keyed-hash Message Authentication Code}
 
-%TODO: 
+%TODO: HMAC è una modalità che permette di autenticare gli emittenti del messaggio attraverso autenticazione basata su algoritmi di hashing, come: MD5, SHA-1, SHA-256 (SHA-2) e SHA-3.
+
+%TODO: La sicurezza di questa modalità è stata provata.
 
 \textsf{\small }
 
 \subsubsection{GMAC | Galois Message Authentication Code}
 
-%TODO: 
+%TODO: Questa modalità è una specializzazione della modalità \textbf{GCM} (\emph{\textbf{G}alois/\textbf{C}ounter \textbf{M}ode}). Viene utilizzata per l'autenticazione.
 
 \textsf{\small }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/internal_structure_of_gmac} %TODO: gcm
+	\caption{GMAC}
+	\label{fig:gmac}
+\end{figure}
 
 \subsubsection{CBC-MAC}
 
-%TODO: 
+%TODO: CBC-MAC combina la modalità CBC (Cipher Block Chaning) assieme al MAC per l'autenticazione dei mittenti del messaggio.
 
 \textsf{\small }
 
-%TODO: section/subsection MACS
-%TODO: spiegare cos'è il MAC e la filosofia dietro.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/cbc-mac}
+	\caption{CBC-MAC}
+	\label{fig:cbc-mac}
+\end{figure}
+
 %TODO: subsection ALG1-6, CMAC (Cipher-based Message Authentication Code), HMAC (keyed-hash message authentication code o hash-based message authentication code), GMAC (Galois Message Authentication Code), CBC-MAC (CBC-MAC qui o sopra?)
 
 \subsection{AEAD | Authenticated Encryption with Associated Data}
 
-%TODO: 
+%TODO: AEAD è un modello di cifratura che assicura sia la riservatezza del messaggio sia la sua autenticazione.
 
 \textsf{\small }
 
-\subsubsection{OCB | Offset Codebook} %TODO: section MACS
+\subsubsection{OCB | Offset Codebook} %TODO: section MACS? AEAD
 
-%TODO: 
+%TODO: Aggiungere qualcos'altro su questa modalità.
+
+%TODO: Questa modalità è stata ideata da Phillip Rogaway con l'assistenza di Mihir Bellare, John Black e Ted Krovetz, basata sull'IAPM (\emph{\textbf{I}ntegrity-\textbf{A}ware \textbf{P}arallelizeable \textbf{M}ode}) che permette di parallelizzare la modalità.
+
+%TODO: Sono presenti tre versioni di OCB: OCB1, OCB2 e OCB3.
+
+%TODO: OCB, rispetto alle altre modalità, è molto più veloce.  
+
+%TODO: Erano presenti due brevetti su questa modalità che ne impedivano l'esteso utilizzo [la diffusione], ma dal 2021 questi sono stati abbandonati.
 
 \textsf{\small }
 
-\subsubsection{CCM | Cipher Block Chaining}
+\subsubsection{CCM | Counter con CBC-MAC}
 
-%TODO: 
+%TODO: CCM è un AEAD basato su Nonce che combina le modalità CTR e CBC-MAC i cui blocchi devono essere composti da 128 bits.
 
 \textsf{\small }
 
 \subsubsection{GCM | Galois Counter Mode}
 
-%TODO: 
+%TODO: È un AEAD basato su Nonce che combina le modalità CTR per l'operazione di cifratura e il campo di Galois (Galois Field) GF(2^{128}) per l'autenticazione.
+
+%TODO: Può essere usato come Nonce-MAC, in quel caso viene denominato \textbf{GMAC}.
 
 \textsf{\small }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/GCM-Galois_Counter_Mode_with_IV} 
+	\caption{GCM}
+	\label{fig:gcm}
+\end{figure}
 
 %TODO: section/subsection Authenticated Encryption (AEAD (Authenticated Encryption with Associated Data))
 %TODO: CCM | Cipher Block Chaining e GCM | Galois Counter Mode
