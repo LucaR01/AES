@@ -4,8 +4,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -35,16 +38,29 @@ public class AESTest {
         assertEquals(AESTest.message, clearMessage);
     }
 
-    /*@Test //TODO: fix
+    @Test
     public void encryptDecryptFileTest() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, IOException, InvalidKeyException {
 
-        final File file = new File(AESTest.plaintextFilePath);
+        final File plaintextFile = new File(AESTest.plaintextFilePath);
+        plaintextFile.createNewFile();
+        Files.write(Path.of(AESTest.plaintextFilePath), message.getBytes());
+
+        final File encryptedFile = new File(AESTest.encryptedFilePath);
+        encryptedFile.createNewFile();
+        final File decryptedFile = new File(AESTest.decryptedFilePath);
+        decryptedFile.createNewFile();
 
         AES.encryptFile(AESTest.plaintextFilePath, AESTest.encryptedFilePath, AES.PASSWORD);
         final byte[] decryptedMessage = AES.decryptFile(AESTest.encryptedFilePath, AES.PASSWORD);
         final String clearMessage = new String(decryptedMessage, StandardCharsets.UTF_8);
 
-        assertEquals(clearMessage, AESTest.message);
-    }*/
+        try {
+            assertEquals(AESTest.message, clearMessage);
+        } finally {
+            plaintextFile.delete();
+            encryptedFile.delete();
+            decryptedFile.delete();
+        }
+    }
 
 }
