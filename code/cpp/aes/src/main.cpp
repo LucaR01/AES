@@ -59,6 +59,19 @@ int main(const int argc, const char** argv)
     aes::fm::FileManager::delete_file(encrypted_file);
     aes::fm::FileManager::delete_file(deciphered_plaintext_file);*/
 
+    /*static constexpr std::string_view plaintext = "hello everybody "; // 16 characters (white spaces included)!
+    static constexpr std::string_view key = "secret_key";
+    static constexpr std::string_view iv = "1 2 3";
+    static const std::vector<uint8_t> plaintext_vector = aes::cvt::get_vector_from_string<uint8_t, std::string_view>(plaintext);
+    static const std::vector<uint8_t> key_vector = aes::cvt::get_vector_from_string<uint8_t, std::string_view>(key);
+    static const std::vector<uint8_t> iv_vector = aes::cvt::get_vector_from_string<uint8_t, std::string_view>(iv);
+
+    //TODO: uncomment
+    std::vector<uint8_t> ciphertext = aes::mod::encrypt_CBC(plaintext_vector, key_vector, iv_vector, aes::AES::AES_256);
+    std::vector<uint8_t> deciphered_plaintext = aes::mod::decrypt_CBC(ciphertext, key_vector, iv_vector, aes::AES::AES_256);
+
+    std::cout << "plaintext: " << plaintext << std::endl << " ciphertext: " << aes::cvt::get_string_from_vector<std::string, uint8_t>(ciphertext) << " deciphered_plaintext: " << aes::cvt::get_string_from_vector<std::string, uint8_t>(deciphered_plaintext);*/
+
 #ifndef RELEASE_MODE
     aes::log::Logger::shutdown();
 #endif

@@ -61,15 +61,15 @@ void shift_row(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORD
 {
     std::array<uint8_t, aes::BLOCK_WORDS> temp{};
     for(uint8_t i = 0; i < aes::BLOCK_WORDS; i++) {
-        temp[i] = state[row][(i + positions) % aes::BLOCK_WORDS]; //TODO: prima senza: % aes::BLOCK_WORDS
+        temp[i] = state[row][(i + positions) % aes::BLOCK_WORDS];
     }
     state[row] = temp;
 }
 
 void shift_rows(std::array<std::array<uint8_t, aes::BLOCK_WORDS>, aes::BLOCK_WORDS>& state)
 {
-    shift_row(state, aes::FIRST_SHIFT_ROW, 1); //TODO: magari creare delle costanti per questi? tipo: FIRST_ROW, SECOND_ROW, THIRD_ROW e SHIFT_FIRST_ROW oppure SHIFT_ONE_POSITION
-    shift_row(state, aes::SECOND_SHIFT_ROW, 2); //TODO: usare una tuple? o magari un pair; ma in realtà è un singolo valore, quindi non serve un pair.
+    shift_row(state, aes::FIRST_SHIFT_ROW, 1);
+    shift_row(state, aes::SECOND_SHIFT_ROW, 2);
     shift_row(state, aes::THIRD_SHIFT_ROW, 3);
 }
 
@@ -589,27 +589,27 @@ void key_expansion(const uint8_t key[], unsigned char word[], const AES& aes)
             rot_word(temp);
             sub_word(temp);
             aes::rcon(rcon, i / (number_of_keys * aes::AES_128_NUMBER_OF_KEYS));
-            for (unsigned short k = 0; k < aes::AES_128_NUMBER_OF_KEYS; k++) { //TODO: mettere in una funzione a parte?
-                temp[k] = temp[k] ^ rcon[k]; //TODO: usare galois_add_sub()?
+            for (unsigned short k = 0; k < aes::AES_128_NUMBER_OF_KEYS; k++) {
+                temp[k] = gal::galois_addition_subtraction(temp[k], rcon[k]);
             }
         } else if (number_of_keys > aes::AES_192_NUMBER_OF_KEYS &&
                    i / aes::AES_128_NUMBER_OF_KEYS % number_of_keys == aes::AES_128_NUMBER_OF_KEYS) {
             sub_word(temp);
         }
 
-        word[i + 0] = word[i - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[0]; //TODO: usare galois_add_sub()?
-        word[i + 1] = word[i + 1 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[1];
-        word[i + 2] = word[i + 2 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[2];
-        word[i + 3] = word[i + 3 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys] ^ temp[3];
+        word[i + 0] = gal::galois_addition_subtraction(word[i - aes::AES_128_NUMBER_OF_KEYS * number_of_keys], temp[0]);
+        word[i + 1] = gal::galois_addition_subtraction(word[i + 1 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys], temp[1]);
+        word[i + 2] = gal::galois_addition_subtraction(word[i + 2 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys], temp[2]);
+        word[i + 3] = gal::galois_addition_subtraction(word[i + 3 - aes::AES_128_NUMBER_OF_KEYS * number_of_keys], temp[3]);
 
-        i += 4;
+        i += aes::BLOCK_WORDS;
     }
 }
-
+//TODO: magari utilizzare un for
+//TODO: static temp non andrebbe!
 void rot_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys)
 {
-    //TODO: magari utilizzare un for
-    const uint8_t temp = keys[0]; //TODO: static non andrebbe!
+    const uint8_t temp = keys[0];
     keys[0] = keys[1];
     keys[1] = keys[2];
     keys[2] = keys[3];
@@ -623,21 +623,23 @@ void sub_word(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys)
     }
 }
 
+//TODO: warning, rimuovendo il constexpr si fixa.
 void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const uint8_t& number_of_keys)
 {
     uint8_t temp = 1;
     for(uint8_t i = 0; i < number_of_keys - 1; i++) {
-        temp = gal::xtime(temp); //TODO: warning, rimuovendo il constexpr si fixa.
+        temp = gal::xtime(temp);
     }
 
     keys[0] = temp;
     keys[1] = keys[2] = keys[3] = 0;
 }
 
-void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, const unsigned int& block_length) //TODO: riscrivere?
+//TODO: riscrivere?
+void xor_blocks(const uint8_t* x, const uint8_t* y, uint8_t* z, const unsigned int& block_length)
 {
     for(unsigned int i = 0; i < block_length; i++) {
-        z[i] = x[i] ^ y[i]; //TODO: usare galois_add_sub()?
+        z[i] = gal::galois_addition_subtraction(x[i], y[i]);
     }
 }
 
