@@ -28,7 +28,9 @@
 
 \subsection{Matematica di Galois}
 
-\textsf{\small } %TODO: 
+\textsf{\small } %TODO: Riguardo alla matematica nel campo di Galois, ho adoperato tre funzioni: una che implementa l'addizione e la sottrazione e due per la moltiplicazione.
+
+\textsf{\small Nel campo di Galois, sia l'addizione che la sottrazione sono semplicemente un'operazione di XOR. Questa funzione prende due parametri x ed y di tipo \emph{uint8\_t} (che corrisponde a un \emph{unsigned char}) e restituisce lo XOR tra essi.}
 
 \begin{figure}[H]
 	\centering
@@ -37,7 +39,13 @@
 	\label{fig:galois_addition_subtraction}
 \end{figure}
 
-\textsf{\small } %TODO: 
+\textsf{\small \emph{galois\_multiplication()} prende due \emph{uint8\_t} come parametri e restituisce la moltiplicazione tra questi nel campo di Galois.}
+
+\textsf{\emph{static constexpr} indicano che la funzione può essere eseguita a compile time. \emph{noexcept} indica che la funziona non lancia eccezioni. \emph{[[nodiscard]]} indica che il risultato che viene restituito non può essere ignorato, ma deve essere utilizzato.}
+
+%TODO: Aggiungere reference alla parte nel capitolo della Matematica o aggiungere breve spiegazione.
+
+\textsf{\small Facciamo un loop su ogni bit del byte e verifichiamo se il secondo valore \emph{y} ha il bit meno significativo attivo (y \& 0x01) allora aggiungiamo \emph{x} (ovvero eseguiamo uno XOR) al risultato. Dopodiché verifichiamo se il bit più significativo \emph{high\_bit} è attivo in \emph{x}. Poi ruotiamo x di 1. Se l'\emph{high\_bit} è \emph{true} eseguiamo uno XOR tra x e il polinomio irriducibile \emph{IRREDUCIBLE\_POLYNOMIAL}, ovvero $0x1\text{B}$. Infine ruotiamo il secondo valore di 1 per ruotarlo a destra. Poi restituiamo il risultato finale delle operazioni.}
 
 \begin{figure}[H]
 	\centering
@@ -46,12 +54,21 @@
 	\label{fig:galois_multiplication}
 \end{figure}
 
-\textsf{\small } %TODO: 
+\textsf{\small \emph{xtime(const uint8\_t\& x)} prende un numero in input e restituisce la round constant.} %TODO:
 
-\begin{figure}[H]
+\textsf{\small Questa funzione è utilizzata per generare la round constant.}
+\textsf{\small L'algoritmo di questa funzione è il seguente: }
+
+\begin{itemize}
+	\item \textsf{\small il round\_constant(1) = 1.}
+	\item \textsf{\small round\_constant(i) = $2 \cdot \text{round\_constant}(i - 1) \text{se round\_constant(i - 1) < 0x80}$}
+	\item \textsf{\small round\_constant($2 \cdot \text{round\_constant(i - 1)}$) $ \oplus \hspace{0.3mm} \text{0x11B } \ge 0x80$ }
+\end{itemize}
+
+\begin{figure}[H] %TODO: update.
 	\centering
 	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/code/cpp/galois_math/xtime.PNG}
-	\caption{Moltiplicazione nel campo di Galois 2}
+	\caption{Generatrice delle costanti di round}
 	\label{fig:xtime}
 \end{figure}
 
@@ -61,7 +78,9 @@
 
 \subsection{Add Round Key}
 
-%TODO: immagine del codice.
+\textsf{\small Nella fase di \emph{add\_round\_key()} la chiave di round viene aggiunta alla matrice di stato.}
+
+\textsf{\small La funzione prende la matrice di stato 4x4 (formata da due std::array di grandezza BLOCK\_WORDS che indica il numero di words in un blocco, ovvero 4) e la chiave del round come puntatore e le aggiunge.}
 
 \begin{figure}[H]
 	\centering
@@ -70,9 +89,11 @@
 	\label{fig:add_round_key}
 \end{figure}
 
-\textsf{\small } %TODO:
-
 \subsection{Sub Bytes}
+
+\textsf{\small Nella funzione \emph{sub\_bytes} ogni byte della matrice di stato viene sostituito con quelli presenti nella S-BOX.}
+
+\textsf{\small Quindi, nella funzione viene passata la matrice di stato come reference, quindi tutti le modifiche verranno applicate anche all'esterno della funzione e poi viene eseguito un loop e ogni elemento viene sostituito con il corrispettivo della S-BOX.}
 
 \begin{figure}[H]
 	\centering
@@ -81,9 +102,13 @@
 	\label{fig:sub_bytes}
 \end{figure}
 
-\textsf{\small } %TODO:
-
 \subsection{Shift Rows}
+
+\textsf{\small Nel passaggio di \emph{shift rows} le righe della matrice di stato verranno \emph{shiftate} di una posizione la seconda riga, di due posizione la terza e di tre la quarta.}
+
+\textsf{\small Per fare questo ci avvaliamo di due funzioni, una \emph{shift\_row} per shiftare effettivamente le righe e nell'altra \emph{shift\_rows} per chiamare la precedente funzione per shiftare delle posizioni stabilite.}
+
+%TODO: aggiungere altro?
 
 \begin{figure}[H]
 	\centering
@@ -103,7 +128,9 @@
 
 \subsection{Mix Columns}
 
-\textsf{\small } %TODO:
+\textsf{\small La procedura \emph{mix\_columns} prende in input la matrice di stato, mescola i suoi bytes.} %TODO:
+
+%TODO: Aggiungere altro.
 
 \begin{figure}[H]
 	\centering
@@ -112,9 +139,15 @@
 	\label{fig:mix_columns}
 \end{figure}
 
-%\subsection{Decifratura} %TODO: uncomment?
+%TODO: funzioni di decifrazione?
 
 \subsection{Key Expansion}
+
+\textsf{\small In questa funzione vengono generate le altre chiavi dei rounds a partire dalla prima chiave. Gli viene passata un array con la chiave, una word e la tipologia di AES: 128, 192 o 256.} %TODO:
+
+\textsf{\small Dopodiché eseguiamo le operazioni di: \emph{rot\_word}, \emph{sub\_word}, e \emph{rcon}. Dopodiché viene eseguito uno XOR tra la chiave e il rcon. Dopodiché si continua a eseguire uno XOR con le chiavi precedenti.}
+
+%TODO: Aggiungere altro.
 
 \begin{figure}[H]
 	\centering
@@ -122,8 +155,6 @@
 	\caption{Key Expansion}
 	\label{fig:key_expansion_code}
 \end{figure}
-
-\textsf{\small } %TODO:
 
 \subsubsection{Rot Word}
 
@@ -134,7 +165,7 @@
 	\label{fig:rot_word}
 \end{figure}
 
-\textsf{\small } %TODO:
+\textsf{\small In questa operazione ogni byte (word di 32 bits, ovvero 4 bytes) viene ruotato di 1 posizione.} %TODO: Aggiungere altro.
 
 \subsubsection{Sub Word}
 
@@ -145,7 +176,7 @@
 	\label{fig:sub_word}
 \end{figure}
 
-\textsf{\small } %TODO:
+\textsf{\small Nella procedura \emph{sub\_word()} ogni byte della chiave viene sostituita con quella della S-BOX.} %TODO:
 
 \subsubsection{Rcon}
 
@@ -156,9 +187,20 @@
 	\label{fig:rcon}
 \end{figure}
 
-\textsf{\small } %TODO:
+\textsf{\small Nella funzione \emph{rcon}, le \emph{round constants} vengono generate attraverso una funzione ricorsiva.} %TODO:
 
 \subsubsection{Xor Blocks} %TODO: uncomment?
+
+\textsf{\small Con questa funzione eseguiamo uno XOR per ogni bit \emph{i} tra i blocchi x e y e assegniamo il risultato a ogni bit del blocco z. }
+
+\textsf{\small Il loop viene eseguito in base alla grandezza del blocco.}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/code/cpp/key_expansion/xor_blocks.PNG}
+	\caption{Xor Blocks}
+	\label{fig:xor_blocks}
+\end{figure}
 
 %\textsf{\small } %TODO:
 
@@ -170,6 +212,12 @@
 
 \subsubsection{ECB}
 
+\textsf{\small ECB è la modalità più semplice e anche quella che non dovrebbe mai essere usata.} %TODO: aggiungere reference alla spiegazione della modalità.
+
+\textsf{\small In questa modalità, semplicemente, ogni blocco viene cifrato com'è. Nessun vettore di inizializzazione viene utilizzato. Lo stesso input genererà lo stesso identico output.}
+
+\textsf{\small Questa modalità inoltre accetta solo blocchi divisibili per 16, questo viene garantito attraverso la funzione \emph{verify\_length()} che verifica e lancia un'eccezione altrimenti.}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/code/cpp/modes/encrypt_ECB.PNG}
@@ -177,7 +225,7 @@
 	\label{fig:encrypt_ECB}
 \end{figure}
 
-\textsf{\small } %TODO:
+\textsf{\small Per la decifrazione è lo stesso procedimento, ma inverso. } %TODO:
 
 \begin{figure}[H]
 	\centering
@@ -187,6 +235,8 @@
 \end{figure}
 
 \subsubsection{CBC}
+
+\textsf{\small } %TODO:
 
 \begin{figure}[H]
 	\centering
@@ -257,6 +307,8 @@
 	\caption{Rimozione del padding (2/2)}
 	\label{fig:remove_padding1}
 \end{figure}
+
+\textsf{\small } %TODO:
 
 \subsection{API}
 
