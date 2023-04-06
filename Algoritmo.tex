@@ -106,6 +106,8 @@
 
 %TODO: magari semplificare questa parte.
 
+\subsection{Key Expansion | Key Schedule} %TODO: remove?
+
 \textsf{\small Per poter elaborare i rounds, l'algoritmo ha bisogno di molte chiavi, una per round, queste vengono tutte derivate dalla chiave iniziale.}
 
 %TODO: Fare una subsection?: titolo: "Come vengono ottenute le chiavi per ogni round?" oppure no? KEY EXPANSION/KEY SCHEDULE
@@ -130,11 +132,15 @@
 	\label{fig:key_expansion}
 \end{figure}
 
+%TODO: Aggiungere ulteriore spiegazione!
+
 %TODO: [mettere delle immagini a riguardo]
 
 %TODO: Per quanto riguarda le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave. [magari spiegare meglio] [magari mettere un'immagine a riguardo] [eccetto per le chiavi a 256 bit che sono un po' più complicate] [approfondire il perché siano più complicate]
 
 %TODO: Dopo aver ottenuto queste chiavi vengono compiuti i vari rounds.
+
+\subsection{I Rounds} %TODO: Rinominare in qualcos'altro.
 
 \textsf{\small Dopo aver ottenuto le chiavi, vengono compiuti i vari rounds.} 
 
@@ -165,6 +171,24 @@
 %TODO: [magari aggiungere qualche immagine sul procedimento]
 
 %TODO: la subsection modalità di AES magari la sposto in un capitolo a parte? Oppure semplicemente ampio con le modalità di AES.
+
+%TODO: subsection Add Round Key, Sub Bytes, Shift Rows, Mix Columns
+
+\subsection{Add Round Key}
+
+\textsf{\small }
+
+\subsection{Sub Bytes}
+
+\textsf{\small }
+
+\subsection{Shift Rows}
+
+\textsf{\small }
+
+\subsection{Mix Columns}
+
+\textsf{\small }
 
 \subsection{Le modalità di AES} %TODO: section/subsection: "Come può essere usato AES?" o "Con quali combinazioni può essere usato AES" o "In combinazione a cosa può essere usato AES"? o "Le modalità di AES"
 
