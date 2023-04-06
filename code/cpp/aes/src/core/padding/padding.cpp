@@ -5,6 +5,7 @@
 #include "core/padding/padding.hpp"
 #include "core/aes.hpp"
 #include "math/random/aes_random.hpp"
+#include "convert/aes_convert.hpp"
 
 #include "logger/logger.hpp"
 
@@ -80,6 +81,8 @@ namespace aes::pad {
     return message;
 }
 
+//TODO: ISO_10126_PADDING nella decryption: questo potrebbe dare errore, perché il valore potrebbe essere superiore a 256 oppure potrebbe non essere mostrato come valore, ma come carattere.
+
 std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& padding)
 {
     const unsigned int& remainder = message.size() % aes::BLOCK_SIZE;
@@ -131,8 +134,7 @@ std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& 
             case Paddings::ISO_10126_PADDING:
                 AES_INFO("ISO 10126 PADDING SELECTED")
                 message.insert(message.cend(), missing_length - 1, aes::rnd::get_random_byte());
-                message.push_back(missing_length); //TODO: questo potrebbe dare errore, perché il valore potrebbe essere superiore a 256 oppure potrebbe non essere
-                //TODO: mostrato come valore, ma come carattere.
+                message.push_back(missing_length);
                 break;
                 // Aggiungiamo come padding il numero totale di bytes
             case Paddings::PKCS7:
@@ -146,7 +148,7 @@ std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& 
         }
     }
 
-    AES_DEBUG("message dopo l'aggiunta del padding: {}", std::string(message.cbegin(), message.cend()))
+    AES_DEBUG("message dopo l'aggiunta del padding: {}", cvt::get_string_from_vector<std::string, uint8_t>(message))
 
     return message;
 }
@@ -154,7 +156,6 @@ std::vector<uint8_t> add_padding(std::vector<uint8_t>& message, const Paddings& 
 std::vector<uint8_t> remove_padding(std::vector<uint8_t>& decrypted_message, const Paddings& padding)
 {
     const unsigned int& remainder = decrypted_message.size() % aes::BLOCK_SIZE;
-    const unsigned int& missing_length = aes::BLOCK_SIZE - remainder;
 
     if(remainder == 0) {
         switch(padding) {

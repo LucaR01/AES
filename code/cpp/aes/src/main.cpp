@@ -23,11 +23,9 @@ int main(const int argc, const char** argv)
     aes::log::Logger::init();
 #endif
 
-    //TODO: posso templetizzare tutti i get_index dei vari enums da poi mettere in un folder generic_templates o generics o templates o generic enums.
+    aes::arg::parse_user_arguments(argc, argv); //TODO: uncomment!
 
     // -----------------------------------------------------------------------------------------------------------------
-
-    aes::arg::parse_user_arguments(argc, argv); //TODO: uncomment!
 
     //TODO: remove
     /*static const std::string plaintext_file = "plaintext.txt";
@@ -58,6 +56,8 @@ int main(const int argc, const char** argv)
     aes::fm::FileManager::delete_file(plaintext_file);
     aes::fm::FileManager::delete_file(encrypted_file);
     aes::fm::FileManager::delete_file(deciphered_plaintext_file);*/
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     /*static constexpr std::string_view plaintext = "hello everybody "; // 16 characters (white spaces included)!
     static constexpr std::string_view key = "secret_key";

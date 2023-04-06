@@ -628,7 +628,7 @@ void rcon(std::array<uint8_t, aes::AES_128_NUMBER_OF_KEYS>& keys, const uint8_t&
 {
     uint8_t temp = 1;
     for(uint8_t i = 0; i < number_of_keys - 1; i++) {
-        temp = gal::xtime(temp);
+        temp = gal::round_constant_generator(temp);
     }
 
     keys[0] = temp;

@@ -11,7 +11,11 @@
 namespace aes::gal {
 
 //TODO: usare std::bitset?
-static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00011011 = x^4 + x^3 + x + 1.
+
+/**
+ * @brief corresponds to 27 = 00011011 = x^4 + x^3 + x + 1.
+ */
+static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B;
 
 /**
  * @brief This function returns the galois addition or subtraction between two numbers. It xors the two numbers.
@@ -40,12 +44,12 @@ static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00
         }
 
         const bool high_bit = x & 0x80; // x >= 0x80 = 128
-        x <<= 1; // ruotiamo x di 1 (moltiplicazione in GF(2^8)
+        x <<= 1; // ruotiamo x di 1 (moltiplicazione in GF(2^8))
         if(high_bit) {
             x ^= IRREDUCIBLE_POLYNOMIAL; // x -= 0x1B, ovvero mod(x^8 + x^4 + x^3 + x + 1)
         }
 
-        y >>= 1; // ruotiamo y a destra (divisione in GF(2^8)
+        y >>= 1; // ruotiamo y a destra (divisione in GF(2^8))
     }
 
     return result;
@@ -54,9 +58,9 @@ static constexpr uint8_t IRREDUCIBLE_POLYNOMIAL = 0x1B; // equivalente a 27 = 00
 /**
  *
  * @param x: a uint8_t aka unsigned char.
- * @return a multiplication of the number x.
+ * @return the round constant.
  */
-[[nodiscard]] static constexpr inline uint8_t xtime(const uint8_t& x) noexcept
+[[nodiscard]] static constexpr inline uint8_t round_constant_generator(const uint8_t& x) noexcept
 {
     return (x << 0x01) ^ (((x >> 0x07) & 0x01) * gal::IRREDUCIBLE_POLYNOMIAL);
 }
