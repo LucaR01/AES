@@ -21,50 +21,21 @@
 
 % ---------------------------- SECTION: INTRODUZIONE ------------------------------------
 
-%TODO: In questo capitolo/In questa parte tratteremo le varie modalità di crittografia disponibili su/per AES. Queste ci permetteranno di cifrare messaggi di varia lunghezza.
-
 \section{Introduzione}
 
-% ---------------------------- SECTION: PERCHÉ SERVE UNA/LE MODALITÀ? PERCHÉ USARE UNA/LE MODALITÀ? A COSA SERVONO LE MODALITÀ? ------------
-
-\section{A cosa servono le modalità?} %TODO: A cosa servono le modalità? oppure Perché usare le modalità
-
-%TODO: Le modalità sono necessarie, perché AES è un cifrario a blocchi, prende in input un blocco e una chiave di 16 bytes
-
-%TODO: Le modalità servono, perché AES è un cifrario a blocchi di 16 bytes, dopo aver preso un blocco e una chiave in input restituisce un altro blocco della medesima grandezza/lunghezza.
-
-%TODO: Quindi, se si desidera/vuole cifrare una sequenza di bytes di lunghezza/grandezza maggiore di 16 bytes, bisogna/è necessario utilizzare una \emph{modalità di operazione} o \emph{modalità di cifratura}.
-
-%TODO: Queste modalità sono indipendenti dal tipo di cifrario sottostante/che sta alla base.
-
-\textsf{\small }
-
-\begin{comment} %TODO: uncomment or remove?
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes_modes/aes_modes.png}
-	\caption{Modalità di AES}
-	\label{fig:aes_modes}
-\end{figure}
-\end{comment}
+\textsf{\small In questa parte tratteremo le varie modalità di crittografia disponibili per AES. Queste ci permetteranno di cifrare messaggi di varia lunghezza.} %TODO: capitolo/In questa parte; su/per AES.
 
 % -------------------------- SECTION: IV, NONCE, SALT E PEPPER --------------------------
 
 \section{IV, Nonce, Salt e Pepper} %TODO: IV, Nonce, Sale e Pepe?
 
-%TODO: Prima di poter trattare le modalità è necessario introdurre alcuni componenti/elementi che ci serviranno (nella creazione ...). (Questi sono l'IV, il nonce, il sale e il pepe).
+\textsf{\small Prima di poter trattare le modalità è necessario introdurre alcuni componenti che ci serviranno nell'utilizzo di queste. Questi sono l'IV, il nonce, il sale e il pepe.} %TODO: componenti/elementi
 
-\textsf{\small }
-
-\subsection{Nonce | Number Used Once} %TODO: oppure solo Nonce
+\subsection{Nonce | Number Used Once}
 
 %TODO: Aggiungere dove viene usato.
 
-%TODO: Il nonce, \emph{\textbf{n}umber used \textbf{once}} (numero utilizzato una volta), sono dei bits (ovvero un numero) che vengono utilizzati una singola volta. Il riutilizzo non è proibito, ma deve essere limitato.
-
-%TODO: Viene utilizzato nei protocolli di autenticazione per garantire la sicurezza nelle comunicazioni (private) (ed evitare replay attacks [da spiegare in un altro capitolo (e aggiungere la \ref alla pagina volendo)]).
-
-\textsf{\small }
+\textsf{\small Il nonce, \emph{\textbf{n}umber used \textbf{once}} (numero utilizzato una volta), sono dei bits (ovvero un numero) che vengono utilizzati una singola volta. Il riutilizzo non è proibito, ma deve essere limitato.}
 
 \begin{figure}[H]
 	\centering
@@ -73,17 +44,15 @@
 	\label{fig:nonce}
 \end{figure}
 
+\textsf{\small Viene utilizzato nei protocolli di autenticazione per garantire la sicurezza nelle comunicazioni (private) (ed evitare replay attacks).} %TODO:  [da spiegare in un altro capitolo (e aggiungere la \ref alla pagina volendo)
+
 \subsubsection{Nonce sequenziali}
 
-%TODO: Prevenisco/Garantiscono la non ripetizione, se molto grandi.
-
-\textsf{\small }
+\textsf{\small Garantiscono la non ripetizione, se molto grandi.} %TODO: Prevenisco/Garantiscono
 
 %TODO: subsubsection Nonce random?
 
 \subsection{IV | Initialization Vector} %TODO: Oppure solo IV; prima era L'IV; Initialization Vector | IV
-
-%TODO: L'initialization vector o anche definito/chiamato starting variables è un input di dimensione fissa, ovvero un numero arbitrario che viene fornito/adoperato per impostare lo stato iniziale di un algoritmo crittografico. Viene utilizzato in varie modalità di cifratura per randomizzare la cifratura in modo da produrre/generare diversi testi cifrati anche se lo stesso testo viene cifrato molteplici volte.
 
 %TODO: È simile al nonce, ma deve essere casuale/random. Quindi i nonce sequenziali non andrebbero bene.
 
@@ -91,7 +60,7 @@
 %TODO: itemize: impredicibile
 %TODO: sempre diverso, mai riutilizzare lo stesso/un IV!
 
-\textsf{\small }
+\textsf{\small L'initialization vector o anche definito starting variables è un input di dimensione fissa, ovvero un numero arbitrario che viene adoperato per impostare lo stato iniziale di un algoritmo crittografico. Viene utilizzato in varie modalità di cifratura per randomizzare la cifratura in modo da produrre diversi testi cifrati anche se lo stesso testo viene cifrato molteplici volte.} %TODO: definito/chiamato; fornito/adoperato; produrre/generare
 
 \subsection{IV vs Nonce} %TODO: forse questa non serve.
 
@@ -99,29 +68,26 @@
 
 \subsection{Salt} %TODO: Oppure Sale; Oppure Salt | Password Salting
 
-%TODO: Il salt/sale/password salting viene utilizzato nelle password per incrementarne la sicurezza. Vengono aggiunti dei caratteri unici casuali alla password, in questo modo un attaccante non necessita solamente di un dizionario di password comuni, ma anche di uno per ogni tipo di sale possibile.
+\textsf{\small  Il sale viene utilizzato nelle password per incrementarne la sicurezza. Vengono aggiunti dei caratteri unici casuali alla password, in questo modo un attaccante non necessita solamente di un dizionario di password comuni, ma anche di uno per ogni tipo di sale possibile.} %TODO: salt/sale/password salting
 
-%TODO: Questo processo/tecnica è molto importante e viene utilizzata nei database affinché le password degli utenti siano sicure. (e non possano essere rubate).
-%TODO: Le password non vengono mai, possibilmente, memorizzate nei database in chiaro, ma gli viene aggiunto il salt e poi viene eseguito l'hashing su esse.
-
-\textsf{\small }
-
-\begin{comment} %TODO: uncomment or remove?
+%\begin{comment} %TODO: uncomment or remove?
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/iv_nonce_salt_pepper/withsalting.png}
 	\caption{Salt}
 	\label{fig:salt}
 \end{figure}
-\end{comment}
+%\end{comment}
 
-\subsection{Pepper} %TODO: Oppure Pepe
+\textsf{\small Questo tecnica è molto importante e viene utilizzata nei database affinché le password degli utenti siano sicure. (e non possano essere rubate).} %TODO: processo/tecnica
 
-%TODO: Il pepper/pepe è simile al salt/sale, ma questo a differenza del sale che è appena/meramente unico più che segreto, è un (singolo) carattere segreto appeso/aggiunto alla fine della password.
+\textsf{\small Le password non vengono mai, possibilmente, memorizzate nei database in chiaro, ma gli viene aggiunto il salt e poi viene eseguito l'hashing su esse.}
 
-%TODO: Questo, (a differenza del sale) non viene memorizzato nello stesso database assieme alla password hash e al sale, ma a parte.
+\subsection{Pepper}
 
-\textsf{\small }
+\textsf{\small Il pepper è simile al salt, ma questo a differenza del sale che è meramente unico più che segreto, è un (singolo) carattere segreto aggiunto alla fine della password.} %TODO: pepper/pepe; salt/sale; appena/meramente; appeso/aggiunto
+
+\textsf{\small Questo, (a differenza del sale) non viene memorizzato nello stesso database assieme alla password hash e al sale, ma a parte.}
 
 %TODO: subsection: IV, Nonce, Salt, Pepper o magari salt e pepper non servono.
 
@@ -141,47 +107,47 @@
 
 \textsf{\small I principali meccanismi di padding sono: }
 
-\begin{comment} %TODO: uncomment, magari mostrare degli esempi per ognuno di questi?
+%TODO: uncomment, magari mostrare degli esempi per ognuno di questi?
 \begin{itemize}
-	\item \textsf{\small \textbf{No padding}: }
+	\item \textsf{\small \textbf{No padding}: Nessun padding viene aggiunto al messaggio.}
 	\item \textsf{\small \textbf{0-Padding}: Vengono aggiunti dei bytes con degli zeri alla fine dell'ultimo blocco, finché non abbiamo il corretto numero di bytes (in AES è 16 bytes); se già abbiamo il numero necessario di bytes, allora non viene aggiunto nulla}
 	\item \textsf{\small \textbf{1-0-Padding}: Viene aggiunto un byte a 1 e il restante viene riempito da bytes di 0 finché non abbiamo il numero necessario di bytes; se il numero di bytes necessario è già presente, allora aggiungiamo un altro blocco.}
 	\item \textsf{\small \textbf{ANSI X9.23 Padding}: Aggiungiamo bytes di 0 alla fine dell'ultimo blocco, finché non abbiamo 16 - 1 bytes. Nell'ultimo blocco inseriamo il numero totale di bytes a 0 che abbiamo aggiunto; se l'ultimo blocco è già pieno (corrisponde a 16 bytes), allora aggiungiamo blocco addizionale.}
 	\item \textsf{\small \textbf{ISO 10126 Padding}: Vengono aggiunti dei bytes casuali in fondo all'ultimo blocco, finché non abbiamo 16 - 1 bytes e nell'ultimo byte inseriamo il numero totale di bytes casuali che abbiamo immesso; Se l'ultimo blocco è già 16 bytes, allora aggiungiamo un altro blocco.}
-	\item \textsf{\small \textbf{PKCS#7}: Aggiungiamo il numero totale di bytes che restano per riempire il blocco in ogni byte rimanente, finché non abbiamo 16 bytes.}
+	\item \textsf{\small \textbf{PKCS\#7}: Aggiungiamo il numero totale di bytes che restano per riempire il blocco in ogni byte rimanente, finché non abbiamo 16 bytes.}
 	\item \textsf{\small }
 	\item \textsf{\small }
 \end{itemize}
-\end{comment}
 
-\begin{comment} %TODO: uncomment e approfondire.
-\begin{itemize}
-	\item \textsf{\small CMS (\emph{\textbf{C}ryptographic \textbf{M}essage \textbf{S}yntax}): }
-	\item \textsf{\small PKCS#5: bytes di padding = 8 - numberOfBytes(clearText) mod 8}
-	\item \textsf{\small PKCS#7: }
-	\item \textsf{\small Bit: composto da 0x80 seguito da bytes di zeri.}
-	\item \textsf{\small Zero length: questo padding è composto da zeri tranne per l'ultimo byte che è uguale al numero di bytes di padding.}
-	\item \textsf{\small Null: il padding è composto da caratteri NULL.}
-	\item \textsf{\small Space: il padding è composto da spazi bianchi.}
-	\item \textsf{\small Random: padding formato da bytes casuali tranne per l'ultimo byte che è uguale al numero di bytes di padding.}
-\end{itemize}
-\end{comment}
+% ---------------------------- SECTION: PERCHÉ SERVE UNA/LE MODALITÀ? PERCHÉ USARE UNA/LE MODALITÀ? A COSA SERVONO LE MODALITÀ? ------------
+
+\section{A cosa servono le modalità?} %TODO: A cosa servono le modalità? oppure Perché usare le modalità
+
+\textsf{\small Le modalità servono, perché AES è un cifrario a blocchi di 16 bytes, dopo aver preso un blocco e una chiave in input restituisce un altro blocco della medesima grandezza.} %TODO: grandezza/lunghezza
+%TODO: Le modalità sono necessarie, perché AES è un cifrario a blocchi, prende in input un blocco e una chiave di 16 bytes
+
+\textsf{\small Quindi, se si desidera cifrare una sequenza di bytes di lunghezza maggiore di 16, è necessario utilizzare una \emph{modalità di operazione} o \emph{modalità di cifratura}.} %TODO: 16 bytes; lunghezza/grandezza; desidera/vuole; bisogna/è
+
+\textsf{\small Queste modalità sono indipendenti dal tipo di cifrario che sta alla base.} %TODO: sottostante/che sta alla base
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.8\textwidth, height=.8\textheight, keepaspectratio]{./images/aes_modes/modes.png} % prima aes_modes.png
+	\caption{Modalità di AES}
+	\label{fig:aes_modes}
+\end{figure}
 
 % ---------------------------- SECTION: LE MODALITÀ -------------------------------------
 
 \section{Le modalità} %TODO: oppure trovare un altro titolo: Panoramica sulle modalità? però l'ho già usato come titolo "panoramica".
 
-%TODO: Qui, di seguito elencherò le caratteristiche e proprietà delle principali modalità di cifratura:
-
-\textsf{\small }
+\textsf{\small Qui, di seguito elencherò le caratteristiche e proprietà delle principali modalità di cifratura:}
 
 %TODO: encryption vs message integrity
 %TODO: volendo anche il MAC qui e poi anche dopo
 %TODO: MAC, meccanismo a tre componenti: Secret Key, MAC Signing Algorithm, MAC Validation Algorithm.
 
 \subsection{Modalità di cifratura senza integrità del messaggio}
-
-%TODO: Queste modalità forniscono la cifratura del messaggio, ma non garantisco l'integrità del messaggio, ovvero/quindi non è assicurato che il messaggio non sia stato manomesso/alterato e quindi non è possibile accertare l'autenticazione del messaggio originale. %TODO: magari riguardare la parte dell'"accertare l'autenticazione del messaggio originale".
 
 \begin{figure}[H]
 	\centering
@@ -190,18 +156,22 @@
 	\label{fig:confidentiality}
 \end{figure}
 
-\textsf{\small }
+\textsf{\small Queste modalità forniscono la cifratura del messaggio, ma non garantisco l'integrità del messaggio, ovvero non è assicurato che il messaggio non sia stato manomesso e quindi non è possibile accertare l'autenticazione del messaggio originale.} %TODO: ovvero/quindi; manomesso/alterato %TODO: magari riguardare la parte dell'"accertare l'autenticazione del messaggio originale"
 
 \subsubsection{ECB | Electronic Code Book}
 
-%TODO: Questa modalità di cifratura divide il nostro messaggio in diversi blocchi e ognuno di questi viene cifrato separatamente.
+%TODO: 
 
-%TODO: Questa modalità manca il principio di diffusione (aggiungere \ref) e quindi cifra lo stesso messaggio nello stesso testo cifrato, quindi non vela (il pattern) dei dati/i dati.
+%TODO: 
 
-%TODO: Quindi, se si encripta/cifra più di un blocco con la stessa chiave, non andrebbe usato.
+%TODO:
 %TODO: In generale, ECB è considerata una modalità obsoleta, da non utilizzare. È una modalità molto debole e poco sicura.
 
-\textsf{\small }
+\textsf{\small Questa modalità di cifratura divide il nostro messaggio in diversi blocchi e ognuno di questi viene cifrato separatamente.}
+
+\textsf{\small Questa modalità manca il principio di diffusione e quindi cifra lo stesso messaggio in chiaro nello stesso testo cifrato, quindi non vela il pattern dei dati.} %TODO: (aggiungere \ref a diffusione); dei dati/i dati
+
+%\textsf{\small Quindi, se si cifra più di un blocco con la stessa chiave, non andrebbe usato.} %TODO: REMOVE
 
 \begin{figure}[H]
 	\centering
@@ -210,13 +180,13 @@
 	\label{fig:ecb}
 \end{figure}
 
-\textsf{\small } %TODO: Come si deduce dall'immagine, ogni blocco viene cifrato indipendentemente. Viene inserito il messaggio in chiaro e la chiave all'interno del cifrario per ottenere il testo cifrato. Blocchi di testo in chiaro uguali vengono cifrato allo stesso modo.
+\textsf{\small Come si deduce dall'immagine, ogni blocco viene cifrato indipendentemente. Viene inserito il messaggio in chiaro e la chiave all'interno del cifrario per ottenere il testo cifrato. Blocchi di testo in chiaro uguali vengono cifrato allo stesso modo.}
 
-%TODO: Per questo, osservando il testo cifrato è possibile riconoscere, se presenti nel testo in chiaro, parti cifrate allo stesso modo. 
+\textsf{\small Per questo, osservando il testo cifrato è possibile riconoscere, se presenti nel testo in chiaro, parti cifrate allo stesso modo. }
 
-%TODO: Per decifrare, eseguiamo l'operazione inversa, immettendo un blocco cifrato assieme alla chiave, per ottenere il testo decifrato.
+\textsf{\small Per decifrare, eseguiamo l'operazione inversa, immettendo un blocco cifrato assieme alla chiave, per ottenere il testo decifrato.}
 
-\textsf{\small } %TODO: Ricapitolando i problemi di ECB:
+\textsf{\small Ricapitolando i problemi di ECB:}
 
 \begin{itemize}
 	\item \textsf{\small ECB è deprecato e non dovrebbe essere utilizzato.}
@@ -227,9 +197,7 @@
 
 \subsubsection{CBC | Cipher Block Chain}
 
-%TODO: La modalità CBC cerca di ovviare ai problemi dell'ECB aggiungendo della casualità a ogni operazione di cifratura usufruendo di un initialization vector (IV) per il primo blocco e dopodichè applicando uno XOR a ogni blocco di testo in chiaro con il blocco cifrato precedente/precedentemente.
-
-\textsf{\small }
+\textsf{\small La modalità CBC cerca di ovviare ai problemi dell'ECB aggiungendo della casualità a ogni operazione di cifratura usufruendo di un initialization vector (IV) per il primo blocco e dopodiché applicando uno XOR a ogni blocco di testo in chiaro con il blocco cifrato precedente.} %TODO: precedente/precedentemente
 
 \begin{figure}[H]
 	\centering
@@ -238,7 +206,7 @@
 	\label{fig:cbc}
 \end{figure}
 
-%TODO: Ricapitolando le fasi che si evincono dallo shema, qui sopra:
+\textsf{\small Ricapitolando le fasi che si evincono dallo shema, qui sopra:}
 
 \begin{itemize}
 	\item \textsf{\small Collega ("Incatena" da \emph{Chaining}) tutti i blocchi.}
@@ -250,24 +218,22 @@
 
 %TODO: Aggiungere immagine/schema della decifrazione?
 
-%TODO: Sono possibili degli attacchi su ECB, se l'attaccante modifica ogni secondo blocco in chiaro se è a conoscenza dell'intero testo in chiaro.
+\textsf{\small Sono possibili degli attacchi su CBC, se l'attaccante modifica ogni secondo blocco in chiaro se è a conoscenza dell'intero testo in chiaro.}
 
-%TODO: Questa modalità è sicura come uno schema probabilistico e la confidenzialità non viene raggiunta se l'IV è un nonce semplice. %TODO: forse approfondire cos'è un nonce semplice
+\textsf{\small Questa modalità è sicura come uno schema probabilistico e la confidenzialità non viene raggiunta se l'IV è un nonce semplice.} %TODO: forse approfondire cos'è un nonce semplice
 
 \subsubsection{CFB | Cipher Feedback}
 
-%TODO: CFB è molto simile a CBC, ma al posto di essere un cifrario a blocchi, è un cifrario a stream, \emph{stream cipher}, ovvero un cifrario che prende una chiave e un algoritmo e lo applica allo stream (un bit alla volta), a ogni singolo bit (bit a bit) e non a blocchi di bits.
-
-\textsf{\small }
+\textsf{\small CFB è molto simile a CBC, ma al posto di essere un cifrario a blocchi, è un cifrario a stream, \emph{stream cipher}, ovvero un cifrario che prende una chiave e un algoritmo e lo applica allo stream (un bit alla volta), a ogni singolo bit (bit a bit) e non a blocchi di bits.}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/aes_modes/cfb.png} % mettere 1 e 1?
+	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/aes_modes/cfb.png}
 	\caption{CFB}
 	\label{fig:cfb}
 \end{figure}
 
-%TODO: Ricapitolando lo schema presente qui sopra:
+\textsf{\small Ricapitolando lo schema presente qui sopra:}
 
 \begin{itemize}
 	\item \textsf{\small Lega tutti i blocchi (proprio come CBC).}
@@ -286,12 +252,11 @@
 	\label{fig:ofb}
 \end{figure}
 
-%TODO: È anch'esso un \emph{stream cipher}, cifra l'iv (genera una serie di caratteri casuali)  e poi esegue uno XOR per ottenere il testo cifrato.
-%TODO: Ogni operazione dipende da quelle precedenti.
+\textsf{\small È anch'esso un \emph{stream cipher}, cifra l'iv (genera una serie di caratteri casuali)  e poi esegue uno XOR per ottenere il testo cifrato.}
 
-\textsf{\small }
+\textsf{\small Ogni operazione dipende da quelle precedenti.}
 
-\textsf{\small }%TODO: Ricapitolando le operazioni dell'OFB, proprio come il CFB:
+\textsf{\small Ricapitolando le operazioni dell'OFB, proprio come il CFB:}
 
 \begin{itemize}
 	\item \textsf{\small Lega tutti i blocchi (proprio come CBC e CFB).}
@@ -303,11 +268,10 @@
 
 \subsubsection{CTR | Counter Mode}
 
-%TODO: La Counter Mode o CM (\emph{integer counter mode}) o SIC (\emph{segmented integer counter}) usufruisce di un counter (contatore), ovvero di una funzione che genera sequenze irripetibili (nel tempo), al posto di utilizzare un IV.
-%TODO: Il più semplice contatore è il (banale/banalissimo) incrementa di 1.
-%TODO: Questa modalità può essere parallelizzata.
+\textsf{\small La Counter Mode o CM (\emph{integer counter mode}) o SIC (\emph{segmented integer counter}) usufruisce di un counter (contatore), ovvero di una funzione che genera sequenze irripetibili (nel tempo), al posto di utilizzare un IV.}
 
-\textsf{\small }
+\textsf{\small Il più semplice contatore è il (banale/banalissimo) incrementa di 1.}
+\textsf{\small Questa modalità può essere parallelizzata.}
 
 \begin{figure}[H]
 	\centering
@@ -318,29 +282,35 @@
 
 \subsubsection{XTS | AES-XTS (XEX) Tweakable Block Cipher}
 
-%TODO: Questa modalità è utilizzata per cifrare/decifrare i dischi rigidi (hard-disk), quindi la cifratura verrà operata sui segmenti da 512 bytes(, ovvero 32 blocchi di AES-128,) e i rispettivi settori (del disco).
+\textsf{\small Questa modalità è utilizzata per cifrare/decifrare i dischi rigidi (hard-disk), quindi la cifratura verrà operata sui segmenti da 512 bytes (ovvero 32 blocchi di AES-128) e i rispettivi settori (del disco).}
 
-%TODO: Questa modalità esegue/è composta/compie/effettua le seguenti operazioni:
+\textsf{\small Questa modalità compie le seguenti operazioni: } %TODO: Questa modalità esegue/è composta/compie/effettua le seguenti operazioni:
 
-%TODO: itemize?
-%TODO: Dati/Definiti: Due chiavi K1, K2 (se utilizziamo AES-128). Blocco di input, P, numero settore, \emph{i} e un numero del blocco, \emph{j}, creiamo/definiamo il tweak", \emph{X}, nel seguente modo:
+\begin{itemize}
+	\item \textsf{\small Definite due chiavi: K1, K2 (utilizzando AES-128), Blocco di input, p, numero settore, \emph{i} e un numero del blocco, \emph{j}, definiamo il "tweak", \emph{X}, nel seguente modo:}
+	\begin{itemize}
+		\item \textsf{\small $X = E_{K_2}(i) \otimes 2^j$}
+	\end{itemize}
+	\item \textsf{\small Di conseguenza, il testo cifrato C è definito così:}
+	\begin{itemize}
+		\item \textsf{\small $C = P \oplus X$}
+		\item \textsf{\small ovvero testo cifrato = blocco di input "XORato" con il tweak.}
+		\item \textsf{\small $C = E_{K_1}(C) \oplus X$}
+	\end{itemize}
+	\item \textsf{\small Per poter decriptare, invece, eseguiamo: }
+	\begin{itemize}
+		\item \textsf{\small $X = E_{K_2} (i) \otimes 2^j$}
+	\end{itemize}
+	\item \textsf{\small il testo in chiaro, per ogni blocco, è:}
+	\begin{itemize}
+		\item \textsf{\small $P = C \oplus X$}
+		\item \textsf{\small $P = E^{-1}_{K_1} (P) \oplus X$}
+	\end{itemize}
+	\item \textsf{\small In questo modo, il tweak fa da IV.}
+	%\item \textsf{\small }
+\end{itemize}
 
-%TODO: $X = E_{K_2}(i) \otimes 2^j$ 
 %TODO: (\otimes è il prodotto tensoriale (nel finite field)). Da includere nel capitolo della matematica?
-
-%TODO: Di conseguenza, il testo cifrato C è definito così:
-%TODO: $C = P \oplus X$
-%TODO: ovvero testo cifrato = blocco di input XORato con il tweak.
-%TODO: $C = E_{K_1}(C) \oplus X$
-
-%TODO: Per poter decriptare, invece, eseguiamo: 
-%TODO: $X = E_{K_2} (i) \otimes 2^j$
-
-%TODO: il testo in chiaro, per ogni blocco, è 
-%TODO: $P = C \oplus X$
-%TODO: $P = E^{-1}_{K_1} (P) \oplus X$
-
-%TODO: In questo modo, il tweak fa da IV.
 
 \textsf{\small }
 
@@ -351,19 +321,11 @@
 	\label{fig:xex}
 \end{figure}
 
-%TODO: subsection Block cipher modes, encryption but not message integrity
-%TODO: subsection ECB | Electronic Code Book
-%TODO: subsection Cipher Block Chain | CBC
-%TODO: subsection CFB | Cipher Feedback
-%TODO: subsection OCB | Offset Codebook (questo va nella subsection MACS)
-%TODO: subsection CTR | Counter Mode
-%TODO: subsection XTS | AES-XTS (XEX) Tweakable Blk Cipher 
-
 %TODO: subsection EAX | encrypt-then-authenticate-then-translate. metterlo o no?
 
 \subsection{MACS | Message Authentication Codes}
 
-%TODO: I MACS permettono di verificare l'integrità del messaggio per potersi assicurare che non sia stato manomesso/alterato da parti esterne e che il messaggio arrivi/giunga integro/intero ai destinatari originali.
+%TODO: 
 
 %TODO: Quindi, i MACS producono/formano una tipologia di firma digitale dove tutte le parti considerate/in considerazione possono verificare che i dati ricevuti siano validi.
 
@@ -373,7 +335,7 @@
 %TODO: 2. MAC Signing Algorithm: (ci) si avvale della chiave e del messaggio per creare/generare/produrre un tag (\emph{authentication tag} che permette(, per l'appunto,) di verificare che i dati siano integri e non manomessi/truccati)
 %TODO: 3.MAC Validation Algorithm: prende in input la chiave, il messaggio, il tag e restituisce in output la validità del tag, ovvero se è il messaggio è stato modificato/violato o no.
 
-\textsf{\small }
+\textsf{\small I MACS permettono di verificare l'integrità del messaggio per potersi assicurare che non sia stato alterato da parti esterne e che il messaggio giunga integro ai destinatari originali.} %TODO: manomesso/alterato; arrivi/giunga; intero/integro
 
 \begin{figure}[H]
 	\centering
@@ -384,15 +346,11 @@
 
 \subsubsection{ALG1-6}
 
-%TODO: È una collezione di MACs basati su CBC-MAC, di cui alcuni sicuri come il VIL PRF, FIL PRF altri non ne abbiamo certezza.
-
-\textsf{\small }
+\textsf{\small È una collezione di MACs basati su CBC-MAC, di cui alcuni sicuri come il VIL PRF, FIL PRF altri non ne abbiamo certezza.}
 
 \subsubsection{CMAC | Cipher-based Message Authentication Code}
 
-%TODO: CMAC è una modalità basata su CBC-MAC. Questa crea un messaggio di autenticazione (MAC) utilizzando un cifrario a blocchi e una chiave segreta. 
-
-\textsf{\small }
+\textsf{\small CMAC è una modalità basata su CBC-MAC. Questa crea un messaggio di autenticazione (MAC) utilizzando un cifrario a blocchi e una chiave segreta. }
 
 \begin{figure}[H]
 	\centering
@@ -403,17 +361,13 @@
 
 \subsubsection{HMAC | Keyed-hash Message Authentication Code}
 
-%TODO: HMAC è una modalità che permette di autenticare gli emittenti del messaggio attraverso autenticazione basata su algoritmi di hashing, come: MD5, SHA-1, SHA-256 (SHA-2) e SHA-3.
+\textsf{\small HMAC è una modalità che permette di autenticare gli emittenti del messaggio attraverso autenticazione basata su algoritmi di hashing, come: MD5, SHA-1, SHA-256 (SHA-2) e SHA-3.}
 
-%TODO: La sicurezza di questa modalità è stata provata.
-
-\textsf{\small }
+\textsf{\small La sicurezza di questa modalità è stata provata.}
 
 \subsubsection{GMAC | Galois Message Authentication Code}
 
-%TODO: Questa modalità è una specializzazione della modalità \textbf{GCM} (\emph{\textbf{G}alois/\textbf{C}ounter \textbf{M}ode}). Viene utilizzata per l'autenticazione.
-
-\textsf{\small }
+\textsf{\small Questa modalità è una specializzazione della modalità \textbf{GCM} (\emph{\textbf{G}alois/\textbf{C}ounter \textbf{M}ode}). Viene utilizzata per l'autenticazione.}
 
 \begin{figure}[H]
 	\centering
@@ -424,9 +378,7 @@
 
 \subsubsection{CBC-MAC}
 
-%TODO: CBC-MAC combina la modalità CBC (Cipher Block Chaning) assieme al MAC per l'autenticazione dei mittenti del messaggio.
-
-\textsf{\small }
+\textsf{\small CBC-MAC combina la modalità CBC (Cipher Block Chaning) assieme al MAC per l'autenticazione dei mittenti del messaggio.}
 
 \begin{figure}[H]
 	\centering
@@ -439,37 +391,29 @@
 
 \subsection{AEAD | Authenticated Encryption with Associated Data}
 
-%TODO: AEAD è un modello di cifratura che assicura sia la riservatezza del messaggio sia la sua autenticazione.
-
-\textsf{\small }
+\textsf{\small AEAD è un modello di cifratura che assicura sia la riservatezza del messaggio sia la sua autenticazione.}
 
 \subsubsection{OCB | Offset Codebook} %TODO: section MACS? AEAD
 
 %TODO: Aggiungere qualcos'altro su questa modalità.
 
-%TODO: Questa modalità è stata ideata da Phillip Rogaway con l'assistenza di Mihir Bellare, John Black e Ted Krovetz, basata sull'IAPM (\emph{\textbf{I}ntegrity-\textbf{A}ware \textbf{P}arallelizeable \textbf{M}ode}) che permette di parallelizzare la modalità.
+\textsf{\small Questa modalità è stata ideata da Phillip Rogaway con l'assistenza di Mihir Bellare, John Black e Ted Krovetz, basata sull'IAPM (\emph{\textbf{I}ntegrity-\textbf{A}ware \textbf{P}arallelizeable \textbf{M}ode}) che permette di parallelizzare la modalità.}
 
-%TODO: Sono presenti tre versioni di OCB: OCB1, OCB2 e OCB3.
+\textsf{\small Sono presenti tre versioni di OCB: OCB1, OCB2 e OCB3.}
 
-%TODO: OCB, rispetto alle altre modalità, è molto più veloce.  
+\textsf{\small OCB, rispetto alle altre modalità, è molto più veloce.}
 
-%TODO: Erano presenti due brevetti su questa modalità che ne impedivano l'esteso utilizzo [la diffusione], ma dal 2021 questi sono stati abbandonati.
-
-\textsf{\small }
+\textsf{\small Erano presenti due brevetti su questa modalità che ne impedivano l'esteso utilizzo, ma dal 2021 questi sono stati abbandonati.} %TODO: utilizzo/la diffusione
 
 \subsubsection{CCM | Counter con CBC-MAC}
 
-%TODO: CCM è un AEAD basato su Nonce che combina le modalità CTR e CBC-MAC i cui blocchi devono essere composti da 128 bits.
-
-\textsf{\small }
+\textsf{\small CCM è un AEAD basato su Nonce che combina le modalità CTR e CBC-MAC i cui blocchi devono essere composti da 128 bits.}
 
 \subsubsection{GCM | Galois Counter Mode}
 
-%TODO: È un AEAD basato su Nonce che combina le modalità CTR per l'operazione di cifratura e il campo di Galois (Galois Field) GF(2^{128}) per l'autenticazione.
+\textsf{\small È un AEAD basato su Nonce che combina le modalità CTR per l'operazione di cifratura e il campo di Galois (Galois Field) GF($2^{128}$) per l'autenticazione.}
 
-%TODO: Può essere usato come Nonce-MAC, in quel caso viene denominato \textbf{GMAC}.
-
-\textsf{\small }
+\textsf{\small Può essere usato come Nonce-MAC, in quel caso viene denominato \textbf{GMAC}.}
 
 \begin{figure}[H]
 	\centering

@@ -72,7 +72,7 @@
 
 %TODO: In questo capitolo tratteremo più a fondo la matematica che sta dietro questo algoritmo. Per poterlo fare avremo bisogno di introdurre alcune strutture matematiche come: i gruppi, gli anelli e i campi, dopodiché ci soffermeremo su uno/un specifico/determinato campo, quello di Galois, ne mostreremo le operazioni possibili e come vengono usufruite/utilizzate nei steps/passi mostrati/trattati nel capitolo degli algoritmi.
 %TODO: da sistemare l'introduzione. 
-\textsf{\small }
+\textsf{\small In questo capitolo tratteremo più a fondo la matematica che sta dietro questo algoritmo. Per poterlo fare avremo bisogno di introdurre alcune strutture matematiche come: i gruppi, gli anelli e i campi, dopodiché ci soffermeremo su uno specifico campo, quello di Galois, ne mostreremo le operazioni possibili e come ne usufruiremo nei passi trattati nel capitolo degli algoritmi.}
 
 % ------------------------- SECTION: GRUPPI, ANELLI E CAMPI  --------------------------
 
@@ -82,7 +82,7 @@
 
 \section{Gruppi, Anelli e Campi} %TODO: oppure "Gruppi, Anelli e Campi: Le differenze" oppure "Campi, Gruppi e Anelli" o "Campi, Anelli e Gruppi".
 
-\textsf{\small }
+\textsf{\small Prima di introdurre il campo di Galois, facciamo chiarezza tra i Gruppi, gli Anelli e i Campi.}
 
 %TODO: Prima di introdurre il campo di Galois, facciamo chiarezza/differenziamo i/tra Gruppi, gli Anelli e i Campi.
 
@@ -96,17 +96,25 @@
 %TODO: I. proprietà associativa: dati a, b, c;  (a * b) * c = a * (b * c) %TODO: oppure usare x, y, z? Usare \cdot o *
 %TODO: II. esistenza dell'elemento neutro: elemento neutro \emph{e} tale che a \cdot e = e \cdot a = a %TODO: a o alfa?
 %TODO: III. esistenza dell'inverso: esiste a', detto inverso, tale che a \cdot a' = a' \cdot a = e
-\textsf{\small }
+\textsf{\small Un gruppo è una struttura algebrica composta da un'insieme vuoto $\emptyset$ e un'operazione binaria ($+ \text{ e } \cdot$) per l'elemento neutro e per l'elemento inverso.}
+
+\textsf{\small Il gruppo deve soddisfare tre assiomi:}
+
+\begin{enumerate}[I.] %con package enumitem: [label=\Roman.]
+	\item \textsf{\small proprietà associativa: dati a, b, c;  $(a \cdot b) \cdot c = a \cdot (b \cdot c)$}
+	\item \textsf{\small esistenza dell'elemento neutro: elemento neutro \emph{e} tale che $a \cdot e = e \cdot a = a$}
+	\item \textsf{\small esistenza dell'inverso: esiste a', detto inverso, tale che a $\cdot a' = a' \cdot a = e$}
+\end{enumerate}
 
 \subsubsection{Monoide}
 
 %TODO: Il monoide è una struttura algebrica fornita/dotata dell'operazione binaria associativa e di un elemento neutro.
-\textsf{\small }
+\textsf{\small Il monoide è una struttura algebrica fornita dell'operazione binaria associativa e di un elemento neutro.}
 
-\subsubsection{Gruppo abelliano}
+\subsubsection{Gruppo abeliano}
 
 %TODO: È un gruppo che gode della proprietà commutativa.
-\textsf{\small }
+\textsf{\small  È un gruppo che gode della proprietà commutativa.}
 
 \subsection{Anello}
 
@@ -118,17 +126,30 @@
 %TODO: 	- gruppo abelliano rispetto all'addizione (proprietà commutativa).
 %TODO: 	- monoide rispetto alla moltiplicazione (proprietà associativa ed elemento neutro)
 %TODO: 	- moltiplicazione distributiva rispetto all'addizione.
-\textsf{\small }
+\textsf{\small Un anello è una struttura algebrica, dove sono definite due operazioni: $+ \text{ e } \cdot$ (somma e prodotto) che rispetta le proprietà: commutativa, distributiva (della moltiplicazione rispetto all'addizione) e dove esiste un elemento neutro nell'addizione ($a + 0 = 0 + a = a$) e nella moltiplicazione ($a \cdot 1 = 1 \cdot a = a$).}
+
+\textsf{\small Quindi, un anello è: }
+
+\begin{itemize}
+	\item \textsf{\small  due operazioni binarie $+ \text{ e } \cdot$ che rispettano i 3 assiomi degli anelli:}
+	\begin{itemize}
+		\item \textsf{\small gruppo abeliano rispetto all'addizione (proprietà commutativa).}
+		\item \textsf{\small monoide rispetto alla moltiplicazione (proprietà associativa ed elemento neutro)}
+		\item \textsf{\small moltiplicazione distributiva rispetto all'addizione.}
+	\end{itemize}
+\end{itemize}
 
 \subsubsection{Anello commutativo}
 
 %TODO: È un tipo di anello in cui l'operazione moltiplicativa gode della proprietà commutativa.
-\textsf{\small }
+\textsf{\small È un tipo di anello in cui l'operazione moltiplicativa gode della proprietà commutativa.}
 
 \subsubsection{Anello finito} %TODO: o altro oppure non serve come subsubsection
 
 %TODO: Un anello finito è un anello che possiede un numero finito di elementi.
-\textsf{\small }
+\textsf{\small Un anello finito è un anello che possiede un numero finito di elementi.}
+
+%TODO: Aggiungere un immagine per riempire il vuoto? O aggiungere altro.
 
 \subsection{Campo} %TODO: o "Campi"?
 
@@ -139,101 +160,158 @@
 
 %TODO: Un campo può essere definito anche come un anello commutativo dove ogni elemento non nullo possiede un inverso.
 %TODO: O anche come un corpo commutativo alla moltiplicazione. %TODO: volendo fare una subsection per il corpo?
-\textsf{\small }
+\textsf{\small Un campo $\mathbb{K}$ è una struttura algebrica formata da un insieme non vuoto e due operazioni binarie $+ \text{ e } \cdot$ in cui:}
+
+\begin{itemize}
+	\item \textsf{\small l'insieme e l'operazione + sono un gruppo abeliano con elemento neutro.}
+	\item \textsf{\small $\mathbb{K} \hspace{.1cm} \backslash \hspace{.1cm} \{0\}$ e l'operazione $\cdot$ sono un gruppo abeliano con elemento neutro 1.}
+	\item \textsf{\small la moltiplicazione è distributiva rispetto all'addizione.}
+\end{itemize}
+
+\textsf{\small Un campo può essere definito anche come un anello commutativo dove ogni elemento non nullo possiede un inverso.}
+\textsf{\small O anche come un corpo commutativo alla moltiplicazione.}
 
 \subsubsection{Campi vs Anelli} %TODO: o "Campo vs Anello"? %TODO: forse questa parte non serve? rimuovere?
 
 %TODO: La differenza fra queste due strutture è questa, ovvero:
-%TODO: Un anello è un gruppo abelliano rispetto alla prima operazione (+ addizione), ma non rispetto alla seconda, mentre, il campo è un gruppo abelliano rispetto a entrambe le operazioni.
-\textsf{\small }
+%TODO: Un anello è un gruppo abeliano rispetto alla prima operazione (+ addizione), ma non rispetto alla seconda, mentre, il campo è un gruppo abelliano rispetto a entrambe le operazioni.
+\textsf{\small La differenza fra queste due strutture è questa, ovvero:}
+
+\textsf{\small Un anello è un gruppo abeliano rispetto alla prima operazione (+ addizione), ma non rispetto alla seconda, mentre, il campo è un gruppo abeliano rispetto a entrambe le operazioni.}
+
+\textsf{\small Di seguito, alcuni esempi:}
+
+\textsf{\small Esempio: L'anello dei numeri interi ($\mathbb{Z}, +, \cdot$) è un gruppo abeliano rispetto all'addizione: 5 + (-5) = 0. Ma non è un gruppo abeliano rispetto alla moltiplicazione, perché non esiste un inverso di un numero intero n tale che $n \cdot n^{-1} = 1, 5 \cdot \frac{1}{5} \underset{}{\notin \mathbb{Z}} = 1$}
 
 %TODO: Di seguito, alcuni esempi:
 %TOOD: Esempio: L'anello dei numeri interi (\mathbb{Z}, +, \cdot) è un gruppo abelliano rispetto all'addizione: 5 + (-5) = 0. Ma non è un gruppo abelliano rispetto alla moltiplicazione, perché non esiste un inverso di un numero intero n tale che n \cdot n^{-1} = 1, 5 * $\underset{\frac{1}{5}}{\notin \mathbb{Z}} = 1$
 
+\textsf{\small Esempio: Anello numeri frazionari è un campo: $(\mathbb{Q}, +, \cdot)$ è un gruppo abeliano rispetto all'addizione e alla moltiplicazione: $5 + (-5) = 0. \hspace{.3cm} 5 \cdot \frac{1}{5} = 1$}
+
 %TODO: Esempio: Anello numeri frazionari è un campo: $(\mathbb{Q}, +, \cdot)$ è un gruppo abelliano rispetto all'addizione e alla moltiplicazione: 5 + (-5) = 0. 5 \cdot $\frac{1}{5} = 1$
 
-%TODO: \subsection{Estensione algebrica}
+\subsection{Estensione di campi}
 
-%TODO: \subsection{Estensione di campi}
+\textsf{\small Essa è uno studio di coppie di campi, l'uno contenuto nell'altro. Una tale coppia prende il nome di \textbf{estensione di campi}. }
 
-%TODO: \subsection{Gruppo di Galois}
+\textsf{\small Se L è un campo e K è un campo contenuto in L tale che le operazioni di campo in K sono le stesse di quelle in L, diciamo che K è un sottocampo di L, che L è un'estensione di K e che $L/K$ è un'\emph{estensione di campi}.} %TODO: \cite{} Wikipedia
 
-%TODO: \subsection{Estensione di Galois}
+%TODO: Altro?
+
+\subsection{Estensione algebrica} %TODO: prima questo era prima dell'estensione di campi.
+
+\textsf{\small L'estensione algebrica, in algebra astratta, una estensione di campi $L/K$ è detta algebrica se ogni elemento L è ottenibile come radice di un qualche polinomio a coefficienti in K.}
+
+\textsf{\small Sia K un campo, una estensione è il dato di un altro campo L e di un omomorfismo iniettivo di K in L. Tramite l'omomorfismo K può essere visto come un sottocampo di L. L'estensione è generalmente indicata con la notazione $L/K$.} %TODO: \cite{} Wikipedia
+
+\subsection{Gruppo di Galois}
+
+\textsf{\small Il gruppo di Galois è un gruppo associato a un'estensione di campi, in particolare i gruppi associati a estensioni che sono di Galois.} %TODO: \cite{} Wikipedia
+
+\subsection{Estensione di Galois}
+
+\textsf{\small È un'estensione algebrica $E/F$ che soddisfa le condizioni descritte qui sotto. Il senso è che un'estensione di Galois ha un gruppo di Galois e obbedisce al teorema fondamentale della teoria di Galois.} %TODO: \cite{} Wikipedia
 
 % ---------------------------- SECTION: IL CAMPO DI GALOIS  ---------------------------
 
 \section{Il campo di Galois} %TODO: o "Il camppo finito"
 
-%TODO: Il campo finito o anche denominato il campo di Galois, dal matematico francese Évariste Galois, è un campo che contiene un numero finito di elementi che ci permette di attuare operazioni su numeri a 8 bits. %TODO: da riscrivere meglio
+\textsf{\small Il campo finito o anche denominato il campo di Galois, dal matematico francese Évariste Galois, è un campo che contiene un numero finito di elementi che ci permette di attuare operazioni su numeri a 8 bits.} %TODO: da riscrivere meglio
 
-%TODO: Fornisce una connessione tra teoria di campi e teoria dei gruppi, attraverso il teorema fondamentale della teoria di galois. %TODO: questo è da approfondire!
+\textsf{\small Fornisce una connessione tra teoria di campi e teoria dei gruppi, attraverso il teorema fondamentale della teoria di galois.} %TODO: questo è da approfondire!
 
-%TODO: Lo introdusse per studiare le radici dei polinomi e risolvere queste equazioni polinomiali in termini di gruppi di permutazione delle loro radici.
-%TODO: Un'equazione è risolvibile dai suoi radicali se le sue radici si possono esprimere da una formula che riguarda numeri interi, radici ennesime e le 4 operazioni aritmetiche basilari (+, -, \cdot, /).
-%TODO: Questo generalizza il teorema di Abel-Ruffini che afferma che non c'è soluzioni in radicali alle equazioni polinomiali di grado 5 o superiori con coefficienti arbitrari. %TODO: questo è da mettere dopo l'introduzione al campo di Galois! E da semplificare.
+\textsf{\small Lo introdusse per studiare le radici dei polinomi e risolvere queste equazioni polinomiali in termini di gruppi di permutazione delle loro radici.}
 
-%TODO: Ora arriviamo al motivo per cui ci interessa:
-%TODO: Il più comune campo di Galois è il campo GF(256) o anche scritto/definito GF(2^8) (GF = Galois Field) che ci permette di definire/dove le operazioni sono definite a livello di byte, dove i bits vengono interpretati come coefficienti dei polinomi del campo finito.
+\textsf{\small Un'equazione è risolvibile dai suoi radicali se le sue radici si possono esprimere da una formula che riguarda numeri interi, radici ennesime e le 4 operazioni aritmetiche basilari $(+, -, \cdot, /)$.}
+
+\textsf{\small } %TODO: Questo generalizza il teorema di Abel-Ruffini che afferma che non c'è soluzioni in radicali alle equazioni polinomiali di grado 5 o superiori con coefficienti arbitrari. %TODO: questo è da mettere dopo l'introduzione al campo di Galois! E da semplificare.
+
+\textsf{\small Ora arriviamo al motivo per cui ci interessa:} %TODO: Riscrivere meglio?
+
+\textsf{\small Il più comune campo di Galois è il campo GF(256) o anche designato GF($2^8$) (GF = Galois Field) che ci permette di definire operazioni sono a livello di byte, dove i bits vengono interpretati come coefficienti dei polinomi del campo finito.}
+%TODO: 
 
 %TODO: Subsection? Le operazioni possibili nel campo di Galois
 \subsection{Le operazioni del campo finito} %TODO: oppure "Le operazioni del campo di Galois" oppure "Le operazioni di GF(2^8)".
 
-%TODO: Nel campo finito sono disponibili le quattro operazioni basilari dell'aritmetica, (+, -, \cdot, /) e i loro relativi./e di conseguenza l'esponenziazione e i logaritmi.
+\textsf{\small Nel campo finito sono disponibili le quattro operazioni basilari dell'aritmetica, $(+, -, \cdot, /)$ e di conseguenza l'esponenziazione e i logaritmi.} %TODO: riscrivere la parte "e di conseguenza"?
 
-%TODO: I numeri vengono rappresentati come polinomi di 8 bits, ovvero, per esempio il numero esadecimale 0x53, ovvero 83 in decimale o 01010011 in binario può essere rappresentato come x^6 + x^4 + x + 1 perché 01010011 (1 * 2^6, 1 * 2^4, 1 * 2^1, 1 * 2^0 <=> x^6 + x^4 + x + 1). 
+\textsf{\small I numeri vengono rappresentati come polinomi di 8 bits, ovvero, per esempio il numero esadecimale 0x53, ovvero 83 in decimale o 01010011 in binario può essere rappresentato come $x^6 + x^4 + x + 1$ perché 01010011 $(1 \cdot 2^6, 1 \cdot 2^4, 1 \cdot 2^1, 1 \cdot 2^0 <=> x^6 + x^4 + x + 1)$. }
 
-%TODO: oppure scegliere un altro numero!
-\textsf{\small }
+%TODO: oppure scegliere un altro numero! <----
 
 \subsubsection{Addizione e sottrazione} %TODO: oppure non serve fare una subsubsection?
 
-%TODO: Somma e sottrazione vengono eseguite tramite uno XOR.
-%TODO: Per esempio: prendiamo due polinomi: x + 1 e x^2 + 1.
-%TODO: x + 1 equivale a 2^1 + 2^0, ovvero in binario il numero 11.
-%TODO: x^2 + 1 equivale a 1 * 2^2 + 0 * 2^1 + 1 * 2^0, ovvero in binario al numero 101.
-%TODO: dopodiché eseguiamo, semplicemente, uno XOR tra i due polinomi.
-%TODO: 011 \xor 101 oppure x + 1 \xor x^2 + 1 = 110 o x^2 + x
-
 %TODO: potrei utilizzare i gli $\underbrace{}$
-\textsf{\small }
+\textsf{\small Somma e sottrazione vengono eseguite tramite uno XOR.}
+
+\textsf{\small Per esempio: prendiamo due polinomi: $x + 1 \text{ e } x^2 + 1$.}
+\textsf{\small $x + 1$ equivale a $2^1 + 2^0$, ovvero in binario il numero 11.}
+\textsf{\small $x^2 + 1$ equivale a $1 \cdot 2^2 + 0 \cdot 2^1 + 1 \cdot 2^0$, ovvero in binario al numero 101.}
+\textsf{\small dopodiché eseguiamo, semplicemente, uno XOR tra i due polinomi.}
+\textsf{\small  $011 \oplus 101$ oppure $x + 1 \oplus x^2 + 1 = 110 \text{ o } x^2 + x$}
 
 \subsubsection{Moltiplicazione}
 
-%TODO: Per la moltiplicazione è un filino/è un pochino più complicato.
-%TODO: Avvenuta l'operazione, è necessario effettuare/compiere un'operazioni di modulo con il polinomio x^8 + x^4 + x^3 + x + 1. (magari spiegare il perché)
+\textsf{\small Per la moltiplicazione è un pochino più complicato.} %TODO: filino/è un pochino
 
-%TODO: per esempio ... \cdot ... = ... , visto/perché: %TODO: ... vuol dire mettere il numero esadecimale.
+\textsf{\small Avvenuta l'operazione, è necessario compiere un'operazione di modulo con il polinomio $x^8 + x^4 + x^3 + x + 1$. } %TODO: effettuare/compiere (magari spiegare il perché)
+
+\textsf{\small per esempio $0x53 \cdot 0xCA = 0x01$, perché: } %TODO: cambiare numeri 0x53 e 0xCA
+
+\textsf{\small $0x53 = 83 = 1010011 = x^6 + x^4 + x + 1$}
+
+\textsf{\small $ 0xCA = 202 = 11001010 = x^7 + x^6 + x^3 + x $} \\
+
+\textsf{\small $ (x^6 + x^4 + x + 1)(x^7 + x^6 + x^3 + x) $}
+
+\textsf{\small $ = (x^{13} + x^{12} + x^9 + x^7)  + (x^{11} + x^{10} + x^7 + x^5) + (x^8 + x^7 + x^4 + x^2) + (x^7 + x^6 + x^3 + x)$}
+
+\textsf{\small $ = x^{13} + x^{12} + x^{11} + x^{10} + x^9 + x^8 + x^6 + x^5 + x^4 + x^3 + x^2 + x$}
+
+\textsf{\small $ x^{13} + x^{12} + x^{11} + x^{10} + x^9 + x^8 + x^6 + x^5 + x^4 + x^3 + x^2 + x \text{ modulo } x^8 + x^4 + x^3 + x + 1 = 1$.}
 
 \subsubsection{Esponenziazione} %TODO: "Potenza"?
 
 \textsf{\small L'esponenziazione è semplicemente la ripetizione della moltiplicazione.}
 
-%TODO: Alcuni numeri possiedono la proprietà di attraversare/essere in grado di attraversare tutti i 255 numeri non-zero/non-zeri del campo quando vengono moltiplicati per se stessi. Questi numeri vengono denominati/chiamati \emph{generatori}.
+\textsf{\small Alcuni numeri possiedono la proprietà di attraversare tutti i 255 numeri non-zero del campo quando vengono moltiplicati per se stessi. Questi numeri vengono chiamati \emph{generatori}.} %TODO: attraversare/essere in grado di attraversare; non-zero/non-zeri; denominati/chiamati
 
-%TODO: Possiamo raccogliere questi numeri in una tabella, la tabella dei generatori.
+\textsf{\small Possiamo raccogliere questi numeri in una tabella, la tabella dei generatori.}
 
-%TODO: volendo mostrare la tabella in un'immagine.
+%TODO: volendo mostrare la tabella in un'immagine. MOSTRARE LA TABELLA.
 
 \subsubsection{Logaritmi}
 
-%\textsf{\small Per eseguire i logaritmi possiamo avvalerci della tabella dei generatori.} %TODO: magari approfondire e fare anche un esempio.
+\textsf{\small Per eseguire i logaritmi possiamo avvalerci della tabella dei generatori.} %TODO: magari approfondire e fare anche un esempio.
 
 %TODO: [...] creando così la tabella degli algoritmi.
 
 \subsubsection{Divisione}
 
-%TODO: Si fa prendendo i logaritmi dei due numeri e eseguedo il modulo 255.
-%TODO: g^{(x - y) mod 255} dove g è uno dei generatori. 
-\textsf{\small }
+\textsf{\small Si fa prendendo i logaritmi dei due numeri e eseguedo il modulo 255.}
 
-\subsubsection{Inverso} %TODO: Multiplication Inverse/Inverso Moltiplicativo
+\textsf{\small $g^{(x - y) mod 255}$ dove g è uno dei generatori. }
+
+%\subsubsection{Inverso} %TODO: Multiplication Inverse/Inverso Moltiplicativo
+
+%TODO: uncomment/remove?
 
 %TODO: 
-\textsf{\small }
+%\textsf{\small }
 
 % ----------- SECTION: IL TEOREMA FONDAMENTALE DELLA TEORIA DI GALOIS  ----------------
 
 \section{Il teorema fondamentale della teoria di Galois} %TODO: oppure non in una section? oppure proprio non metterlo?
-\textsf{\small } 
+\textsf{\small È un teorema che crea un legame tra gli intercampi di un'estensione di Galois e i sottogruppi del relativo gruppo di Galois.} %TODO: \cite{} Wikipedia
+
+\textsf{\small Data un'estensione di campi $M/K$ con gruppo di Galois $G = \text{ Gal(M/K)}$ definiamo \emph{i} e \emph{j} (due funzioni): } %TODO: \cite{} Wikipedia
+
+\begin{itemize}
+	\item \textsf{\small Per ogni intercampo L (cioè tale che $K \subseteq L \subseteq M$) poniamo \emph{i}(L) = Gal(M/L), ossia il sottogruppo degli automorfismi di M che lasciano fissi gli elementi di L.}
+	\item \textsf{\small Per ogni sottogruppo H di G, \emph{j}(H) che classicamente è indicato con $M^H$, è l'intercampo costituito dagli elementi di M lasciati fissi da tutti gli automorfismi di H.}
+\end{itemize}
+
+\textsf{\small } %TODO: \cite{} Wikipedia
 
 % -------------------------------- FINE CAPITOLO --------------------------------------
