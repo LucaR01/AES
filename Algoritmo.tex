@@ -176,24 +176,72 @@
 
 \subsection{Add Round Key}
 
-\textsf{\small }
+\textsf{\small Viene aggiunto (ovvero nella matematica di Galois viene eseguito un'operazione di XOR) tra la matrice di stato (16 bytes = 4 words) e la chiave di round (anch'essa 16 bytes).}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth, height=0.7\textheight, keepaspectratio]{./images/aes/add_round_key.png} %TODO: prima era roundkey.png
+	\caption{Add Round Key}
+	\label{fig:add_round_key2}
+\end{figure}
+
+\textsf{\small Per esempio, nell'immagine sopra, BA $ \oplus $ E2 = 58 $ \Leftrightarrow 10111010 \oplus 11100010 = 1011000 $.}
 
 \subsection{Sub Bytes}
 
-\textsf{\small }
+\textsf{\small Ognuno dei 16 bytes della matrice di stato viene sostituito con il corrispondente byte della S-BOX.}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes/aes-s-box-no-background.png}
+	\caption{S-BOX}
+	\label{fig:sbox}
+\end{figure}
+
+\textsf{\small Come si evince dall'esempio nell'immagine il valore 95, prendendo la nona riga e la quinta colonna, viene sostituito con il valore 2A.}
 
 \subsection{Shift Rows}
 
-\textsf{\small }
+\textsf{\small Rotazione della seconda, terza e quarta riga.}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes/aes-shift-rows.png}
+	\caption{Shift Rows}
+	\label{fig:shift_rows2}
+\end{figure}
+
+\begin{itemize}
+	\item \textsf{\small Shift della seconda riga di 1 posizione a sinistra.}
+	\item \textsf{\small Shift della terza riga di 2 posizioni a sinistra.}
+	\item \textsf{\small Shift della quarta riga di 3 posizioni a sinistra.}
+\end{itemize}
 
 \subsection{Mix Columns}
 
-\textsf{\small }
+\textsf{\small Ogni byte viene della matrice dello stato è combinato usando una trasformazione lineare invertibile.}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth, height=.9\textheight, keepaspectratio]{./images/aes/mixcolumns.png}
+	\caption{Mix Columns}
+	\label{fig:mix_columns2}
+\end{figure}
+
+\textsf{\small Le equazioni per ricavare la nuova colonna: }
+
+\textsf{\small $ NC_0 = galois\_multiplication 1 (C_0) \oplus galois\_multiplication 2 (C_1) \oplus C_2 \oplus C_3 $}
+
+\textsf{\small $ NC_1 = C_0 \oplus galois\_multiplication 1 (C_1) \oplus galois\_multiplication 2 (C_2) \oplus C_3 $}
+
+\textsf{\small $ NC_2 = C_0 \oplus C_1 \oplus galois\_multiplication 1 (C_2) \oplus galois\_multiplication 2 (C_3) $ }
+
+\textsf{\small $ NC_3 = galois\_multiplication 2 (C_0) \oplus C_1 \oplus C_2 \oplus galois\_multiplication 1 (C_3) $}
 
 \subsection{Le modalità di AES} %TODO: section/subsection: "Come può essere usato AES?" o "Con quali combinazioni può essere usato AES" o "In combinazione a cosa può essere usato AES"? o "Le modalità di AES"
 
 \textsf{\small AES non può essere utilizzato così com'è, ma necessita di essere adoperato in combinazione a una modalità. } %TODO: AES non può essere usato così com'è, ma necessita di essere utilizzato in combinazione a una modalità .
-\textsf{\small Una modalità è un processo/sistema/procedimento per aumentare/incrementare/trasformare/avanzare l'efficacia di un algoritmo crittografico.  } %TODO: processo/sistema/procedimento; aumentare/incrementare/trasformare/avanzare;
+\textsf{\small Una modalità è un sistema per trasformare l'efficacia di un algoritmo crittografico.} %TODO: processo/sistema/procedimento; aumentare/incrementare/trasformare/avanzare;
 
 \textsf{\small Di seguito, alcune delle modalità di AES: }
 
