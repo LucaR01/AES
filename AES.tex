@@ -262,7 +262,21 @@
 	pdfpagemode=FullScreen,
 }
 
+% ------- begin index ----------
+
+\usepackage{imakeidx}
+\makeindex[columns=3, title=Indice Analitico, options= -s index.ist, intoc]
+\usepackage[initsep = 15pt]{idxlayout}
+
+% ------- end index ------------
+
 % ----------------------------- END PREAMBLE -----------------------------------------
+
+% ----------------------------- BEGIN BIBLIOGRAPHY  ----------------------------------
+
+\bibliographystyle{plain} %TODO: update
+
+% ----------------------------- END BIBLIOGRAPHY  ------------------------------------
 
 % ----------------------------- BEGIN CHAPTER STYLE ----------------------------------
 
@@ -392,6 +406,11 @@
 	%TODO: Bibliografia e Indice Analitico.
 	
 	\backmatter
+	
+	\printindex
+	
+	\nocite{*} % Questo serve per mostrare tutta la bibliografia, anche se non la si è citata.
+	\bibliography{bibliography.bib}
 	
 \end{document}
 
