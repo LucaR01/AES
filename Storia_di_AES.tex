@@ -38,6 +38,8 @@
 
 \textsf{\small DES era divenuto lo standard dopo un bando dell'NBS (\emph{\textbf{N}ational \textbf{B}ureau of \textbf{S}tandards}), oggi NIST \emph{(\textbf{N}ational \textbf{I}nstitute for \textbf{S}ecurity and \textbf{T}echnology)} per trovare un buon e sicuro algoritmo per proteggere le comunicazioni private dei cittadini americani.}
 
+\index{Lucifer}
+
 %TODO: "rettificandone" o "alterandone"
 \textsf{\small Venne così proposto un algoritmo chiamato \emph{Lucifer}, sviluppato dall'\emph{IBM} che dopo esser stato modificato dall'NSA (\emph{\textbf{N}ational \textbf{S}ecurity \textbf{A}gency}), riducendone la grandezza della chiave da 128 a 56 bits e rettificandone le funzioni contenute nell'S-box, venne designato come \emph{Data Encryption Standard} (\textbf{DES}).}
 
@@ -48,12 +50,17 @@
 
 \textsf{\small DES regnò per 20 anni, venne studiato in lungo e in largo dagli accademici e criptoanalisti di tutto il mondo, grazie a ciò, ci fu finalmente per la prima volta un cifrario certificato che tutti potevano studiare: nacque così il moderno campo della crittografia.}
 
+\index{DES}
+
 \textsf{\small Negli anni, molti sfidarono DES e dopo diverse battaglie fu finalmente sconfitto.} %TODO: ampliare come venne sconfitto?
+
+\index{3DES}
 
 %TODO: "fermare" o "ovviare"
 %TODO: magari spiegare perché era lento più nel dettaglio. (perché combinevamo il des tre volte)
 \textsf{\small L'unico modo per ovviare a questi attacchi era quello di combinare des tre volte, formando il 3DES (\emph{Triplo DES}). Il problema di questo però era la sua lentezza.} %TODO: estremamente lento
 
+\index{NIST}
 
 %TODO: "indire" è il verbo corretto?
 \textsf{\small Per questo, nel 1997, il NIST indisse un nuovo bando per cercare un nuovo algoritmo di cifratura, forte come il triplo-DES, ma veloce e flessibile.}
@@ -65,6 +72,8 @@
 	\label{fig:aes_vs_des}
 \end{figure}
 
+\index{Rijndael} \index{Serpent} \index{Twofish} \index{MARS} \index{RC6}
+
 %TODO: "spuntò" o "emerse" ?
 %TODO: "semplicità"? Approfondire un po' di più magari
 \textsf{\small Vari algoritmi competerono: Serpent, Twofish, MARS, RC6, ma alla fine spuntò Rijndael per la sua semplicità e velocità.} %TODO: magari aggiungere i link a pagine su questi algoritmi? con il footnote anche?
@@ -75,8 +84,12 @@
 
 \section{AES vs Rijndeal}
 
+\index{AES} \index{Rijndael}
+
 \textsf{\small AES è un'implentazione di Rijndael, divenuto l'algoritmo di cifratura standard del governo degli Stati Uniti d'America.}
 \textsf{\small Una differenza tra i due è che AES utilizza blocchi di dati da 128 bits, mentre Rijndael permette oltre a blocchi da 128, anche blocchi da 192 e 256 bits.} %TODO: "blocchi di dati"?
+
+\index{AES} \index{Rijndael}
 
 \textsf{\small Sia AES che Rijndael permettono una grandezza della chiave di 128, 192 o 256 bits, da cui ne ricaviamo il numero di rounds: 10, 12 o 14 rispettivamente.}
 
@@ -97,11 +110,17 @@
 
 \section{Cifratura simmetrica vs asimmetrica} %rinominare in "Cifrari simmetrici vs asimettrici"?
 
+\index{cifratura} \index{decifratura}
+
 \textsf{\small Nella cifratura simmetrica viene usata una chiave sia per la cifratura che per la decifratura di un messaggio.}
+
+\index{messaggio} \index{chiave}
 
 \textsf{\small La cifratura asimmetrica è basata sul concetto di chiave pubblica e chiave privata. Vengono, quindi usate due chiavi sia per la cifratura che per la decifratura. Usiamo la chiave pubblica per cifrare il messagio e la chiave privata per decifrarlo.} %TODO: qui sto facendo un po' di controsenso.
 
 \textsf{\small Ulteriori differenze: }
+
+\index{DES} \index{3DES} \index{DSA} \index{RSA} \index{AES} \index{RC4} \index{Diffie-Hellman} \index{ECC} \index{El Gamal} \index{decifratura} \index{cifrare} \index{decifrare}
 
 \begin{tabular}{|c|c|}
 	\hline
@@ -144,6 +163,8 @@
 	\label{fig:encryption_types}
 \end{figure}
 
+\index{AES} \index{cifrare} \index{messaggio}
+
 \textsf{\small AES è di tipo simmetrico, quindi useremo la stessa chiave sia per cifrare il nostro messaggio sia per decifrarlo. }
 
 \begin{figure}[H]
@@ -157,6 +178,8 @@
 
 \section{Stream vs Block Ciphers}
 
+\index{stream} \index{block cipher} \index{block} \index{a flusso} \index{blocchi} \index{AES} \index{cifrario} \index{messaggio}
+
 \textsf{\small \textbf{Cifrario a flusso}: Il testo in chiaro viene separato in [singoli] bits che vengono poi singolarmente cifrati.} %TODO:
 
 \textsf{\small \textbf{Cifrario a blocchi}: Un cifrario a blocchi prende un messaggio in chiaro e lo suddivide in blocchi di bytes.} %TODO: 
@@ -168,6 +191,8 @@
 % ------------------------ SECTION: PRINCIPIO DI KERCKHOFFS ---------------------------
 
 \section{Principio di Kerchoffs}
+
+\index{Kerckhoffs}
 
 \textsf{\small L'olandese Auguste Kerckhoffs elaborò, nel 1883, due articoli riguardanti la crittografia. Nel primo enunciò sei principi, di cui il più famoso (il numero 2) sostiene che la sicurezza di un sistema crittografico non deve risiedere nella segretezza del suo algoritmo, ma soltanto nel mantenere la sua chiave segreta.} %TODO:  [scrisse/redisse/stilò/compose/elaborò] nel 1883 due articoli riguardanti la crittografia. Nel primo trattò [enunciò] sei principi, di cui il più famoso (il numero 2) sostiene che la sicurezza di un sistema crittografico non deve risiedere nella segretezza del suo algoritmo, ma soltanto dal mantenere la chiave segreta.
 

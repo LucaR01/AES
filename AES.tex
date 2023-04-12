@@ -8,8 +8,6 @@
 
 %TODO: Aggiungere capitolo: "Implementazione" (implementazione basilare) in C++ e/o Java.
 
-%TODO: Rimuovere il numero della pagina nel titolo. (in alto a destra)
-
 % ----------------------------- BEGIN PREAMBLE ---------------------------------------
 
 \usepackage{lmodern}
@@ -18,6 +16,16 @@
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage{titlesec} %porre titlesec prima di hyperref per evitare il warning "The anchor of a bookmark and its parent's must not(hyperref) be the same".
+
+% ------- begin index ----------
+
+% Questo va prima di hyperref, altrimenti non è cliccabile.
+\usepackage{imakeidx}
+\makeindex[columns=3, title=Indice Analitico, options= -s index.ist, intoc]
+\usepackage[initsep = 15pt]{idxlayout}
+
+% ------- end index ------------
+
 \usepackage[breaklinks]{hyperref} %porre hyperref infondo al preamble perché altrimenti potrebbe dare warning tipo: "The anchor of a bookmark and its parent's must not(hyperref) be the same" dovuto al fatto che titlesec si trova dopo hyperref.
 \usepackage{amsmath,amssymb,amsthm}
 
@@ -262,19 +270,11 @@
 	pdfpagemode=FullScreen,
 }
 
-% ------- begin index ----------
-
-\usepackage{imakeidx}
-\makeindex[columns=3, title=Indice Analitico, options= -s index.ist, intoc]
-\usepackage[initsep = 15pt]{idxlayout}
-
-% ------- end index ------------
-
 % ----------------------------- END PREAMBLE -----------------------------------------
 
 % ----------------------------- BEGIN BIBLIOGRAPHY  ----------------------------------
 
-\bibliographystyle{plain} %TODO: update
+\bibliographystyle{unsrt} %TODO: prima era plain
 
 % ----------------------------- END BIBLIOGRAPHY  ------------------------------------
 
@@ -370,6 +370,7 @@
 	\frontmatter
 	
 	\titleRF
+	\thispagestyle{empty} % serve per rimuovere il numero della pagina dal titolo.
 	
 	\tableofcontents
 	
@@ -395,15 +396,15 @@
 	
 	\include{Implementazione}
 	
+	\include{Attacchi_e_Sicurezza_su_AES} 
+	
+	\include{Conclusioni}
+	
 	%TODO: Prima dell'implementazione facciamo: "Le modalità di AES" oppure anche prima del capitolo "La matematica dietro AES" oppure anche no!
 	
 	%TODO: Implementazione %TODO: oppure dipende dall'implementazione, se nell'implementazione c'è solo AES, allora la parte delle Modalità la metto dopo, altrimenti prima.
 	
 	%TODO: Pros e Cons (Tipi Attacchi su AES, vulnerabilità?, ecc.) %TODO: volendo resistance to linear and differential cryptoanalysis, wide tail strategy, impractical related key attacks. %TODO: oppure chiamarlo Attacchi/Sicurezza di/su AES
-	
-	%TODO: Conclusioni
-	
-	%TODO: Bibliografia e Indice Analitico.
 	
 	\backmatter
 	

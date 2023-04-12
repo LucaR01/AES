@@ -39,6 +39,8 @@
 
 \section{I tre concetti dietro la Crittografia} %TODO: Le tre idee/concetti/principi dietro la/alla Crittografia
 
+\index{Shannon} \index{diffusione} \index{confusione} \index{teoria dell'informazione} \index{simmetrica}
+
 \textsf{\small Alla base della crittografia, ci sono due importanti proprietà dei cifrari a chiave simmetrica, elaborati dal padre della teoria dell'informazione, Claude Elwood Shannon, ovvero: \emph{diffusione} e \emph{confusione}.} \\
 
 \begin{comment}
@@ -55,6 +57,8 @@
 \textsf{\small Il principio della \emph{confusione} vela la connessione tra il messaggio originale e il testo cifrato.} %TODO: messaggio/testo; [per esempio cifrario di cesare (con annessa immagine volendo)]
 
 \textsf{\small La proprietà di \emph{diffusione}, invece, riguarda lo scombussolamento della posizione dei caratteri del messaggio.} %TODO: [un semplice esempio potrebbe essere la trasposizione delle colonne in una matrice oppure non lo scrivo.]
+
+\index{segretezza della chiave}
 
 \textsf{\small Un altro importante concetto è quello della \emph{segretezza della chiave}, ovvero che l'algoritmo alla base del cifrario è conosciuto, è pubblico, ma la sola conoscenza di questo non è sufficiente per poter conseguire l'accesso alle informazioni, perché per poter attingerle sarà necessario conoscere la chiave segreta.} %TODO: nella/della chiave; attingere/ottenere; attingerle/acquisire/raggiungere; concetto/astrazione
 
@@ -76,7 +80,9 @@
 %TODO: itemize?
 %TODO: forse dovrei semplificarlo un attimo e parlarne più con calma prima di passare alle liste delle operazioni.
 
-\textsf{\small I dati di input vengono caricati in una matrice 4x4, anche chiamata \emph{state matrix} (matrice di stato), dove ogni cella rappresenta 1 byte di informazione e su queste compiamo diverse operazioni: \emph{sub-bytes} (sostituzione dei bytes), \emph{shift rows} (spostamento delle righe), \emph{mix columns} (mescolamento delle colonne), \emph{add round key} (aggiunta della chiave del round) per un numero di volte, di rounds pari alla grandezza della chiave.} %TODO: oppure metterli in un itemize?
+\index{state matrix} \index{matrice di stato} \index{sub-bytes} \index{mix columns} \index{shift rows} \index{add round key}
+
+\textsf{\small I dati di input vengono caricati in una matrice 4x4, anche chiamata \emph{state matrix} (matrice di stato), dove ogni cella rappresenta 1 byte di informazione e su queste compiamo diverse operazioni: \emph{sub bytes} (sostituzione dei bytes), \emph{shift rows} (spostamento delle righe), \emph{mix columns} (mescolamento delle colonne), \emph{add round key} (aggiunta della chiave del round) per un numero di volte, di rounds pari alla grandezza della chiave.} %TODO: oppure metterli in un itemize?
 
 \begin{figure}[H]
 	\centering
@@ -84,6 +90,8 @@
 	\caption{Key Size e Numero di Rounds}
 	\label{fig:aes_key_size_number_of_rounds}
 \end{figure}
+
+\index{XOR}
 
 \textsf{\small Nel primo round svolgiamo uno XOR tra il messaggio d'input e la chiave segreta.}
 
@@ -98,6 +106,8 @@
 
 \subsection{Perché lo XOR è usato in crittografia?}
 
+\index{XOR} \index{AND} \index{OR} \index{NOT}
+
 \begin{itemize}
 	\item \textsf{\small Lo XOR non \emph{leaka} informazioni sull'input originale.} %TODO: magari leaka non è proprio il top come parola, non esiste nemmeno in italiano
 	\item \textsf{\small Lo XOR è una \emph{involutory function} (funzione involutoria) tale che se la applichi due volte riottieni il testo originale.}
@@ -110,12 +120,16 @@
 
 \subsection{Key Expansion | Key Schedule} %TODO: remove?
 
+\index{key expansion} \index{key schedule} \index{rounds} \index{chiavi}
+
 \textsf{\small Per poter elaborare i rounds, l'algoritmo ha bisogno di molte chiavi, una per round, queste vengono tutte derivate dalla chiave iniziale.}
 
 %TODO: Fare una subsection?: titolo: "Come vengono ottenute le chiavi per ogni round?" oppure no? KEY EXPANSION/KEY SCHEDULE
 %TODO: Per poter eseguire/elaborare i rounds, l'algoritmo ha bisogno di molte chiavi [una per round?], queste vengono tutte derivate dalla chiave iniziale. (volendo scrivere: Questo è uno dei motivi per cui AES viene criticato, perché tutte le chiavi vengono derivate dalla chiave originale).
 
 \textsf{\small Il procedimento per ricavarle è questo: }
+
+\index{xor} \index{round constant}
 
 \begin{enumerate}
 	\item \textsf{\small Sposta la prima cella dell'ultima colonna della precedente chiave in fondo alla colonna.} %TODO: spostare
@@ -125,28 +139,79 @@
 	%\item \textsf{\small }
 \end{enumerate}
 
+\index{XOR}
+
 \textsf{\small Per le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave (eccetto per le chiavi a 256 bit che hanno un procedimento un po' più complicato).} %TODO: rimuovere la parte tra parentesi? ovvero la parte procedimento un po' più complicato o approfondirla?
 
-\begin{figure}[H] %TODO: Cambiare immagine?
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth, height=0.8\textheight, keepaspectratio]{./images/key_expansion/key_expansion.png}
 	\caption{Key Expansion}
 	\label{fig:key_expansion}
 \end{figure}
 
-%TODO: Aggiungere ulteriore spiegazione!
+\index{AES}
 
-%TODO: [mettere delle immagini a riguardo]
+\textsf{\small La singola chiave viene espansa in 11 chiavi per AES-128, 13 per AES-192 e 15 per AES-256.}
 
-%TODO: Per quanto riguarda le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave. [magari spiegare meglio] [magari mettere un'immagine a riguardo] [eccetto per le chiavi a 256 bit che sono un po' più complicate] [approfondire il perché siano più complicate]
+\index{RotWord} \index{SubWord} \index{Rcon} \index{XOR}
 
-%TODO: Dopo aver ottenuto queste chiavi vengono compiuti i vari rounds.
+\textsf{\small Ogni byte della chiave viene inserita in vari arrays, in cui verranno eseguite delle specifiche operazioni: \emph{RotWord}, \emph{SubWord}, \emph{Rcon} e infine verranno eseguiti degli XOR tra loro.}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth, height=0.6\textheight, keepaspectratio]{./images/key_expansion/AES-Key_Schedule_128-bit_key.png}
+	\caption{Key Expansion}
+	\label{fig:key_expansion2}
+\end{figure}
+
+\subsubsection{RotWord}
+
+\index{RotWord}
+
+\textsf{\small Questa funzione ruota una word di 32 bits.}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth, height=0.4\textheight, keepaspectratio]{./images/key_expansion/key_schedule-rot_word.png}
+	\caption{Rot Word}
+	\label{fig:rot_word2}
+\end{figure}
+
+\subsubsection{SubWord}
+
+\index{SubWord}
+
+\textsf{\small La funzione \emph{SubWord} sostituisce una word di 32 bits con l'S-BOX.}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth, height=0.4\textheight, keepaspectratio]{./images/key_expansion/subWord.png}
+	\caption{Sub Word}
+	\label{fig:sub_word2}
+\end{figure}
+
+\subsubsection{Rcon}
+
+\index{Rcon} \index{round constant}
+
+\textsf{\small Questa funzione ricorsiva permette di generare delle costanti di round, attraverso questa formula:}
+
+\begin{itemize}
+	\item \textsf{\small il round\_constant(1) = 1.}
+	\item \textsf{\small round\_constant(i) = $2 \cdot \text{round\_constant}(i - 1) \text{se round\_constant(i - 1) < 0x80}$}
+	\item \textsf{\small round\_constant($2 \cdot \text{round\_constant(i - 1)}$) $ \oplus \hspace{0.3mm} \text{0x11B } \ge 0x80$ }
+\end{itemize}
 
 \subsection{I Rounds} %TODO: Rinominare in qualcos'altro.
+
+\index{rounds} \index{mix columns}
 
 \textsf{\small Dopo aver ottenuto le chiavi, vengono compiuti i vari rounds.} 
 
 \textsf{\small Per ogni round, eseguiamo questi passaggi, tranne per l'ultimo dove non effettuiamo il passaggio delle \emph{Mix Columns}, perché non aumenterebbe la sicurezza e semplicemente rallenterebbe: } %TODO: [magari approfondire il perché rallenterebbe]
+
+\index{sub bytes} \index{shift rows} \index{mix columns} \index{add round key} \index{confusione} \index{segretezza della chiave} \index{diffusione} \index{Shannon}
 
 \begin{itemize}
 	\item[] \textsf{\small Applichiamo il principio di \emph{confusione} attraverso il passaggio \emph{Sub-bytes}.}
@@ -165,8 +230,12 @@
 	\label{fig:aes_flowchart2}
 \end{figure}
 
+\index{rounds}
+
 \textsf{\small Più rounds aggiungiamo, più sicurezza, ma questo porterebbe ad un rallentamento dell'algoritmo e quindi delle performance.}
 \textsf{\small Per questo serve un compromesso tra sicurezza e prestazioni.}
+
+\index{AES} \index{rounds}
 
 \textsf{\small Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, per evitare ciò, sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.} %TODO: Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, [come possiamo notare ogni bit di output di un round dipende da ogni bit dei due rounds precedenti ] per evitare questo sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}. %TODO: magari approfondire?
 
@@ -177,6 +246,8 @@
 %TODO: subsection Add Round Key, Sub Bytes, Shift Rows, Mix Columns
 
 \subsection{Add Round Key}
+
+\index{add round key} \index{Galois} \index{XOR} \index{round} \index{matrice di stato}
 
 \textsf{\small Viene aggiunto (ovvero nella matematica di Galois viene eseguito un'operazione di XOR) tra la matrice di stato (16 bytes = 4 words) e la chiave di round (anch'essa 16 bytes).}
 
@@ -191,6 +262,8 @@
 
 \subsection{Sub Bytes}
 
+\index{sub bytes}
+
 \textsf{\small Ognuno dei 16 bytes della matrice di stato viene sostituito con il corrispondente byte della S-BOX.}
 
 \begin{figure}[H]
@@ -203,6 +276,8 @@
 \textsf{\small Come si evince dall'esempio nell'immagine il valore 95, prendendo la nona riga e la quinta colonna, viene sostituito con il valore 2A.}
 
 \subsection{Shift Rows}
+
+\index{shift rows}
 
 \textsf{\small Rotazione della seconda, terza e quarta riga.}
 
@@ -220,6 +295,8 @@
 \end{itemize}
 
 \subsection{Mix Columns}
+
+\index{mix columns} \index{matrice dello stato}
 
 \textsf{\small Ogni byte viene della matrice dello stato è combinato usando una trasformazione lineare invertibile.}
 
@@ -242,8 +319,12 @@
 
 \subsection{Le modalità di AES} %TODO: section/subsection: "Come può essere usato AES?" o "Con quali combinazioni può essere usato AES" o "In combinazione a cosa può essere usato AES"? o "Le modalità di AES"
 
+\index{AES} \index{modalità}
+
 \textsf{\small AES non può essere utilizzato così com'è, ma necessita di essere adoperato in combinazione a una modalità. } %TODO: AES non può essere usato così com'è, ma necessita di essere utilizzato in combinazione a una modalità .
 \textsf{\small Una modalità è un sistema per trasformare l'efficacia di un algoritmo crittografico.} %TODO: processo/sistema/procedimento; aumentare/incrementare/trasformare/avanzare;
+
+\index{AES} \index{ECB} \index{CBC} \index{CFB} \index{OFB} \index{CTR}
 
 \textsf{\small Di seguito, alcune delle modalità di AES: }
 
