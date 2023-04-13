@@ -12,10 +12,14 @@
 
 \usepackage{lmodern}
 \usepackage{alltt, fancyvrb, url}
-\usepackage{float}
+
+%\usepackage{float}
+\usepackage[rawfloats=true]{floatrow}
+\restylefloat{figure} % questo forse riduce gli spazi bianchi tra immagini e testo.
+
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
-\usepackage{titlesec} %porre titlesec prima di hyperref per evitare il warning "The anchor of a bookmark and its parent's must not(hyperref) be the same".
+\usepackage[compact]{titlesec} %porre titlesec prima di hyperref per evitare il warning "The anchor of a bookmark and its parent's must not(hyperref) be the same".
 
 % ------- begin index ----------
 
@@ -293,6 +297,23 @@
 \usepackage[Lenny]{fncychap}
 
 % ----------------------------- END CHAPTER STYLE ------------------------------------
+
+% ----------------------------- BEGIN SPACING ----------------------------------------
+
+%\usepackage[compact]{titlesec}         % you need this package
+\titlespacing{\section}{0pt}{0pt}{0pt} % this reduces space between (sub)sections to 0pt, for example
+\AtBeginDocument{%                     % this will reduce spaces between parts (above and below) of texts within a (sub)section to 0pt, for example - like between an 'eqnarray' and text
+	\setlength\abovedisplayskip{0pt}
+	\setlength\belowdisplayskip{0pt}}
+
+\begin{comment}
+\titlespacing{\subsection}{0pt}{0pt}{0pt} % this reduces space between (sub)sections to 0pt, for example
+\AtBeginDocument{%                     % this will reduce spaces between parts (above and below) of texts within a (sub)section to 0pt, for example - like between an 'eqnarray' and text
+	\setlength\abovedisplayskip{0pt}
+	\setlength\belowdisplayskip{0pt}}
+\end{comment}
+
+% ----------------------------- END SPACING ------------------------------------------
 
 
 % ----------------------------- BEGIN SECTION STYLE ----------------------------------
