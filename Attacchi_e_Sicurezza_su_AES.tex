@@ -19,7 +19,7 @@
 
 \section{Attacchi}
 
-\textsf{\small }
+\textsf{\small In questa sezione, verranno esplicati alcuni principali tipi di attacchi generici sui cifrari e anche su AES.} %TODO: update
 
 \subsection{CCA | No Chosen Ciphertext Attack}
 
@@ -29,9 +29,9 @@
 
 %TODO: Immagine?
 
-\subsection{Sample Tampering Attack}
+%\subsection{Sample Tampering Attack}
 
-\textsf{\small }
+%\textsf{\small }
 
 \subsection{Side Channel Attack}
 
@@ -42,6 +42,21 @@
 	\includegraphics[width=.6\textwidth, height=.6\textheight, keepaspectratio]{./images/attacks/side_channel_attack.png}
 	\caption{Attacco dal canale laterale}
 	\label{fig:side_channel_attack}
+\end{figure}
+
+\subsection{Template Attack}
+
+\textsf{\small Il \emph{template attack} è un tipo di \emph{side channel attack}. Questi tipi di attacchi sono degli attacchi di \emph{profiling} eseguiti sullo specifico dispositivo di una "vittima" per ottenere la sua chiave segreta. }
+
+\subsection{MITM | Man-In-The-Middle}
+
+\textsf{\small È un tipo di attacco in cui un'attaccante si interpone tra le due parti in comunicazione ed è in grado di leggere e possibilmente alterare gli scambi di informazioni, idealmente senza la conoscenza di queste. }
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.6\textwidth, height=.6\textheight, keepaspectratio]{./images/attacks/man_in_the_middle.png}
+	\caption{Attacco "uomo nel mezzo"}
+	\label{fig:man_in_the_middle}
 \end{figure}
 
 \subsection{MITM | Meet-In-The-Middle}
@@ -56,6 +71,10 @@
 
 \textsf{\small L'attacco delle chiavi correlate è un attacco in cui l'attaccante attraverso l'osservazione di varie chiavi, i cui valori sono sconosciuti inizialmente, riesce a ricavarne qualche relazione matematica tra queste.} %TODO: rimuovere tra queste?
 
+\subsection{Known-key distinguishing Attack}
+
+\textsf{\small È un tipo di attacco in cui l'attaccante è a conoscenza della chiave ed è così in grado di trovare una proprietà del cifrario che permette di trasformazione il testo in chiaro in testo cifrato.}
+
 \subsection{Social Engineering}
 
 \textsf{\small L'attacco di tipo \emph{ingegneria sociale} è un attacco che riguarda la manipolazione psicologica delle persone per poter ottenere informazioni confidenziali.}
@@ -68,7 +87,7 @@
 
 \textsf{\small Questa classe di attacchi in cui l'attaccante tenta di compromettere il sistema crittografico analizzando il tempo di esecuzione dell'algoritmo. Prendono vantaggio degli intervalli di tempo tra la cache e gli accessi alla memoria principale.}
 
-\subsection{Attacks on Reduced-Round AES}
+\subsection{Key Recovery Attack | Attacks on Reduced-Round AES}
 
 \textsf{\small È possibile che con un ridotto numero di rounds, AES è vulnerabile. È stato scoperto, in fase di progettazione che era possibile trovare una scorciatoia con AES con 6 rounds, per questo ne sono stati aggiunti altri 4. È stato possibile recuperare la chiave con un AES fornito di soli 5 rounds.}
 
@@ -82,8 +101,12 @@
 
 \section{Sicurezza}
 
-\textsf{\small }
+\textsf{\small Verrà trattato, brevemente, il livello di sicurezza, in generale, dell'Advanced Encryption Standard:}
 
-%TODO: In generale la sicurezza di AES
+\textsf{\small La forza del cifrario, in generale, dipende dalla lunghezza della chiave. Tentare un attacco di forza bruta (brute-force attack) su AES-256 richiederebbe troppo tempo e una potenza di calcolo elevatissima, dato l'enorme numero di combinazioni possibili $ \sim 1100^{75} $. Questi tipi di attacchi, invece, sono più possibili con AES-128.}
+
+\textsf{\small Nel 2017 è stato possibile, per dei ricercatori olandesi, ricavare le chiavi di AES-256 utilizzando un \emph{side channel attack} con l'ausilio di un'antenna e con l'elaborazione del segnale.}
+
+\textsf{\small Gli attacchi con i computer quantistici potrebbero causare problemi.}
 
 % ============================ FINE CAPITOLO ==============================================

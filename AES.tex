@@ -384,6 +384,13 @@
 
 % ----------------------------- END TITLE PAGE ---------------------------------------
 
+% ----------------------------- END ABSTRACT -----------------------------------------
+
+\newenvironment{abstract}{}{}
+\usepackage{abstract}
+
+% ----------------------------- END ABSTRACT -----------------------------------------
+
 % ----------------------------- BEGIN DOCUMENT ---------------------------------------
 
 \begin{document}
@@ -403,9 +410,7 @@
 	
 	\mainmatter
 	
-	%TODO: magari non serve l'introduzione per ogni capitolo? %TODO: remove
-	
-	%TODO: Abstract
+	\include{Abstract}
 	
 	\include{Storia_di_AES}
 	
