@@ -2,33 +2,31 @@
 
 \chapter{L'implementazione}
 
-%TODO: Implementazione in C++
-%TODO: Con gui e command line o solo gui.
-
-%TODO: Volendo anche Java?
-
-%TODO: Presenterò/Mostrerò due implementazioni una fatta specificamente per questo progetto in C++ e un'altra in Java che avevo fatto per altri progetti.
-%TODO: Quella in C++ sarà più completa rispetto di quella in Java.
-
 % =======================================================================================
 
 % ---------------------------- SECTION: INTRODUZIONE ------------------------------------
 
 \section{Introduzione}
 
-\textsf{\small In questo capitolo, presenterò due implementazioni, una elaborata esclusivamente per questo progetto in C++ e un'altra in Java che avevo creato per altri progetti universitari. Quella in C++ risulterà più completa rispetto a quella in Java.} %TODO: In questo capitolo, presenterò due implementazioni, una elaborata esclusivamente per questo progetto in C++ e un'altra in Java che avevo creato per altri progetti universitari. Quella in C++ risulterà più completa rispetto a quella in Java.
+\index{C++} \index{Java}
+
+\textsf{\small In questo capitolo, presenterò due implementazioni, una elaborata esclusivamente per questo progetto in C++ e un'altra in Java che avevo creato per altri progetti universitari. Quella in C++ risulterà più completa rispetto a quella in Java.}
 
 % ---------------------------- SECTION: IMPLEMENTAZIONE IN C++ --------------------------
 
 \section{Implementazione in C++}
 
-\textsf{\small Ho adottato C++23 per questo progetto. In esso sono presenti una interfaccia grafica e una applicazione da linea di comando, entrambe hanno le stesse operazioni.} %TODO: Ho adottato C++23 per questo progetto. In esso sono presenti una interfaccia grafica e una applicazione da linea di comando, entrambe hanno le stesse operazioni.
+\index{C++} \index{C++23}
 
-\textsf{\small Inanzittutto, esibirò, le funzioni riguardanti la matematica di Galois di cui mi sono avvalso.}
+\textsf{\small Ho adottato C++23 per questo progetto. In esso sono presenti una interfaccia grafica e una applicazione da linea di comando, entrambe hanno le stesse operazioni.}
 
-%TODO: Inanzittutto, esibirò, le funzioni riguardanti la matematica di Galois di cui mi sono avvalso.
+\index{Galois}
+
+\textsf{\small Innanzitutto, esibirò, le funzioni riguardanti la matematica di Galois di cui mi sono avvalso.}
 
 \subsection{Matematica di Galois}
+
+\index{Galois} \index{matematica}
 
 \begin{figure}[H]
 	\centering
@@ -37,7 +35,11 @@
 	\label{fig:irreducible_polynomial}
 \end{figure}
 
-\textsf{\small Riguardo alla matematica nel campo di Galois, ho adoperato tre funzioni: una che implementa l'addizione e la sottrazione, una per la moltiplicazione e una per generare le costanti di round.} %TODO: 
+\index{Galois} \index{matematica}
+
+\textsf{\small Riguardo alla matematica nel campo di Galois, ho adoperato tre funzioni: una che implementa l'addizione e la sottrazione, una per la moltiplicazione e una per generare le costanti di round.}
+
+\index{campo di Galois} \index{Galois} \index{XOR}
 
 \textsf{\small Nel campo di Galois, sia l'addizione che la sottrazione sono semplicemente un'operazione di XOR. Questa funzione prende due parametri x ed y di tipo \emph{uint8\_t} (che corrisponde a un \emph{unsigned char}) e restituisce lo XOR tra essi.}
 
@@ -54,6 +56,8 @@
 
 %TODO: Aggiungere reference alla parte nel capitolo della Matematica o aggiungere breve spiegazione.
 
+\index{XOR}
+
 \textsf{\small Facciamo un loop su ogni bit del byte e verifichiamo se il secondo valore \emph{y} ha il bit meno significativo attivo (y \& 0x01) allora aggiungiamo \emph{x} (ovvero eseguiamo uno XOR) al risultato. Dopodiché verifichiamo se il bit più significativo \emph{high\_bit} è attivo in \emph{x}. Poi ruotiamo x di 1. Se l'\emph{high\_bit} è \emph{true} eseguiamo uno XOR tra x e il polinomio irriducibile \emph{IRREDUCIBLE\_POLYNOMIAL}, ovvero $0x1\text{B}$. Infine ruotiamo il secondo valore di 1 per ruotarlo a destra. Poi restituiamo il risultato finale delle operazioni.}
 
 \begin{figure}[H]
@@ -63,7 +67,11 @@
 	\label{fig:galois_multiplication}
 \end{figure}
 
-\textsf{\small \emph{round\_constant\_generator(const uint8\_t\& x)} prende un numero in input e restituisce la round constant.} %TODO:
+\index{round constant}
+
+\textsf{\small \emph{round\_constant\_generator(const uint8\_t\& x)} prende un numero in input e restituisce la round constant.}
+
+\index{round constant}
 
 \textsf{\small Questa funzione è utilizzata per generare la round constant.}
 \textsf{\small L'algoritmo di questa funzione è il seguente: }
@@ -74,18 +82,22 @@
 	\item \textsf{\small round\_constant($2 \cdot \text{round\_constant(i - 1)}$) $ \oplus \hspace{0.3mm} \text{0x11B } \ge 0x80$ }
 \end{itemize}
 
-\begin{figure}[H] %TODO: update.
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/code/cpp/galois_math/round_constant_generator.PNG}
 	\caption{Generatrice delle costanti di round}
 	\label{fig:round_constant_generator}
 \end{figure}
 
-%TODO: Come prima cosa mostrerò l'implementazione dell'algoritmo di AES con tutte le varie operazioni all'interno di ogni round di AES, ovvero: add round key, sub bytes, shift rows e mix columns. Dopodiché presenterò la parte di Key Expansion, ovvero come vengono ottenute le chiavi per ogni round, anch'esso composto da queste fasi: rot word, sub word, rcon.
+\index{AES} \index{add round key} \index{sub bytes} \index{shift rows} \index{mix columns} \index{key expansion} \index{round} \index{rot word} \index{sub word} \index{rcon}
+
+\textsf{\small Come prima cosa mostrerò l'implementazione dell'algoritmo di AES con tutte le varie operazioni all'interno di ogni round di AES, ovvero: add round key, sub bytes, shift rows e mix columns. Dopodiché presenterò la parte di Key Expansion, ovvero come vengono ottenute le chiavi per ogni round, anch'esso composto da queste fasi: rot word, sub word, rcon.}
 
 %\subsection{Cifratura} %TODO: uncomment?
 
 \subsection{Add Round Key}
+
+\index{add round key} \index{chiave} \index{round} \index{matrice di stato}
 
 \textsf{\small Nella fase di \emph{add\_round\_key()} la chiave di round viene aggiunta alla matrice di stato.}
 
@@ -100,7 +112,11 @@
 
 \subsection{Sub Bytes}
 
+\index{sub bytes} \index{S-BOX}
+
 \textsf{\small Nella funzione \emph{sub\_bytes} ogni byte della matrice di stato viene sostituito con quelli presenti nella S-BOX.}
+
+\index{S-BOX} \index{matrice di stato}
 
 \textsf{\small Quindi, nella funzione viene passata la matrice di stato come reference, quindi tutti le modifiche verranno applicate anche all'esterno della funzione e poi viene eseguito un loop e ogni elemento viene sostituito con il corrispettivo della S-BOX.}
 
@@ -113,7 +129,11 @@
 
 \subsection{Shift Rows}
 
+\index{shift rows}
+
 \textsf{\small Nel passaggio di \emph{shift rows} le righe della matrice di stato verranno \emph{shiftate} di una posizione la seconda riga, di due posizione la terza e di tre la quarta.}
+
+\index{shift rows}
 
 \textsf{\small Per fare questo ci avvaliamo di due funzioni, una \emph{shift\_row} per shiftare effettivamente le righe e nell'altra \emph{shift\_rows} per chiamare la precedente funzione per shiftare delle posizioni stabilite.}
 
@@ -126,7 +146,7 @@
 	\label{fig:shift_row}
 \end{figure}
 
-\textsf{\small } %TODO:
+%\textsf{\small } %TODO:
 
 \begin{figure}[H]
 	\centering
@@ -137,7 +157,9 @@
 
 \subsection{Mix Columns}
 
-\textsf{\small La procedura \emph{mix\_columns} prende in input la matrice di stato, mescola i suoi bytes.} %TODO:
+\index{mix columns} \index{matrice di stato}
+
+\textsf{\small La procedura \emph{mix\_columns} prende in input la matrice di stato, mescola i suoi bytes.}
 
 %TODO: Aggiungere altro.
 
@@ -152,7 +174,11 @@
 
 \subsection{Key Expansion}
 
-\textsf{\small In questa funzione vengono generate le altre chiavi dei rounds a partire dalla prima chiave. Gli viene passata un array con la chiave, una word e la tipologia di AES: 128, 192 o 256.} %TODO:
+\index{key expansion} \index{key schedule} \index{rounds}
+
+\textsf{\small In questa funzione vengono generate le altre chiavi dei rounds a partire dalla prima chiave. Gli viene passata un array con la chiave, una word e la tipologia di AES: 128, 192 o 256.}
+
+\index{rot word} \index{sub word} \index{rcon} \index{XOR}
 
 \textsf{\small Dopodiché eseguiamo le operazioni di: \emph{rot\_word}, \emph{sub\_word}, e \emph{rcon}. Dopodiché viene eseguito uno XOR tra la chiave e il rcon. Dopodiché si continua a eseguire uno XOR con le chiavi precedenti.}
 
@@ -178,6 +204,8 @@
 
 \subsubsection{Sub Word}
 
+\index{sub word}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/code/cpp/key_expansion/sub_word.PNG}
@@ -185,9 +213,13 @@
 	\label{fig:sub_word}
 \end{figure}
 
-\textsf{\small Nella procedura \emph{sub\_word()} ogni byte della chiave viene sostituita con quella della S-BOX.} %TODO:
+\index{sub word} \index{S-BOX}
+
+\textsf{\small Nella procedura \emph{sub\_word()} ogni byte della chiave viene sostituita con quella della S-BOX.}
 
 \subsubsection{Rcon}
+
+\index{rcon}
 
 \begin{figure}[H]
 	\centering
@@ -196,9 +228,13 @@
 	\label{fig:rcon}
 \end{figure}
 
-\textsf{\small Nella funzione \emph{rcon}, le \emph{round constants} vengono generate attraverso una funzione ricorsiva.} %TODO:
+\index{rcon} \index{round constants}
 
-\subsubsection{Xor Blocks} %TODO: uncomment?
+\textsf{\small Nella funzione \emph{rcon}, le \emph{round constants} vengono generate attraverso una funzione ricorsiva.}
+
+\subsubsection{Xor Blocks}
+
+\index{XOR} \index{xor blocks}
 
 \textsf{\small Con questa funzione eseguiamo uno XOR per ogni bit \emph{i} tra i blocchi x e y e assegniamo il risultato a ogni bit del blocco z. }
 
@@ -215,11 +251,13 @@
 
 \subsection{Modes}
 
-\textsf{\small } %TODO:
+\index{modalità} \index{ECB} \index{CBC} \index{CFB}
 
-%TODO: subsection: Modes con codice? Questo si potrebbe fare.
+\textsf{\small Verranno ora mostrate le implementazione di alcune delle modalità di cifratura, nello specifico: ECB, CBC e CFB.}
 
 \subsubsection{ECB}
+
+\index{ECB}
 
 \textsf{\small ECB è la modalità più semplice e anche quella che non dovrebbe mai essere usata.} %TODO: aggiungere reference alla spiegazione della modalità.
 
@@ -234,7 +272,7 @@
 	\label{fig:encrypt_ECB}
 \end{figure}
 
-\textsf{\small Per la decifrazione è lo stesso procedimento, ma inverso. } %TODO:
+\textsf{\small Per la decifrazione è lo stesso procedimento, ma inverso. }
 
 \begin{figure}[H]
 	\centering
@@ -245,7 +283,9 @@
 
 \subsubsection{CBC}
 
-\textsf{\small CBC è la modalità di chaining, in cui viene utilizzato un IV (initialization vector) per aggiungere casualità e viene eseguito uno XOR tra il messaggio in chiaro e il testo cifrato.} %TODO:
+\index{CBC} \index{IV} \index{XOR}
+
+\textsf{\small CBC è la modalità di chaining, in cui viene utilizzato un IV (initialization vector) per aggiungere casualità e viene eseguito uno XOR tra il messaggio in chiaro e il testo cifrato.}
 
 \begin{figure}[H]
 	\centering
@@ -254,7 +294,7 @@
 	\label{fig:encrypt_CBC}
 \end{figure}
 
-\textsf{\small } %TODO:
+%\textsf{\small } %TODO:
 
 \begin{figure}[H]
 	\centering
@@ -265,7 +305,9 @@
 
 \subsubsection{CFB}
 
-\textsf{\small In queste funzioni, innanzitutto, verifico che la lunghezza dell'input sia divisibile per 16, poi ottengo il numero di rounds in base a quale AES stiamo utilizzando. Imposto l'output, il blocco, il blocco cifrato e le chiavi di rounds che ottengo dalla key\_expansion. Dopodiché cifro il blocco, eseguo uno XOR tra il plaintext e il blocco cifrato. Infine restituisco l'output.} %TODO:
+\index{CFB} \index{rounds} \index{AES} \index{key expansion} \index{XOR} \index{plaintext}
+
+\textsf{\small In queste funzioni, innanzitutto, verifico che la lunghezza dell'input sia divisibile per 16, poi ottengo il numero di rounds in base a quale AES stiamo utilizzando. Imposto l'output, il blocco, il blocco cifrato e le chiavi di rounds che ottengo dalla key\_expansion. Dopodiché cifro il blocco, eseguo uno XOR tra il plaintext e il blocco cifrato. Infine restituisco l'output.}
 
 \begin{figure}[H]
 	\centering
@@ -285,7 +327,9 @@
 
 \subsection{Paddings}
 
-\textsf{\small Il padding viene utilizzato per aggiungere dei caratteri prestabiliti alla fine di un messaggio. Abbiamo due funzioni, una per aggiungere il padding, add\_padding e una per rimuoverlo, remove\_padding. Entrambe queste funzioni richiedono il messaggio da cui vogliamo aggiungere/rimuovere il padding e quale tipologia di padding applicare.} %TODO:
+\index{padding}
+
+\textsf{\small Il padding viene utilizzato per aggiungere dei caratteri prestabiliti alla fine di un messaggio. Abbiamo due funzioni, una per aggiungere il padding, add\_padding e una per rimuoverlo, remove\_padding. Entrambe queste funzioni richiedono il messaggio da cui vogliamo aggiungere/rimuovere il padding e quale tipologia di padding applicare.}
 
 \textsf{\small Otteniamo, innanzitutto, il resto per vedere se il messaggio è perfettamente divisibile del BLOCK\_SIZE, ovvero 16 oppure no. Dopodiché calcoliamo la lunghezza mancante, sottraendo il BLOCK\_SIZE al resto.}
 
@@ -297,6 +341,8 @@
 \end{figure}
 
 \textsf{\small Se il resto è 0, ovvero il blocco è formato da esattamente 16 caratteri, allora eseguiamo questo:}
+
+\index{1-0-Padding} \index{ISO 10126 PADDING} \index{no padding}
 
 \begin{itemize}
 	\item \textsf{\small \textbf{1-0-Padding}: Aggiungiamo un ulteriore blocco di lunghezza 16, ove il primo elemento è il carattere '1' e il rimanente è composto da zeri.}
@@ -313,12 +359,14 @@
 
 \textsf{\small Se il resto non è pari a 0, quindi il blocco non è pieno, non corrisponde a 16, allora eseguiamo:}
 
+\index{0-Padding} \index{1-0-Padding} \index{ANSI X9.23 Paddding} \index{ISO 10126 Padding} \index{PKCS7} \index{no padding}
+
 \begin{itemize}
 	\item \textsf{\small \textbf{0-Padding}: Aggiungiamo tanti zeri quanti necessari per riempire il blocco.}
 	\item \textsf{\small \textbf{1-0-Padding}: Aggiungiamo un 1 e poi tanti zeri quanti necessari per riempire il blocco.}
 	\item \textsf{\small \textbf{ANSI\_X9\_23\_PADDING}: Aggiungiamo tanti zeri quanti necessari per riempire il blocco - 1, perché nell'ultimo byte inseriamo il numero degli zeri che abbiamo aggiunto.}
 	\item \textsf{\small \textbf{ISO\_10126\_PADDING}: Aggiungiamo dei numeri casuali fino a riempire il blocco - 1, tranne che nell'ultimo byte in cui inseriamo il numero di bytes casuali aggiunti.}
-	\item \textsf{\small \textbf{PKCS7}: Aggiungiamo il numero di bytes che mancano al riempire il blocco in tutti i blocchi rimanenti.}
+	\item \textsf{\small \textbf{PKCS\#7}: Aggiungiamo il numero di bytes che mancano al riempire il blocco in tutti i blocchi rimanenti.}
 	\item \textsf{\small \textbf{NO\_PADDING}: Non eseguiamo alcuna operazione al testo in chiaro.}
 \end{itemize}
 
@@ -336,13 +384,19 @@
 	\label{fig:remove_padding1}
 \end{figure}
 
-\textsf{\small Per quanto riguarda la rimozione del padding, dal testo decifrato, è la stessa identica operazione dell'aggiunta, ma all'inverso, rimuovendo i bytes che avevamo aggiunto.} %TODO:
+\index{padding}
+
+\textsf{\small Per quanto riguarda la rimozione del padding, dal testo decifrato, è la stessa identica operazione dell'aggiunta, ma all'inverso, rimuovendo i bytes che avevamo aggiunto.} 
 
 \subsection{API}
+
+\index{API} \index{padding} \index{modalità} \index{AES}
 
 \textsf{\small Per poter interfacciarsi con tutte queste funzioni, ne sono presenti due: \emph{encrypt()} e \emph{decrypt()} che richiedono entrambe il messaggio (cifrato o in chiaro), la chiave, l'eventuale IV, opzionale, perché potrebbe non essere presente se si utilizza la modalità ECB, la tipologia di padding, la modalità e infine quale tipologia di AES.}
 
 \subsubsection{Cifratura}
+
+\index{padding}
 
 \textsf{\small Nella cifratura, viene aggiunto il padding chiamando \emph{add\_padding()} al messaggio in chiaro. Dopodiché, in base alla modalità scelta, viene restituito il messaggio cifrato.}
 
@@ -356,6 +410,8 @@
 %TODO: encrypt_file?
 
 \subsubsection{Decifratura}
+
+\index{modalità} \index{padding}
 
 \textsf{\small Nella decifratura, viene decifrato il messaggio in base alla modalità selezionata e dopodiché viene restituito il messaggio dopo la rimozione del padding, se presente.}
 
@@ -374,7 +430,11 @@
 
 \section{Implementazione in Java}
 
-\textsf{\small Per l'implementazione in Java, mi sono avvalso di Java 11 e ho usufruito delle librerie standard.} %TODO: 
+\index{Java}
+
+\textsf{\small Per l'implementazione in Java, mi sono avvalso di Java 11 e ho usufruito delle librerie standard.}
+
+\index{padding} \index{iv} \index{salt} \index{password}
 
 \textsf{\small Ho definito, innanzitutto, delle variabili membro statiche, per definire la grandezza della chiave, quale algoritmo utilizzare, quale tipo di padding usufruire e altre inerenti l'iv e la salatura della password.}
 
@@ -385,7 +445,9 @@
 	\label{fig:constructor_and_member_variables}
 \end{figure}
 
-\textsf{\small Attraverso il metodo \emph{getRandomBytes()} otteniamo un Nonce.} %TODO: 
+\index{nonce}
+
+\textsf{\small Attraverso il metodo \emph{getRandomBytes()} otteniamo un Nonce.}
 
 \begin{figure}[H]
 	\centering
@@ -394,7 +456,9 @@
 	\label{fig:nonce_getRandomBytes}
 \end{figure}
 
-\textsf{\small Col metodo \emph{getKeyFromPassword} otteniamo la chiave dalla password assieme alla salatura.} %TODO: 
+\index{password}
+
+\textsf{\small Col metodo \emph{getKeyFromPassword} otteniamo la chiave dalla password assieme alla salatura.}
 
 \begin{figure}[H]
 	\centering
@@ -403,7 +467,9 @@
 	\label{fig:getKeyFromPassword}
 \end{figure}
 
-\textsf{\small Nel metodo \emph{encrypt()} otteniamo la salatura e l'IV attraverso il metodo \emph{getRandomBytes()} e la chiave attraverso \emph{getKeyFromPassword()}. Dopodiché, inizializziamo il cifrario, cifriamo il messaggio e restituiamo il messaggio cifrato, assieme alla salatura e all'IV.} %TODO: 
+\index{salt} \index{iv}
+
+\textsf{\small Nel metodo \emph{encrypt()} otteniamo la salatura e l'IV attraverso il metodo \emph{getRandomBytes()} e la chiave attraverso \emph{getKeyFromPassword()}. Dopodiché, inizializziamo il cifrario, cifriamo il messaggio e restituiamo il messaggio cifrato, assieme alla salatura e all'IV.} 
 
 \begin{figure}[H]
 	\centering
@@ -412,7 +478,9 @@
 	\label{fig:encrypt_java}
 \end{figure}
 
-\textsf{\small Nel metodo \emph{decrypt()} otteniamo l'IV e il sale dal messaggio e recuperiamo la password, dopodiché inizializziamo il cifrario e decifriamo il messaggio.} %TODO: 
+\index{IV} \index{passsword}
+
+\textsf{\small Nel metodo \emph{decrypt()} otteniamo l'IV e il sale dal messaggio e recuperiamo la password, dopodiché inizializziamo il cifrario e decifriamo il messaggio.} 
 
 \begin{figure}[H]
 	\centering
@@ -421,7 +489,9 @@
 	\label{fig:decrypt_java}
 \end{figure}
 
-\textsf{\small In \emph{encryptFile} ci avvaliamo del metodo \emph{encrypt} per cifrare. Leggiamo i dati presenti nel file \emph{inputFilePath} e scriviamo il testo cifrato nel file \emph{outputFilePath}.} %TODO: 
+\index{file}
+
+\textsf{\small In \emph{encryptFile} ci avvaliamo del metodo \emph{encrypt} per cifrare. Leggiamo i dati presenti nel file \emph{inputFilePath} e scriviamo il testo cifrato nel file \emph{outputFilePath}.}
 
 \begin{figure}[H]
 	\centering
@@ -430,7 +500,9 @@
 	\label{fig:encryptFile}
 \end{figure}
 
-\textsf{\small Per \emph{decryptFile} adoperiamo il metodo \emph{decrypt} per decifrare il messaggio cifrato presente nella path indicata dalla variabile \emph{encryptedFilePath}.} %TODO: 
+\index{file}
+
+\textsf{\small Per \emph{decryptFile} adoperiamo il metodo \emph{decrypt} per decifrare il messaggio cifrato presente nella path indicata dalla variabile \emph{encryptedFilePath}.}
 
 \begin{figure}[H]
 	\centering

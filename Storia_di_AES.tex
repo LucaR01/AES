@@ -4,35 +4,21 @@
 
 % ======================================================================================
 
-%TODO: stream cipher vs block cipher \section
-%TODO: kerchoffs laws \section.
-
 % ---------------------------- SECTION: INTRODUZIONE ----------------------------------
 
 %\newpage
 
 \section{Introduzione}
 
-%TODO: \textsf o \textsc o altro ?
-
 \index{AES} \index{DES} \index{Rijndael}
 
-%TODO: a blocchi simmetrico o a blocchi simmetrici?
 \textsf{\small \textbf{AES} (\emph{\textbf{A}dvanced \textbf{E}ncryption \textbf{S}tandard}) è un cifrario a blocchi simmetrico, inventato da due matematici belghi, Vincent Rijmen e Joan Daemen, da cui viene il nome \emph{Rijndael}, nel 1998 per sostituire il precedente standard: DES (\emph{\textbf{D}ata \textbf{E}ncryption \textbf{S}tandard}).}
-
-%TODO: aggiungere la differenza tra AES e Rijndael, sono diversi.
-%TODO: Rijndael: gestisce blocchi e chiavi di differenti dimensioni. (blocco e chiave di 32 bit con 128 bit come minimo e 256 come massimo).
-%TODO: AES: gestisce un blocco di dimensione fissa (128 bit) e la chiave può essere da 128, 192 o 256.
 
 % ---------------------------- SECTION: STORIA DI AES ---------------------------------
 
 %\newpage %TODO: questo newpage da problema, è da fixare
 
 \section{Breve storia di AES} 
-
-%TODO: Partire dal DES, dai problemi del DES e del triplo DES
-%TODO: Nist 1997
-%TODO: I concorrenti di AES: serpent, twofish, ecc. e dire per quale motivo è stato scelto Rijndael come AES alla fine.
 
 \index{DES} \index{NIST} \index{NSA} \index{IBM} \index{NBS} \index{S-BOX}
 
@@ -93,22 +79,11 @@
 
 \textsf{\small Sia AES che Rijndael permettono una grandezza della chiave di 128, 192 o 256 bits, da cui ne ricaviamo il numero di rounds: 10, 12 o 14 rispettivamente.}
 
-\begin{comment}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/.png}
-	\caption{}
-	\label{fig: }
-\end{figure}
-\end{comment}
-
-%TODO: immagine AES vs Rijndael
-
 % ------------------------ SECTION: SYMMETRIC VS ASYMMETRIC? --------------------------
 
 %\newpage
 
-\section{Cifratura simmetrica vs asimmetrica} %rinominare in "Cifrari simmetrici vs asimettrici"?
+\section{Cifratura simmetrica vs asimmetrica}
 
 \index{cifratura} \index{decifratura}
 
@@ -180,13 +155,11 @@
 
 \index{stream} \index{block cipher} \index{block} \index{a flusso} \index{blocchi} \index{AES} \index{cifrario} \index{messaggio}
 
-\textsf{\small \textbf{Cifrario a flusso}: Il testo in chiaro viene separato in [singoli] bits che vengono poi singolarmente cifrati.} %TODO:
+\textsf{\small \textbf{Cifrario a flusso}: Il testo in chiaro viene separato in [singoli] bits che vengono poi singolarmente cifrati.} 
 
-\textsf{\small \textbf{Cifrario a blocchi}: Un cifrario a blocchi prende un messaggio in chiaro e lo suddivide in blocchi di bytes.} %TODO: 
+\textsf{\small \textbf{Cifrario a blocchi}: Un cifrario a blocchi prende un messaggio in chiaro e lo suddivide in blocchi di bytes.} 
 
 \textsf{\small  AES è un cifrario a blocchi che prende un blocco di grandezza fissa di 16 bytes (o 4 words).}
-
-%TODO: aggiungere immagine?
 
 % ------------------------ SECTION: PRINCIPIO DI KERCKHOFFS ---------------------------
 
@@ -194,16 +167,16 @@
 
 \index{Kerckhoffs}
 
-\textsf{\small L'olandese Auguste Kerckhoffs elaborò, nel 1883, due articoli riguardanti la crittografia. Nel primo enunciò sei principi, di cui il più famoso (il numero 2) sostiene che la sicurezza di un sistema crittografico non deve risiedere nella segretezza del suo algoritmo, ma soltanto nel mantenere la sua chiave segreta.} %TODO:  [scrisse/redisse/stilò/compose/elaborò] nel 1883 due articoli riguardanti la crittografia. Nel primo trattò [enunciò] sei principi, di cui il più famoso (il numero 2) sostiene che la sicurezza di un sistema crittografico non deve risiedere nella segretezza del suo algoritmo, ma soltanto dal mantenere la chiave segreta.
+\textsf{\small L'olandese Auguste Kerckhoffs elaborò, nel 1883, due articoli riguardanti la crittografia. Nel primo enunciò sei principi, di cui il più famoso (il numero 2) sostiene che la sicurezza di un sistema crittografico non deve risiedere nella segretezza del suo algoritmo, ma soltanto nel mantenere la sua chiave segreta.} %TODO: [scrisse/redisse/stilò/compose/elaborò]
 
-\textsf{\small I sei principi di Kerckhoffs:} %TODO: 
+\textsf{\small I sei principi di Kerckhoffs:}
 
 %TODO: citare fonte.
 %TODO: \cite{} Wikipedia e video.
 
 \begin{enumerate}
 	\item \textsf{\small Il sistema deve essere praticamente, se non matematicamente, indecifrabile.} %TODO: 
-	\item \textsf{\small Non dovrebbe richiedere segretezza e non dovrebbe essere un problema se cade nelle mani nemiche.} %TODO:  [del nemico]
+	\item \textsf{\small Non dovrebbe richiedere segretezza e non dovrebbe essere un problema se cade nelle mani nemiche.} %TODO: [del nemico]
 	\item \textsf{\small Deve essere possibile comunicare e ricordare la chiave, senza utilizzare note scritte e i corrispondenti devono essere in grado di modificarla a piacimento.} %TODO: Deve essere possibile comunicare e ricordare la chiave, senza utilizzare note scritte e i corrispondenti devono essere in grado di modificarla a volere/a piacimento.
 	\item \textsf{\small ve essere applicabile a comunicazioni attraverso il telegrafo.} %TODO: 
 	\item \textsf{\small  Deve essere portabile, e non dovrebbe richiedere diverse persone per poterlo utilizzare.} %TODO:

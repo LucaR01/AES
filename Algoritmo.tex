@@ -1,25 +1,6 @@
 % ================================ L'ALGORITMO ========================================
 
-\chapter{L'Algoritmo} %TODO: Rinominare in "Una panoramica sull'Algoritmo" o in realtà quello è per una sezione?
-
-%TODO: Le varie sezioni: sub bytes, Shift Rows, mix columns, Add Round Key
-%TODO: aggiungere immagini
-
-%TODO: perché l'ultimo round è differente?
-
-%TODO: 1. KeyExpansion (Rijndael Key Scheduler/AES Key Scheduler)
-%TODO: 1. AddRoundKey (con lo XOR)
-
-%TODO: 1. SubBytes (S-Box)
-%TODO: 2. ShiftRows (1a riga niente, 2a riga = shift a sinistra di 1, 3a riga = shift di 2, 4a riga = shift di 3) (lo shift è come una ROL in x86)
-%TODO: 3. MixColumns (Rijndael Key Scheduler/AES Key Scheduler)
-%TODO: 4. AddRoundKey (con lo XOR)
-
-%TODO: ShiftRows e MixColumns per la "Confusione e Diffusione" (teoria di Shannon).
-
-%TODO: 10 rounds (fasi/cicli) per chiavi di 128-bit
-%TODO: 12 rounds (fasi/cicli) per chiavi di 192-bit
-%TODO: 14 rounds (fasi/cicli) per chiavi di 256-bit
+\chapter{L'Algoritmo}
 
 % ======================================================================================
 
@@ -43,17 +24,6 @@
 
 \textsf{\small Alla base della crittografia, ci sono due importanti proprietà dei cifrari a chiave simmetrica, elaborati dal padre della teoria dell'informazione, Claude Elwood Shannon, ovvero: \emph{diffusione} e \emph{confusione}.} \\
 
-\begin{comment}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\textwidth, height=1\textheight, keepaspectratio]{./images/theory_of_information/confusion_and_diffusion.png}
-	\caption{Confusion and Diffusion}
-	\label{fig:confusion_and_diffusion2}
-\end{figure}
-\end{comment}
-
-%TODO: itemize?
-
 \textsf{\small Il principio della \emph{confusione} vela la connessione tra il messaggio originale e il testo cifrato.} %TODO: messaggio/testo; [per esempio cifrario di cesare (con annessa immagine volendo)]
 
 \textsf{\small La proprietà di \emph{diffusione}, invece, riguarda lo scombussolamento della posizione dei caratteri del messaggio.} %TODO: [un semplice esempio potrebbe essere la trasposizione delle colonne in una matrice oppure non lo scrivo.]
@@ -69,13 +39,9 @@
 	\label{fig:confusion_and_diffusion}
 \end{figure}
 
-%TODO: [volendo aggiungere altro sulla teoria dell'informazione, su Shannon, sull'importanza, ecc. Magari aggiungere anche un'immagine.]
-
-%TODO: [aggiungere una o più immagini sulla teoria di Shannon]
-
 % ------------------- SECTION: UNA PANORAMICA SULL'ALGORITMO --------------------------
 
-\section{Una panoramica sull'Algoritmo} %TODO: Una panoramica dell'Algoritmo/Una panoramica sull'Algoritmo (meglio una panoramica sull'algoritmo come nome!) oppure "L'Algoritmo in breve" o "Semplice Overview dell'Algoritmo".
+\section{Una panoramica sull'Algoritmo}
 
 %TODO: itemize?
 %TODO: forse dovrei semplificarlo un attimo e parlarne più con calma prima di passare alle liste delle operazioni.
@@ -118,7 +84,7 @@
 
 %TODO: magari semplificare questa parte.
 
-\subsection{Key Expansion | Key Schedule} %TODO: remove?
+\subsection{Key Expansion | Key Schedule}
 
 \index{key expansion} \index{key schedule} \index{rounds} \index{chiavi}
 
@@ -203,7 +169,7 @@
 	\item \textsf{\small round\_constant($2 \cdot \text{round\_constant(i - 1)}$) $ \oplus \hspace{0.3mm} \text{0x11B } \ge 0x80$ }
 \end{itemize}
 
-\subsection{I Rounds} %TODO: Rinominare in qualcos'altro.
+\subsection{I Rounds}
 
 \index{rounds} \index{mix columns}
 
@@ -223,7 +189,7 @@
 	\item \textsf{\small \underline{\emph{Add Round Key}}: Viene applicata la chiave del prossimo round attraverso uno XOR.} %TODO: applicata, meglio trovare un altro verbo
 \end{itemize}
 
-\begin{figure}[H] %TODO: Cambiare immagine?
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth, height=0.5\textheight, keepaspectratio]{./images/aes/flowcharts/aes_flowchart.png}
 	\caption{AES Rounds Flowchart}
@@ -239,12 +205,6 @@
 
 \textsf{\small Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, per evitare ciò, sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}.} %TODO: Quando AES era in sviluppo venne trovata una scorciatoia attraverso 6 rounds, [come possiamo notare ogni bit di output di un round dipende da ogni bit dei due rounds precedenti ] per evitare questo sono stati aggiunti 4 rounds extra, come \emph{margine di sicurezza}. %TODO: magari approfondire?
 
-%TODO: [magari aggiungere qualche immagine sul procedimento]
-
-%TODO: la subsection modalità di AES magari la sposto in un capitolo a parte? Oppure semplicemente ampio con le modalità di AES.
-
-%TODO: subsection Add Round Key, Sub Bytes, Shift Rows, Mix Columns
-
 \subsection{Add Round Key}
 
 \index{add round key} \index{Galois} \index{XOR} \index{round} \index{matrice di stato}
@@ -253,7 +213,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth, height=0.7\textheight, keepaspectratio]{./images/aes/add_round_key.png} %TODO: prima era roundkey.png
+	\includegraphics[width=0.7\textwidth, height=0.7\textheight, keepaspectratio]{./images/aes/add_round_key.png} 
 	\caption{Add Round Key}
 	\label{fig:add_round_key2}
 \end{figure}
@@ -291,7 +251,6 @@
 \end{figure}
 
 \begin{itemize}
-	%\setlength\itemsep{1em} %TODO: remove
 	\item \textsf{\small Shift della seconda riga di 1 posizione a sinistra.}
 	\item \textsf{\small Shift della terza riga di 2 posizioni a sinistra.}
 	\item \textsf{\small Shift della quarta riga di 3 posizioni a sinistra.}
@@ -320,7 +279,7 @@
 
 \textsf{\small $ NC_3 = galois\_multiplication 2 (C_0) \oplus C_1 \oplus C_2 \oplus galois\_multiplication 1 (C_3) $}
 
-\subsection{Le modalità di AES} %TODO: section/subsection: "Come può essere usato AES?" o "Con quali combinazioni può essere usato AES" o "In combinazione a cosa può essere usato AES"? o "Le modalità di AES"
+\subsection{Le modalità di AES}
 
 \index{AES} \index{modalità}
 
@@ -331,7 +290,7 @@
 
 \textsf{\small Di seguito, alcune delle modalità di AES: }
 
-\begin{itemize} %TODO: approfondirli, scrivere qualcosa di ciascuno
+\begin{itemize}
 	\item \textsf{\small \textbf{ECB} (\emph{\textbf{E}lectronic \textbf{C}ode \textbf{B}ook})}
 	\item \textsf{\small \textbf{CBC} (\emph{\textbf{C}ipher \textbf{B}lock \textbf{C}haining})}
 	\item \textsf{\small \textbf{CFB} (\emph{\textbf{C}ipher \textbf{F}eed\textbf{B}ack)}}
@@ -339,20 +298,5 @@
 	\item \textsf{\small \textbf{CTR} (\emph{\textbf{C}oun\textbf{t}e\textbf{r} mode})}
 	%\item \textsf{\small }
 \end{itemize} 
-
-%TODO: magari approfondire queste modalità oppure più tardi oppure scrivere giusto un filino per ognuna e poi al massimo lo riprendo dopo.
-
-\newpage
-
-\begin{comment}
-\begin{figure}[H] %TODO: oppure mettere un'immagine sulle modalità, oppure mettere quueta prima delle modalità %TODO: remove visto che l'ho messo nel titolo?
-	\centering
-	\includegraphics[width=0.6\textwidth, height=0.6\textheight, keepaspectratio]{./images/aes/500px-AES_(Rijndael)_Round_Function.png}
-	\caption{AES Round Function}
-	\label{fig:500px-AES_(Rijndael)_Round_Function}
-\end{figure}
-\end{comment}
-
-%TODO: Approfondirli magari nella sezione dei pro e contro e dei possibili attacchi come: PA (Padding Attack), CPA (Chosen Plaintext Attack), CCA (Chosen Ci)
 
 % -------------------------------- FINE CAPITOLO --------------------------------------

@@ -2,12 +2,6 @@
 
 \documentclass[a4paper,12pt]{book}
 
-%TODO: aggiungere un Abstract? (L'objective (l'obiettivo) di questa ricerca è ...)
-%TODO: aggiungere bibliografia.
-%TODO: aggiungere indice analitico alla fine del "libro".
-
-%TODO: Aggiungere capitolo: "Implementazione" (implementazione basilare) in C++ e/o Java.
-
 % ----------------------------- BEGIN PREAMBLE ---------------------------------------
 
 \usepackage{lmodern}
@@ -151,7 +145,6 @@
 % ----- empty page command end -------------
 
 % ----- code ----------------
-%TODO: remove
 
 \usepackage{listingsutf8}
 
@@ -278,7 +271,7 @@
 
 % ----------------------------- BEGIN BIBLIOGRAPHY  ----------------------------------
 
-\bibliographystyle{unsrt} %TODO: prima era plain
+\bibliographystyle{unsrt} % prima era plain
 
 % ----------------------------- END BIBLIOGRAPHY  ------------------------------------
 
@@ -369,16 +362,16 @@
 	%\FSfont{5bp} % FontSite Bergamo (Bembo)
 	%49
 	\drop = 0.2\textheight
-	\centering %TODO: questo centering da problemi; uncomment
+	\centering 
 	\vfill
 	{\Huge Advanced Encryption Standard}\\[\baselineskip]
 	{\Huge AES}\\[\baselineskip]
 	{\large Luca Rengo}\\[0.5\drop]
 	{\Large }%\\[0.5\baselineskip] %TODO: \plogo da problemi; questo \\ dava l'errore: "there is no line to end here"
-	{\large v1.0.0}\\ %TODO: prima AES v1.0.0
+	{\large v1.0.0}\\ 
 	{\Large \scshape Maggio | Aprile}\par
 	{\large \scshape \hspace{2mm} 2022 | 2023}\\
-	{\includegraphics[width=0.6\textwidth, height=0.6\textheight, keepaspectratio]{./images/aes/500px-AES_(Rijndael)_Round_Function.png}} %TODO: remove?
+	{\includegraphics[width=0.6\textwidth, height=0.6\textheight, keepaspectratio]{./images/aes/500px-AES_(Rijndael)_Round_Function.png}} 
 	\vfill\null
 	\endgroup}
 
@@ -414,7 +407,7 @@
 	
 	\include{Storia_di_AES}
 	
-	\include{Algoritmo} %TODO: oppure chiamarlo: "Meccanismo"/"Il Meccanismo"? Dopo l'algoritmo ci sta meglio, le modalità al posto della matematica.
+	\include{Algoritmo}
 	
 	\include{La_matematica_dietro_AES}
 	
@@ -429,8 +422,6 @@
 	%TODO: Prima dell'implementazione facciamo: "Le modalità di AES" oppure anche prima del capitolo "La matematica dietro AES" oppure anche no!
 	
 	%TODO: Implementazione %TODO: oppure dipende dall'implementazione, se nell'implementazione c'è solo AES, allora la parte delle Modalità la metto dopo, altrimenti prima.
-	
-	%TODO: Pros e Cons (Tipi Attacchi su AES, vulnerabilità?, ecc.) %TODO: volendo resistance to linear and differential cryptoanalysis, wide tail strategy, impractical related key attacks. %TODO: oppure chiamarlo Attacchi/Sicurezza di/su AES
 	
 	\backmatter
 	
