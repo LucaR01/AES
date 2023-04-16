@@ -1,9 +1,9 @@
 # AES
-A document project about the Advanced Encryption Standard (AES) for an assignment at the university Alma Mater Studiorum of Bologna.
+A project about the Advanced Encryption Standard (AES) for an assignment at the university _Alma Mater Studiorum of Bologna_.
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/LucaR01/AES?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/LucaR01/AES?style=for-the-badge)
-![Lines of code](https://img.shields.io/tokei/lines/github.com/LucaR01/AES?style=for-the-badge)
+[![GitHub issues](https://img.shields.io/github/issues/LucaR01/AES?style=for-the-badge)](https://github.com/LucaR01/AES/issues)
+[![Lines of code](https://img.shields.io/tokei/lines/github.com/LucaR01/AES?style=for-the-badge)](https://github.com/LucaR01/AES/tree/main/code)
 ![GitHub last commit](https://img.shields.io/github/last-commit/LucaR01/AES?style=for-the-badge)
 
 <hr>
@@ -14,7 +14,7 @@ By default, the console application will be launched, but if it has been launche
 
 ## Arguments
 
-There are multiple arguments that can be passed to the program, all of these are optional. Not providing them will not effect the result of the software.
+There are multiple arguments that can be passed to the program, all of these are optional. Not providing them will not affect the result of the software.
 
 The available arguments:
 - `--help` or `-h`: Show help screen.
