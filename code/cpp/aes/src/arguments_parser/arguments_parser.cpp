@@ -66,7 +66,7 @@ void parse_user_arguments(const int& argc, const char** argv)
     } else if(args["--decryption"].asBool()) {
         operation = std::make_pair(aes::ops::Operations::DECRYPT, Arguments::USER_PASSED_ARGUMENT);
     } else if(args["--operation"] && args["--operation"].isString()) {
-        operation = std::make_pair(aes::cvt::retrieve_key_from_map(aes::ops::OPERATIONS_NAMES, std::string_view(args["--operation"].asString())).value_or(aes::def::DEFAULT_OPERATION), Arguments::USER_PASSED_ARGUMENT); //TODO: update because of value_or(); dovrebbe essere false (Arguments::NOT_USER_PASSED_ARGUMENT) se il parametro è sbagliato.
+        operation = std::make_pair(aes::cvt::retrieve_key_from_map(aes::ops::OPERATIONS_NAMES, std::string_view(args["--operation"].asString())).value_or(aes::def::DEFAULT_OPERATION), Arguments::NOT_USER_PASSED_ARGUMENT);
     } else {
         operation = std::make_pair(aes::def::DEFAULT_OPERATION, Arguments::NOT_USER_PASSED_ARGUMENT);
     }
