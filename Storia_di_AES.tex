@@ -12,7 +12,7 @@
 
 \index{AES} \index{DES} \index{Rijndael}
 
-\textsf{\small \textbf{AES} (\emph{\textbf{A}dvanced \textbf{E}ncryption \textbf{S}tandard}) è un cifrario a blocchi simmetrico, inventato da due matematici belghi, Vincent Rijmen e Joan Daemen, da cui viene il nome \emph{Rijndael}, nel 1998 per sostituire il precedente standard: DES (\emph{\textbf{D}ata \textbf{E}ncryption \textbf{S}tandard}).}
+\textsf{\small \textbf{AES} (\emph{\textbf{A}dvanced \textbf{E}ncryption \textbf{S}tandard}) è un cifrario a blocchi simmetrico, inventato da due matematici belgi, Vincent Rijmen e Joan Daemen, da cui viene il nome \emph{Rijndael}, nel 1998 per sostituire il precedente standard: DES (\emph{\textbf{D}ata \textbf{E}ncryption \textbf{S}tandard}).}
 
 % ---------------------------- SECTION: STORIA DI AES ---------------------------------
 
@@ -22,7 +22,7 @@
 
 \index{DES} \index{NIST} \index{NSA} \index{IBM} \index{NBS} \index{S-BOX}
 
-\textsf{\small DES era divenuto lo standard dopo un bando dell'NBS (\emph{\textbf{N}ational \textbf{B}ureau of \textbf{S}tandards}), oggi NIST \emph{(\textbf{N}ational \textbf{I}nstitute for \textbf{S}ecurity and \textbf{T}echnology)} per trovare un buon e sicuro algoritmo per proteggere le comunicazioni private dei cittadini americani.}
+\textsf{\small DES era divenuto lo standard dopo un bando del NBS (\emph{\textbf{N}ational \textbf{B}ureau of \textbf{S}tandards}), oggi NIST \emph{(\textbf{N}ational \textbf{I}nstitute for \textbf{S}ecurity and \textbf{T}echnology)} per trovare un buon e sicuro algoritmo per proteggere le comunicazioni private dei cittadini americani.}
 
 \index{Lucifer}
 
@@ -34,17 +34,17 @@
 
 \index{DES}
 
-\textsf{\small DES regnò per 20 anni, venne studiato in lungo e in largo dagli accademici e criptoanalisti di tutto il mondo, grazie a ciò, ci fu finalmente per la prima volta un cifrario certificato che tutti potevano studiare: nacque così il moderno campo della crittografia.}
+\textsf{\small DES regnò per 20 anni, venne studiato in lungo e in largo dagli accademici e criptoanalisti di tutto il mondo, grazie a ciò, ci fu finalmente per la prima volta un cifrario certificato che tutti potessero studiare: nacque così il moderno campo della crittografia.} %TODO: potevano
 
 \index{DES}
 
 \textsf{\small Negli anni, molti sfidarono DES e dopo diverse battaglie fu finalmente sconfitto.} %TODO: ampliare come venne sconfitto?
 
-\index{3DES}
+\index{3DES} \index{DES}
 
 %TODO: "fermare" o "ovviare"
 %TODO: magari spiegare perché era lento più nel dettaglio. (perché combinevamo il des tre volte)
-\textsf{\small L'unico modo per ovviare a questi attacchi era quello di combinare des tre volte, formando il 3DES (\emph{Triplo DES}). Il problema di questo però era la sua lentezza.} %TODO: estremamente lento
+\textsf{\small L'unico modo per ovviare a questi attacchi era quello di combinare DES tre volte, formando il 3DES (\emph{Triplo DES}). Il problema di questo però era la sua lentezza.} %TODO: estremamente lento
 
 \index{NIST}
 
@@ -72,7 +72,7 @@
 
 \index{AES} \index{Rijndael}
 
-\textsf{\small AES è un'implentazione di Rijndael, divenuto l'algoritmo di cifratura standard del governo degli Stati Uniti d'America.}
+\textsf{\small AES è un'implementazione di Rijndael, divenuto l'algoritmo di cifratura standard del governo degli Stati Uniti d'America.}
 \textsf{\small Una differenza tra i due è che AES utilizza blocchi di dati da 128 bits, mentre Rijndael permette oltre a blocchi da 128, anche blocchi da 192 e 256 bits.} %TODO: "blocchi di dati"?
 
 \index{AES} \index{Rijndael}
@@ -155,7 +155,7 @@
 
 \index{stream} \index{block cipher} \index{block} \index{a flusso} \index{blocchi} \index{AES} \index{cifrario} \index{messaggio}
 
-\textsf{\small \textbf{Cifrario a flusso}: Il testo in chiaro viene separato in [singoli] bits che vengono poi singolarmente cifrati.} 
+\textsf{\small \textbf{Cifrario a flusso}: Il testo in chiaro viene separato in singoli bits che vengono poi singolarmente cifrati.} 
 
 \textsf{\small \textbf{Cifrario a blocchi}: Un cifrario a blocchi prende un messaggio in chiaro e lo suddivide in blocchi di bytes.} 
 
@@ -178,7 +178,7 @@
 	\item \textsf{\small Il sistema deve essere praticamente, se non matematicamente, indecifrabile.} %TODO: 
 	\item \textsf{\small Non dovrebbe richiedere segretezza e non dovrebbe essere un problema se cade nelle mani nemiche.} %TODO: [del nemico]
 	\item \textsf{\small Deve essere possibile comunicare e ricordare la chiave, senza utilizzare note scritte e i corrispondenti devono essere in grado di modificarla a piacimento.} %TODO: Deve essere possibile comunicare e ricordare la chiave, senza utilizzare note scritte e i corrispondenti devono essere in grado di modificarla a volere/a piacimento.
-	\item \textsf{\small ve essere applicabile a comunicazioni attraverso il telegrafo.} %TODO: 
+	\item \textsf{\small Deve essere applicabile a comunicazioni attraverso il telegrafo.} %TODO: 
 	\item \textsf{\small  Deve essere portabile, e non dovrebbe richiedere diverse persone per poterlo utilizzare.} %TODO:
 	\item \textsf{\small Il sistema dovrebbe essere facile da usare e non dovrebbe essere stressante o richiedere ai propri operatori di seguire una lunga lista di procedure.} %TODO: utenti
 \end{enumerate}

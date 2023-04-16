@@ -89,6 +89,8 @@
 	\label{fig:round_constant_generator}
 \end{figure}
 
+\subsection{AES}
+
 \index{AES} \index{add round key} \index{sub bytes} \index{shift rows} \index{mix columns} \index{key expansion} \index{round} \index{rot word} \index{sub word} \index{rcon}
 
 \textsf{\small Come prima cosa mostrerò l'implementazione dell'algoritmo di AES con tutte le varie operazioni all'interno di ogni round di AES, ovvero: add round key, sub bytes, shift rows e mix columns. Dopodiché presenterò la parte di Key Expansion, ovvero come vengono ottenute le chiavi per ogni round, anch'esso composto da queste fasi: rot word, sub word, rcon.}
@@ -118,7 +120,7 @@
 
 \index{S-BOX} \index{matrice di stato}
 
-\textsf{\small Quindi, nella funzione viene passata la matrice di stato come reference, quindi tutti le modifiche verranno applicate anche all'esterno della funzione e poi viene eseguito un loop e ogni elemento viene sostituito con il corrispettivo della S-BOX.}
+\textsf{\small Quindi, nella funzione viene passata la matrice di stato come reference, quindi tutte le modifiche verranno applicate anche all'esterno della funzione e poi viene eseguito un loop e ogni elemento viene sostituito con il corrispettivo della S-BOX.}
 
 \begin{figure}[H]
 	\centering
@@ -329,7 +331,7 @@
 
 \index{padding}
 
-\textsf{\small Il padding viene utilizzato per aggiungere dei caratteri prestabiliti alla fine di un messaggio. Abbiamo due funzioni, una per aggiungere il padding, add\_padding e una per rimuoverlo, remove\_padding. Entrambe queste funzioni richiedono il messaggio da cui vogliamo aggiungere/rimuovere il padding e quale tipologia di padding applicare.}
+\textsf{\small Il padding viene utilizzato per aggiungere dei caratteri prestabiliti alla fine di un messaggio. Abbiamo due funzioni, una per aggiungere il padding, \emph{add\_padding} e una per rimuoverlo, \emph{remove\_padding}. Entrambe queste funzioni richiedono il messaggio da cui vogliamo aggiungere/rimuovere il padding e quale tipologia di padding applicare.}
 
 \textsf{\small Otteniamo, innanzitutto, il resto per vedere se il messaggio è perfettamente divisibile del BLOCK\_SIZE, ovvero 16 oppure no. Dopodiché calcoliamo la lunghezza mancante, sottraendo il BLOCK\_SIZE al resto.}
 
@@ -345,6 +347,7 @@
 \index{1-0-Padding} \index{ISO 10126 PADDING} \index{no padding}
 
 \begin{itemize}
+	%\setlength\itemsep{1em}
 	\item \textsf{\small \textbf{1-0-Padding}: Aggiungiamo un ulteriore blocco di lunghezza 16, ove il primo elemento è il carattere '1' e il rimanente è composto da zeri.}
 	\item \textsf{\small \textbf{ISO\_10126\_PADDING}: Aggiungiamo 15 caratteri casuali e nell'ultimo carattere inseriamo il numero di caratteri casuali aggiunti.}
 	\item \textsf{\small \textbf{NO\_PADDING} o qualsiasi altro padding: non facciamo nulla.}
@@ -436,7 +439,7 @@
 
 \index{padding} \index{iv} \index{salt} \index{password}
 
-\textsf{\small Ho definito, innanzitutto, delle variabili membro statiche, per definire la grandezza della chiave, quale algoritmo utilizzare, quale tipo di padding usufruire e altre inerenti l'iv e la salatura della password.}
+\textsf{\small Ho definito, innanzitutto, delle variabili statiche, per definire la grandezza della chiave, quale algoritmo utilizzare, quale tipo di padding usufruire e altre inerenti l'iv e la salatura della password.}
 
 \begin{figure}[H]
 	\centering

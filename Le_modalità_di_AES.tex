@@ -70,7 +70,7 @@
 
 \index{database} \index{password}
 
-\textsf{\small Questo tecnica è molto importante e viene utilizzata nei database affinché le password degli utenti siano sicure. (e non possano essere rubate).} %TODO: processo/tecnica
+\textsf{\small Questa tecnica è molto importante e viene utilizzata nei database affinché le password degli utenti siano sicure. (e non possano essere rubate).} %TODO: processo/tecnica
 
 \index{password} \index{salt}
 
@@ -185,7 +185,7 @@
 	\label{fig:ecb}
 \end{figure}
 
-\textsf{\small Come si deduce dall'immagine, ogni blocco viene cifrato indipendentemente. Viene inserito il messaggio in chiaro e la chiave all'interno del cifrario per ottenere il testo cifrato. Blocchi di testo in chiaro uguali vengono cifrato allo stesso modo.}
+\textsf{\small Come si deduce dall'immagine, ogni blocco viene cifrato indipendentemente. Viene inserito il messaggio in chiaro e la chiave all'interno del cifrario per ottenere il testo cifrato. Blocchi di testo in chiaro uguali vengono cifrati allo stesso modo.}
 
 \textsf{\small Per questo, osservando il testo cifrato è possibile riconoscere, se presenti nel testo in chiaro, parti cifrate allo stesso modo. }
 
@@ -223,7 +223,7 @@
 	\item \textsf{\small Collega ("Incatena" da \emph{Chaining}) tutti i blocchi.}
 	\item \textsf{\small L'IV (\emph{\textbf{I}nitialization \textbf{V}ector}) è usato per modificare il testo in chiaro.}
 	\item \textsf{\small Viene eseguito lo XOR tra il blocco cifrato precedente e il blocco col testo in chiaro corrente.}
-	\item \textsf{\small Risolve il problema dei blocchi di testo in chiaro uguali vengano cifrati allo stesso modo. (problema presente in ECB)}
+	\item \textsf{\small Risolve il problema dei blocchi di testo in chiaro uguali che vengano cifrati allo stesso modo. (problema presente in ECB)}
 	\item \textsf{\small Modificando un bit di un blocco di testo in chiaro, modifica di conseguenza tutti gli altri blocchi cifrati a seguire.}
 \end{itemize}
 
@@ -256,7 +256,7 @@
 
 \begin{itemize}
 	\item \textsf{\small Lega tutti i blocchi (proprio come CBC).}
-	\item \textsf{\small Genera dei bytes casuali, un flusso usando il cifrario che viene poi successivamente XOR col blocco di testo in chiaro.}
+	\item \textsf{\small Genera dei bytes casuali che vengono poi successivamente "XORati" col blocco di testo in chiaro.}
 	\item \textsf{\small Trasforma il cifrario a blocchi in uno stream cipher (cifrario a flusso).}
 \end{itemize}
 
@@ -301,7 +301,7 @@
 
 \textsf{\small La Counter Mode o CM (\emph{integer counter mode}) o SIC (\emph{segmented integer counter}) usufruisce di un counter (contatore), ovvero di una funzione che genera sequenze irripetibili (nel tempo), al posto di utilizzare un IV.}
 
-\textsf{\small Il più semplice contatore è il (banale/banalissimo) incrementa di 1.}
+\textsf{\small Il più semplice contatore è il banale incrementa di 1.}
 \textsf{\small Questa modalità può essere parallelizzata.}
 
 \begin{figure}[H]
@@ -379,7 +379,7 @@
 
 \begin{enumerate}
 	\item \textsf{\small Chiave segreta: chiave segreta condivisa dalle parti.}
-	\item \textsf{\small MAC Signing Algorithm: si avvale della chiave e del messaggio per generare un tag (\emph{authentication tag} che permette di verificare che i dati siano integri e non truccati)}
+	\item \textsf{\small MAC Signing Algorithm: si avvale della chiave e del messaggio per generare un tag (\emph{authentication tag}) che permette di verificare che i dati siano integri e non truccati)}
 	\item \textsf{\small MAC Validation Algorithm: prende in input la chiave, il messaggio, il tag e restituisce in output la validità del tag, ovvero se il messaggio è stato violato, modificato o no.}
 \end{enumerate}
 

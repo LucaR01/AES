@@ -61,7 +61,7 @@
 
 \textsf{\small Nel primo round svolgiamo uno XOR tra il messaggio d'input e la chiave segreta.}
 
-\textsf{\small Lo \emph{XOR} (\emph{E\textbf{X}clusive-\textbf{OR}}) bit-a-bit è un'operazione di macsheratura dei bit, dove se i due bit di input sono diversi, allora produrrà un 1 in uscita, altrimenti se sono uguali, uno zero.} 
+\textsf{\small Lo \emph{XOR} (\emph{E\textbf{X}clusive-\textbf{OR}}) bit-a-bit è un'operazione di mascheratura dei bit, dove se i due bit di input sono diversi, allora produrrà un 1 in uscita, altrimenti se sono uguali, uno zero.} 
 
 \begin{figure}[H]
 	\centering
@@ -107,7 +107,7 @@
 
 \index{XOR}
 
-\textsf{\small Per le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave (eccetto per le chiavi a 256 bit che hanno un procedimento un po' più complicato).} %TODO: rimuovere la parte tra parentesi? ovvero la parte procedimento un po' più complicato o approfondirla?
+\textsf{\small Per le altre colonne, vengono semplicemente eseguiti degli XOR con la stessa colonna della precedente chiave.} %TODO: rimuovere la parte tra parentesi? ovvero la parte procedimento un po' più complicato o approfondirla?; (eccetto per le chiavi a 256 bit che hanno un procedimento un po' più complicato)
 
 \begin{figure}[H]
 	\centering
@@ -198,7 +198,7 @@
 
 \index{rounds}
 
-\textsf{\small Più rounds aggiungiamo, più sicurezza, ma questo porterebbe ad un rallentamento dell'algoritmo e quindi delle performance.}
+\textsf{\small Più rounds aggiungiamo, più sicurezza, ma questo porterebbe a un rallentamento dell'algoritmo e quindi delle performance.}
 \textsf{\small Per questo serve un compromesso tra sicurezza e prestazioni.}
 
 \index{AES} \index{rounds}
@@ -260,7 +260,7 @@
 
 \index{mix columns} \index{matrice dello stato}
 
-\textsf{\small Ogni byte viene della matrice dello stato è combinato usando una trasformazione lineare invertibile.}
+\textsf{\small Ogni byte della matrice dello stato è combinato usando una trasformazione lineare invertibile.} %TODO: viene 
 
 \begin{figure}[H]
 	\centering
