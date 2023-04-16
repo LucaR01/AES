@@ -1,11 +1,15 @@
 # AES
 A document project about the Advanced Encryption Standard (AES) for an assignment at the university Alma Mater Studiorum of Bologna.
 
+![GitHub repo size](https://img.shields.io/github/repo-size/LucaR01/AES) [![GitHub issues](https://img.shields.io/github/issues/LucaR01/AES)](https://github.com/LucaR01/AES/issues) 
+[![Lines of code](https://img.shields.io/tokei/lines/github.com/LucaR01/AES)](https://github.com/LucaR01/AES/pulse)
+[![GitHub last commit](https://img.shields.io/github/last-commit/LucaR01/AES)](https://github.com/LucaR01/AES/graphs/commit-activity)
+
 <hr>
 
 The C++ implementation has both a gui and a console application:
 
-By default, the console application will be run, but if it has been launched with the `--gui` or `-g` argument, then the gui application will run.
+By default, the console application will be launched, but if it has been launched with the `--gui` or `-g` argument, then the gui application will run.
 
 ## Arguments
 
