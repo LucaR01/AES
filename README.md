@@ -1,9 +1,10 @@
 # AES
 A document project about the Advanced Encryption Standard (AES) for an assignment at the university Alma Mater Studiorum of Bologna.
 
-![GitHub repo size](https://img.shields.io/github/repo-size/LucaR01/AES) [![GitHub issues](https://img.shields.io/github/issues/LucaR01/AES)](https://github.com/LucaR01/AES/issues) 
-[![Lines of code](https://img.shields.io/tokei/lines/github.com/LucaR01/AES)](https://github.com/LucaR01/AES/pulse)
-[![GitHub last commit](https://img.shields.io/github/last-commit/LucaR01/AES)](https://github.com/LucaR01/AES/graphs/commit-activity)
+![GitHub repo size](https://img.shields.io/github/repo-size/LucaR01/AES?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/LucaR01/AES?style=for-the-badge)
+![Lines of code](https://img.shields.io/tokei/lines/github.com/LucaR01/AES?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/LucaR01/AES?style=for-the-badge)
 
 <hr>
 
