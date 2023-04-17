@@ -61,3 +61,9 @@ The console application will request the user various input unless they've been 
 <img src="https://github.com/LucaR01/AES/blob/main/screens/console_operazione.PNG" width="20%" heigth="20%" />
 
 <hr>
+
+## Java
+
+The java implementation works just as it is, but doesn't have nor a console nor a gui application.
+
+<hr>
