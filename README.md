@@ -64,6 +64,6 @@ The console application will request the user various input unless they've been 
 
 ## Java
 
-The java implementation works just as it is, but doesn't have nor a console nor a gui application.
+The Java implementation works just fine but doesn't have a console or a GUI application.
 
 <hr>
